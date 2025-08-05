@@ -228,8 +228,8 @@ public:
     double AUcfqzi() const
     {
         double term1 = -8 * (2 - y) * sqrt(1 - y) * (csi - 2 * xB);
-        double term2 = sqrt(xB * (csi - xB)) * (2 * sqrt(zetamax * zetamin) - 1);
-        return term1 * term2 * fgl; // half-range
+        double term2 = sqrt(xB * (csi - xB)) * 2 * ( sqrt(zetamax * zetamin) - 1); //POSSIBILE ERRORE MODIFICATO DA RICONTROLLARE IL RESTO
+        return term1 * term2 * fgl; // half-range 
     }
 
     double AUc2fqzi() const
@@ -247,7 +247,7 @@ public:
     double ALcfqzi() const
     {
         double term1 = 8 * y * sqrt(1 - y) * csi * sqrt(xB * (csi - xB));
-        double term2 = 2 * sqrt(zetamax * zetamin) - 1;
+        double term2 = 2 * sqrt(zetamax * zetamin) - 1; //ANCHE QUESTO DA RICONTROLLARE PERCHE SBAGLIATO???
         return term1 * term2 * DLfgl; // half-range
     }
 
@@ -546,25 +546,25 @@ struct IntegrationResults {
 
 int main() {
     // Fixed integration settings
-    const int maxeval = static_cast<int>(1e6);
-    const int nstart  = static_cast<int>(1e5);
+    const int maxeval = static_cast<int>(1e7);
+    const int nstart  = static_cast<int>(1e6);
 
     // Fixed values for xB, y, and Q2
     std::vector<double> xB_values;
-    for(double i = 0; i <=0.2; i += 0.001) xB_values.push_back(i);
+    for(double i = 0; i <=1; i += 0.005) xB_values.push_back(i);
     std::vector<double> y_values;
-    for(double i = 0; i <=1; i += 0.01) y_values.push_back(i);
+    for(double i = 0; i <=1; i += 0.005) y_values.push_back(i);
     std::vector<double> Q2_values;
-    for(double i = 0; i <= 1; i += 0.001) Q2_values.push_back(i * (PhysicsCalculator::getQ2M() - PhysicsCalculator::getQ20()) + PhysicsCalculator::getQ20()); // Assuming Q2 ranges from 0 to Q2M
+    for(double i = 0; i <= 1; i += 0.005) Q2_values.push_back(i * (PhysicsCalculator::getQ2M() - PhysicsCalculator::getQ20()) + PhysicsCalculator::getQ20()); // Assuming Q2 ranges from 0 to Q2M
     
     //set parameters for the integration
     int ndim = 2, ncomp = 13, nvec = 1;
-    double epsrel = 1e-4, epsabs = 1e-9;
+    double epsrel = 1e-6, epsabs = 1e-12;
     int flags = 2, seed = 0, mineval = 0, nincrease = 0, nbatch = 1000, gridno = 0;
     char statefile[64] = "";
     void* spin = nullptr;
     
-    std::ofstream outFile("Prova0.1.txt");  
+    std::ofstream outFile("Fixed_xB.txt");  
     outFile << std::setw(10) << "xB<0.2" 
             << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
             << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
@@ -577,7 +577,20 @@ int main() {
             << std::setw(15) << "<dsig|+2,-1> " << std::setw(15) << "err[9]"
             << std::setw(15) << "<ALL|0,+1>" << std::setw(15) << "err[10]"
             << std::setw(15) << "<ALL|+1,-1>" << std::setw(15) << "err[11]"
-            << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"        
+            << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"
+            << std::setw(15) << "AUzi" << std::setw(15) << "err[13]"
+            << std::setw(15) << "AUcfqzi" << std::setw(15) << "err[14]"
+            << std::setw(15) << "AUc2fqzi" << std::setw(15) << "err[15]"
+            << std::setw(15) << "ALzi" << std::setw(15) << "err[16]"
+            << std::setw(15) << "ALcfqzi" << std::setw(15) << "err[17]"
+            << std::setw(15) << "BUcf12zi" << std::setw(15) << "err[18]"
+            << std::setw(15) << "BUcfqmf12zi" << std::setw(15) << "err[19]"
+            << std::setw(15) << "BUcfqpf12zi" << std::setw(15) << "err[20]"
+            << std::setw(15) << "BUc2fqmf12zi" << std::setw(15) << "err[21]"
+            << std::setw(15) << "BUc2fqpf12zi" << std::setw(15) << "err[22]"
+            << std::setw(15) << "BLcf12zi" << std::setw(15) << "err[23]"
+            << std::setw(15) << "BLcfqmf12zi" << std::setw(15) << "err[24]"
+            << std::setw(15) << "BLcfqpf12zi" << std::setw(15) << "err[25]"
             << std::setw(15) << "time[s]"
             << std::setw(10) << "neval" << std::setw(10) << "fail"
             << std::endl;
@@ -613,6 +626,18 @@ int main() {
             );
         }
         outFile << std::setw(10) << xB_val  
+                << std::setw(15) << 2 * res.ratio[1] << std::setw(15) << 2 * res.ratioerror[1]
+                << std::setw(15) << res.ratio[2] << std::setw(15) << res.ratioerror[2]
+                << std::setw(15) << res.ratio[3] << std::setw(15) << res.ratioerror[3]
+                << std::setw(15) << 2 * res.ratio[4] << std::setw(15) << 2 * res.ratioerror[4]
+                << std::setw(15) << res.ratio[5] << std::setw(15) << res.ratioerror[5]
+                << std::setw(15) << res.ratio[6] << std::setw(15) << res.ratioerror[6]
+                << std::setw(15) << res.ratio[7] << std::setw(15) << res.ratioerror[7]
+                << std::setw(15) << res.ratio[8] << std::setw(15) << res.ratioerror[8]
+                << std::setw(15) << res.ratio[9] << std::setw(15) << res.ratioerror[9]
+                << std::setw(15) << res.ratio[10] << std::setw(15) << res.ratioerror[10]
+                << std::setw(15) << res.ratio[11] << std::setw(15) << res.ratioerror[11]
+                << std::setw(15) << res.ratio[12] << std::setw(15) << res.ratioerror[12]
                 << std::setw(15) << res.integral[0] << std::setw(15) << res.error[0]
                 << std::setw(15) << res.integral[1] << std::setw(15) << res.error[1]
                 << std::setw(15) << res.integral[2] << std::setw(15) << res.error[2]
@@ -635,7 +660,7 @@ int main() {
 
     outFile.close();
 
-    std::ofstream outFile1("Prova1.txt");  
+    std::ofstream outFile1("Fixed_y.txt");  
     outFile1 << std::setw(10) << "y" 
             << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
             << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
@@ -648,7 +673,20 @@ int main() {
             << std::setw(15) << "<dsig|+2,-1> " << std::setw(15) << "err[9]"
             << std::setw(15) << "<ALL|0,+1>" << std::setw(15) << "err[10]"
             << std::setw(15) << "<ALL|+1,-1>" << std::setw(15) << "err[11]"
-            << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"        
+            << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"
+            << std::setw(15) << "AUzi" << std::setw(15) << "err[13]"
+            << std::setw(15) << "AUcfqzi" << std::setw(15) << "err[14]"
+            << std::setw(15) << "AUc2fqzi" << std::setw(15) << "err[15]"
+            << std::setw(15) << "ALzi" << std::setw(15) << "err[16]"
+            << std::setw(15) << "ALcfqzi" << std::setw(15) << "err[17]"
+            << std::setw(15) << "BUcf12zi" << std::setw(15) << "err[18]"
+            << std::setw(15) << "BUcfqmf12zi" << std::setw(15) << "err[19]"
+            << std::setw(15) << "BUcfqpf12zi" << std::setw(15) << "err[20]"
+            << std::setw(15) << "BUc2fqmf12zi" << std::setw(15) << "err[21]"
+            << std::setw(15) << "BUc2fqpf12zi" << std::setw(15) << "err[22]"
+            << std::setw(15) << "BLcf12zi" << std::setw(15) << "err[23]"
+            << std::setw(15) << "BLcfqmf12zi" << std::setw(15) << "err[24]"
+            << std::setw(15) << "BLcfqpf12zi" << std::setw(15) << "err[25]"        
             << std::setw(15) << "time[s]"
             << std::setw(10) << "neval" << std::setw(10) << "fail"
             << std::endl;
@@ -696,6 +734,19 @@ int main() {
                 << std::setw(15) << res.ratio[10] << std::setw(15) << res.ratioerror[10]
                 << std::setw(15) << res.ratio[11] << std::setw(15) << res.ratioerror[11]
                 << std::setw(15) << res.ratio[12] << std::setw(15) << res.ratioerror[12]
+                << std::setw(15) << res.integral[0] << std::setw(15) << res.error[0]
+                << std::setw(15) << res.integral[1] << std::setw(15) << res.error[1]
+                << std::setw(15) << res.integral[2] << std::setw(15) << res.error[2]
+                << std::setw(15) << res.integral[3] << std::setw(15) << res.error[3]
+                << std::setw(15) << res.integral[4] << std::setw(15) << res.error[4]
+                << std::setw(15) << res.integral[5] << std::setw(15) << res.error[5]
+                << std::setw(15) << res.integral[6] << std::setw(15) << res.error[6]
+                << std::setw(15) << res.integral[7] << std::setw(15) << res.error[7]
+                << std::setw(15) << res.integral[8] << std::setw(15) << res.error[8]
+                << std::setw(15) << res.integral[9] << std::setw(15) << res.error[9]
+                << std::setw(15) << res.integral[10] << std::setw(15) << res.error[10]
+                << std::setw(15) << res.integral[11] << std::setw(15) << res.error[11]
+                << std::setw(15) << res.integral[12] << std::setw(15) << res.error[12]
                 << std::setw(15) << res.elapsed_seconds
                 << std::setw(10) << res.neval << std::setw(10) << res.fail
                 << std::endl;
@@ -704,7 +755,7 @@ int main() {
     }
 
     outFile1.close();      
-    std::ofstream outFile2("Prova2.txt");  
+    std::ofstream outFile2("Fixed_Q2.txt");  
     outFile2 << std::setw(10) << "Q2" 
             << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
             << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
@@ -717,7 +768,20 @@ int main() {
             << std::setw(15) << "<dsig|+2,-1> " << std::setw(15) << "err[9]"
             << std::setw(15) << "<ALL|0,+1>" << std::setw(15) << "err[10]"
             << std::setw(15) << "<ALL|+1,-1>" << std::setw(15) << "err[11]"
-            << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"        
+            << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"
+            << std::setw(15) << "AUzi" << std::setw(15) << "err[13]"
+            << std::setw(15) << "AUcfqzi" << std::setw(15) << "err[14]"
+            << std::setw(15) << "AUc2fqzi" << std::setw(15) << "err[15]"
+            << std::setw(15) << "ALzi" << std::setw(15) << "err[16]"
+            << std::setw(15) << "ALcfqzi" << std::setw(15) << "err[17]"
+            << std::setw(15) << "BUcf12zi" << std::setw(15) << "err[18]"
+            << std::setw(15) << "BUcfqmf12zi" << std::setw(15) << "err[19]"
+            << std::setw(15) << "BUcfqpf12zi" << std::setw(15) << "err[20]"
+            << std::setw(15) << "BUc2fqmf12zi" << std::setw(15) << "err[21]"
+            << std::setw(15) << "BUc2fqpf12zi" << std::setw(15) << "err[22]"
+            << std::setw(15) << "BLcf12zi" << std::setw(15) << "err[23]"
+            << std::setw(15) << "BLcfqmf12zi" << std::setw(15) << "err[24]"
+            << std::setw(15) << "BLcfqpf12zi" << std::setw(15) << "err[25]"        
             << std::setw(15) << "time[s]"
             << std::setw(10) << "neval" << std::setw(10) << "fail"
             << std::endl;
@@ -766,6 +830,19 @@ int main() {
                 << std::setw(15) << res.ratio[10] << std::setw(15) << res.ratioerror[10]
                 << std::setw(15) << res.ratio[11] << std::setw(15) << res.ratioerror[11]
                 << std::setw(15) << res.ratio[12] << std::setw(15) << res.ratioerror[12]
+                << std::setw(15) << res.integral[0] << std::setw(15) << res.error[0]
+                << std::setw(15) << res.integral[1] << std::setw(15) << res.error[1]
+                << std::setw(15) << res.integral[2] << std::setw(15) << res.error[2]
+                << std::setw(15) << res.integral[3] << std::setw(15) << res.error[3]
+                << std::setw(15) << res.integral[4] << std::setw(15) << res.error[4]
+                << std::setw(15) << res.integral[5] << std::setw(15) << res.error[5]
+                << std::setw(15) << res.integral[6] << std::setw(15) << res.error[6]
+                << std::setw(15) << res.integral[7] << std::setw(15) << res.error[7]
+                << std::setw(15) << res.integral[8] << std::setw(15) << res.error[8]
+                << std::setw(15) << res.integral[9] << std::setw(15) << res.error[9]
+                << std::setw(15) << res.integral[10] << std::setw(15) << res.error[10]
+                << std::setw(15) << res.integral[11] << std::setw(15) << res.error[11]
+                << std::setw(15) << res.integral[12] << std::setw(15) << res.error[12]
                 << std::setw(15) << res.elapsed_seconds
                 << std::setw(10) << res.neval << std::setw(10) << res.fail
                 << std::endl;
