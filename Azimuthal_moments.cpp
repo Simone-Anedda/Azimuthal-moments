@@ -130,7 +130,7 @@ public:
         return 1.0 / (Q2 * y * y * csi * csi * csi);
     }
 
-    // A coefficients
+    // A coefficients // Il extra 2 term is for the denominator in the azimuthal moments... ->> PERCHé??
     double AU() const
     {
         double term1 = (1 + (1 - y) * (1 - y)) * (xB * xB + (csi - xB) * (csi - xB));
@@ -216,6 +216,10 @@ public:
         return term1 * term2 * DLfgl;
     }
 
+    // Coefficienti AU,AL,BU,BL integrati sul range permesso di zeta *)
+    // A eccezione di quelli che integrano a zero tra zetamin e zetamax per simmetria, integrati solo da zeta = 1/2 a zetamax *)
+    // per cui bisogna ricordarsi che consistentemente vanno divisi per AU/2 *)
+    // Nota: usato 1 - zetamax = zetamin e viceversa *)
     // Integrated coefficients over zeta range
     double AUzi() const
     {
@@ -228,7 +232,7 @@ public:
     double AUcfqzi() const
     {
         double term1 = -8 * (2 - y) * sqrt(1 - y) * (csi - 2 * xB);
-        double term2 = sqrt(xB * (csi - xB)) * 2 * ( sqrt(zetamax * zetamin) - 1); //POSSIBILE ERRORE MODIFICATO DA RICONTROLLARE IL RESTO
+        double term2 = sqrt(xB * (csi - xB)) * ( 2 * sqrt(zetamax * zetamin) - 1); 
         return term1 * term2 * fgl; // half-range 
     }
 
@@ -247,7 +251,7 @@ public:
     double ALcfqzi() const
     {
         double term1 = 8 * y * sqrt(1 - y) * csi * sqrt(xB * (csi - xB));
-        double term2 = 2 * sqrt(zetamax * zetamin) - 1; //ANCHE QUESTO DA RICONTROLLARE PERCHE SBAGLIATO???
+        double term2 = 2 * sqrt(zetamax * zetamin) - 1; 
         return term1 * term2 * DLfgl; // half-range
     }
 
@@ -551,11 +555,11 @@ int main() {
 
     // Fixed values for xB, y, and Q2
     std::vector<double> xB_values;
-    for(double i = 0; i <=1; i += 0.005) xB_values.push_back(i);
+    for(double i = 0; i <=1; i += 0.001) xB_values.push_back(i);
     std::vector<double> y_values;
-    for(double i = 0; i <=1; i += 0.005) y_values.push_back(i);
+    for(double i = 0; i <=1; i += 0.001) y_values.push_back(i);
     std::vector<double> Q2_values;
-    for(double i = 0; i <= 1; i += 0.005) Q2_values.push_back(i * (PhysicsCalculator::getQ2M() - PhysicsCalculator::getQ20()) + PhysicsCalculator::getQ20()); // Assuming Q2 ranges from 0 to Q2M
+    for(double i = 0; i <= 1; i += 0.001) Q2_values.push_back(i * (PhysicsCalculator::getQ2M() - PhysicsCalculator::getQ20()) + PhysicsCalculator::getQ20()); // Assuming Q2 ranges from 0 to Q2M
     
     //set parameters for the integration
     int ndim = 2, ncomp = 13, nvec = 1;
@@ -565,14 +569,14 @@ int main() {
     void* spin = nullptr;
     
     std::ofstream outFile("Fixed_xB.txt");  
-    outFile << std::setw(10) << "xB<0.2" 
+    outFile << std::setw(10) << "xB" 
             << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
             << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
             << std::setw(15) << "<ALL|0,0>" << std::setw(15) << "err[3]"
             << std::setw(15) << "<ALL|+1,0>" << std::setw(15) << "err[4]"
             << std::setw(15) << "<dsig|0,+1> " << std::setw(15) << "err[5]"
             << std::setw(15) << "<dsig|+1,-1>" << std::setw(15) << "err[6]"
-            << std::setw(15) << "dsig|+1,+1>" << std::setw(15) << "err[7]"
+            << std::setw(15) << "<dsig|+1,+1>" << std::setw(15) << "err[7]"
             << std::setw(15) << "<dsig|+2,+1> " << std::setw(15) << "err[8]"
             << std::setw(15) << "<dsig|+2,-1> " << std::setw(15) << "err[9]"
             << std::setw(15) << "<ALL|0,+1>" << std::setw(15) << "err[10]"
