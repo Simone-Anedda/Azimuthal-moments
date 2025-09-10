@@ -6,10 +6,120 @@
 #include <cuba.h>
 #include <algorithm>
 #include <fstream>
+#include <string>
+#include <cstring>
 #include <chrono>
 #include <iomanip>
 
-// #include "src/COL.h"
+#include "FragFunct.h"
+#include "COL.h"
+
+#include "constants.h"
+
+std::vector<double> pars = {0.5316, -.7290, .8246, 3.2293, 0.8568, -.3539, 1.7524, .2551};
+std::vector<double> COL_z(13), COL_ppz1(13), COL_ppz2(13), COL_pmz1(13), COL_pmz2(13);
+std::vector<double> FF(13), FF_ppz1(13), FF_ppz2(13), FF_pmz1(13), FF_pmz2(13),\
+    FF_ppz1_fixedQ2(13), FF_ppz2_fixedQ2(13), FF_pmz1_fixedQ2(13), FF_pmz2_fixedQ2(13),\
+    FF_evo(13);
+        
+double f[13], h1[13]; //for HOPPET and transversity
+    
+const double charges[13] = {-2./3., 1./3., -2./3., 1./3., -2./3., 1./3., 0, -1./3., 2./3., -1./3., 2./3., -1./3., 2./3.};
+
+double  numU = 0.0, denU = 0.0,\
+        numL = 0.0, denL = 0.0,\
+        numC = 0.0, denC = 0.0,\
+        numFact = 0.0, denFact = 0.0,\
+        z1 = 0.0, z2 = 0.0;
+
+int charge = 1, hadron = 1;
+
+FRAG::FF myFF("DEHSS","NLO");
+COL::COLLINS myCol;
+
+void Collins_FF(int & hadron, int & charge, double & z1, double & z2, double & Q2){
+
+    //call to the Fragmentation Functions
+
+//    cout << hadron << "\t" << charge << "\t" << z1 << "\t" << z2 << "\t" << Q2 << endl;
+      
+    myFF.FF_eval(hadron, charge, z1, Q2);
+    for(int i = 0; i < FF_ppz1.size(); i++) FF_ppz1[i] = myFF.theFF[i] / z1;
+        
+    myFF.FF_eval(hadron, charge, z2, Q2);
+    for(int i = 0; i < FF_ppz2.size(); i++) FF_ppz2[i] = myFF.theFF[i] / z2;
+        
+    charge*=-1; //to call pi- FFs
+        
+    myFF.FF_eval(hadron, charge, z1, Q2);
+    for(int i = 0; i < FF_pmz1.size(); i++) FF_pmz1[i] = myFF.theFF[i] / z1;
+        
+    myFF.FF_eval(hadron, charge, z2, Q2);
+    for(int i = 0; i < FF_pmz2.size(); i++) FF_pmz2[i] = myFF.theFF[i] / z2;
+
+    // for(int i = 0; i < FF_pmz2.size(); i++) cout << FF_pmz2[i] << "\t";
+    // cout << endl;
+       
+}
+
+
+void Collins_epem_loop(const std::vector<double> &COL_ppz1_in, const std::vector<double> &COL_ppz2_in, const std::vector<double> &COL_pmz1_in, const std::vector<double> &COL_pmz2_in, const std::vector<double> &FF_ppz1_in, const std::vector<double> &FF_ppz2_in, const std::vector<double> &FF_pmz1_in, const std::vector<double> &FF_pmz2_in){
+    
+    for(int i = 3; i <= 9; i++){
+            
+        if(i == 3){ //sb
+            numU += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i+6] + COL_pmz1_in[i] * COL_ppz2_in[i+6]);
+            denU += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i+6] + FF_pmz1_in[i] * FF_ppz2_in[i+6]);
+            numL += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i+6] + COL_pmz1_in[i] * COL_pmz2_in[i+6]);
+            denL += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i+6] + FF_pmz1_in[i] * FF_pmz2_in[i+6]);
+        }                                
+                                         
+        if(i == 4){ //ub                 
+            numU += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i+4] + COL_pmz1_in[i] * COL_ppz2_in[i+4]);
+            denU += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i+4] + FF_pmz1_in[i] * FF_ppz2_in[i+4]);
+            numL += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i+4] + COL_pmz1_in[i] * COL_pmz2_in[i+4]);
+            denL += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i+4] + FF_pmz1_in[i] * FF_pmz2_in[i+4]);
+        }                                
+                                         
+        if(i == 5){ //db                 
+            numU += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i+2] + COL_pmz1_in[i] * COL_ppz2_in[i+2]);
+            denU += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i+2] + FF_pmz1_in[i] * FF_ppz2_in[i+2]);
+            numL += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i+2] + COL_pmz1_in[i] * COL_pmz2_in[i+2]);
+            denL += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i+2] + FF_pmz1_in[i] * FF_pmz2_in[i+2]);
+        }                                
+                                         
+        if(i == 6){ //g                  
+            numU += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i] + COL_pmz1_in[i] * COL_ppz2_in[i]);
+            denU += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i] + FF_pmz1_in[i] * FF_ppz2_in[i]);
+            numL += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i] + COL_pmz1_in[i] * COL_pmz2_in[i]);
+            denL += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i] + FF_pmz1_in[i] * FF_pmz2_in[i]);
+        }                                
+                                         
+        if(i == 7){ //d                  
+            numU += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i-2] + COL_pmz1_in[i] * COL_ppz2_in[i-2]);
+            denU += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i-2] + FF_pmz1_in[i] * FF_ppz2_in[i-2]);
+            numL += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i-2] + COL_pmz1_in[i] * COL_pmz2_in[i-2]);
+            denL += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i-2] + FF_pmz1_in[i] * FF_pmz2_in[i-2]);            
+        }                                
+                                         
+        if(i == 8){ //u                  
+            numU += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i-4] + COL_pmz1_in[i] * COL_ppz2_in[i-4]);
+            denU += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i-4] + FF_pmz1_in[i] * FF_ppz2_in[i-4]);
+            numL += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i-4] + COL_pmz1_in[i] * COL_pmz2_in[i-4]);
+            denL += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i-4] + FF_pmz1_in[i] * FF_pmz2_in[i-4]);
+        }                                
+                                         
+        if(i == 9){ //s                  
+            numU += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i-6] + COL_pmz1_in[i] * COL_ppz2_in[i-6]);
+            denU += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i-6] + FF_pmz1_in[i] * FF_ppz2_in[i-6]);
+            numL += pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i-6] + COL_pmz1_in[i] * COL_pmz2_in[i-6]);
+            denL += pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i-6] + FF_pmz1_in[i] * FF_pmz2_in[i-6]);
+        }  
+    }
+    
+}
+
+
 
 
 
@@ -20,12 +130,12 @@ private:
     static constexpr double alphaem = 1.0 / 137.036;
     static constexpr double thetac = 3.0e-2; // rad [value for FCC-ee]; search for adequate values for other colliders
     static constexpr double me = 5.11e-4;    // in GeV
-    static constexpr double SqrtS = 50.0;    // GeV [value for FCC-ee: 92.]
+    static constexpr double SqrtS = 92.0;    // GeV [value for FCC-ee: 92.]
     static constexpr double S = SqrtS * SqrtS;
     static constexpr double PI = 3.14159265358979323846;
 
     // Variable extremes
-    static constexpr double Q20 = 3.0; // GeV
+    static constexpr double Q20 = 10.0; // GeV
     static constexpr double Q2M = S - 4 * Q20;
     static constexpr double csimax = 1.0;
     static constexpr double ymax = 1.0;
@@ -478,19 +588,69 @@ void ValuesfixedQ2(const std::vector<double> &x, double results[])
     pc.setVariablesWithQ2(x[0], fixed_Q2, x[1]);
     if (cut(pc))
     {
-        results[0]  = pc.AUzi()*pc.KQx();
-        results[1]  = pc.AUcfqzi()*pc.KQx();
-        results[2]  = pc.AUc2fqzi()*pc.KQx();
-        results[3]  = pc.ALzi()*pc.KQx();
-        results[4]  = pc.ALcfqzi()*pc.KQx();
-        results[5]  = pc.BUcf12zi()*pc.KQx();
-        results[6]  = pc.BUcfqmf12zi()*pc.KQx();
-        results[7]  = pc.BUcfqpf12zi()*pc.KQx();
-        results[8]  = pc.BUc2fqmf12zi()*pc.KQx();
-        results[9]  = pc.BUc2fqpf12zi()*pc.KQx();
-        results[10] = pc.BLcf12zi()*pc.KQx();
-        results[11] = pc.BLcfqmf12zi()*pc.KQx();
-        results[12] = pc.BLcfqpf12zi()*pc.KQx();
+       
+        double Q2 = fixed_Q2;
+
+        Collins_FF(hadron, charge, z1, z2, Q2);
+
+
+        //call for the Collins functions
+        if(myCol.evo == "DGLAP" || myCol.evo == "none"){ 
+            
+            myCol.eval(z1, Q2, charge, FF_ppz1, pars);
+            for(int i = 0; i < COL_ppz1.size(); i++) COL_ppz1[i] = myCol.COL_z[i];
+            
+            myCol.eval(z2, Q2, charge, FF_ppz2, pars);
+            for(int i = 0; i < COL_ppz2.size(); i++) COL_ppz2[i] = myCol.COL_z[i];
+            
+            charge *= -1; //to call pi- Collins
+                
+            myCol.eval(z1, Q2, charge, FF_pmz1, pars);
+            for(int i = 0; i < COL_pmz1.size(); i++) COL_pmz1[i] = myCol.COL_z[i];
+            
+            myCol.eval(z2, Q2, charge, FF_pmz2, pars);
+            for(int i = 0; i < COL_pmz2.size(); i++) COL_pmz2[i] = myCol.COL_z[i];
+        }
+        
+        if(myCol.evo == "CT3"){
+        
+            //call for the Collins functions
+            hoppetEvalcf(z1, sqrt(Q2), f);
+//             COL_ppz1 = CollinsHoppetEval(z1, int_charge, f);
+            for(int i = 0; i < COL_ppz1.size(); i++) COL_ppz1[i] = f[i] / z1;
+
+            hoppetEvalcf(z2, sqrt(Q2), f);
+//             COL_ppz2 = CollinsHoppetEval(z2, int_charge, f);
+            for(int i = 0; i < COL_ppz2.size(); i++) COL_ppz2[i] = f[i] / z2;
+            
+            charge *= -1; //to call pi- Collins
+                
+            hoppetEvalcff(z1, sqrt(Q2), f);      //modified to use proper hoppet calls for pip and pim
+//             COL_pmz1 = CollinsHoppetEval(z1, int_charge, f);    
+            for(int i = 0; i < COL_pmz1.size(); i++) COL_pmz1[i] = f[i] / z1;
+
+            hoppetEvalcff(z2, sqrt(Q2), f);
+//             COL_pmz2 = CollinsHoppetEval(z2, int_charge, f);
+            for(int i = 0; i < COL_pmz2.size(); i++) COL_pmz2[i] = f[i] / z2;
+
+        }
+        
+        //calling the loop to calculate numerator and denominator of A0
+        Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2);
+
+        results[0]  = pc.AUzi()*pc.KQx() * denU; // moltiplicare per D1D1
+        results[1]  = pc.AUcfqzi()*pc.KQx() * denU; // moltiplicare per D1D1
+        results[2]  = pc.AUc2fqzi()*pc.KQx() * denU; // moltiplicare per D1D1
+        results[3]  = pc.ALzi()*pc.KQx() * denU; // moltiplicare per D1D1
+        results[4]  = pc.ALcfqzi()*pc.KQx() * denU; // moltiplicare per D1D1
+        results[5]  = pc.BUcf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
+        results[6]  = pc.BUcfqmf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
+        results[7]  = pc.BUcfqpf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
+        results[8]  = pc.BUc2fqmf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
+        results[9]  = pc.BUc2fqpf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
+        results[10] = pc.BLcf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
+        results[11] = pc.BLcfqmf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
+        results[12] = pc.BLcfqpf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
     }
     else
     {
@@ -537,6 +697,8 @@ int integrand_fixedQ2(const int *ndim, const double x[], const int *ncomp, doubl
 }
 
 
+
+
 struct IntegrationResults {
     int maxeval;
     int nstart;
@@ -550,10 +712,40 @@ struct IntegrationResults {
     double elapsed_seconds;
 };
 
-int main() {
+int main(int argc,char *argv[]) {
     // Fixed integration settings
     const int maxeval = static_cast<int>(1e7);
     const int nstart  = static_cast<int>(1e6);
+
+    //TO DO: input arguments here
+    stringstream modelstr, widthsstr, evostr;
+    modelstr << argv[2];
+    widthsstr << argv[4];
+    evostr << argv[6];
+    z1 = atof(argv[8]);
+    z2 = atof(argv[10]);
+    
+    std::string model = modelstr.str();
+    std::string widths = widthsstr.str();
+    std::string evo = evostr.str();
+
+    myFF.use_LHAPDF(true);
+    cout << myFF.FFset << "\t" << myFF.FForder << endl;
+    if(myFF.useLHAPDF){
+
+        if(myFF.FFset == "NNFF10"){
+
+            if(myFF.FForder == "LO") myFF.set_LHAPDF_FFset(NNFF10setsLO);
+            if(myFF.FForder == "NLO") myFF.set_LHAPDF_FFset(NNFF10setsNLO);
+        }
+        if(myFF.FFset == "DEHSS") myFF.set_LHAPDF_FFset(DEHSSsetsNLO);
+
+    }
+
+
+    myCol.set_model(model);
+    myCol.set_widths(widths);
+    myCol.set_evolution(evo);
 
     // Fixed values for xB, y, and Q2
     std::vector<double> xB_values;
@@ -601,166 +793,166 @@ int main() {
             << std::setw(10) << "neval" << std::setw(10) << "fail"
             << std::endl;
 
-    for (double xB_val : xB_values) {
+    // for (double xB_val : xB_values) {
         
-        fixed_xB = xB_val; 
-        std::cout << "Running scan for fixed xB = " << fixed_xB << std::endl;
+    //     fixed_xB = xB_val; 
+    //     std::cout << "Running scan for fixed xB = " << fixed_xB << std::endl;
         
-        IntegrationResults res;
-        res.maxeval = maxeval;
-        res.nstart  = nstart;
+    //     IntegrationResults res;
+    //     res.maxeval = maxeval;
+    //     res.nstart  = nstart;
 
-        auto t0 = std::chrono::high_resolution_clock::now();
+    //     auto t0 = std::chrono::high_resolution_clock::now();
 
-        Vegas(ndim, ncomp, integrand_fixedxB, nullptr,
-                nvec, epsrel, epsabs,
-                flags, seed, mineval, maxeval,
-                nstart, nincrease, nbatch,
-                gridno, statefile, spin,
-                &res.neval, &res.fail,
-                res.integral, res.error, res.prob);
+    //     Vegas(ndim, ncomp, integrand_fixedxB, nullptr,
+    //             nvec, epsrel, epsabs,
+    //             flags, seed, mineval, maxeval,
+    //             nstart, nincrease, nbatch,
+    //             gridno, statefile, spin,
+    //             &res.neval, &res.fail,
+    //             res.integral, res.error, res.prob);
 
-        auto t1 = std::chrono::high_resolution_clock::now();
-        res.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
+    //     auto t1 = std::chrono::high_resolution_clock::now();
+    //     res.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
         
-        // Calculate ratios and ratio errors 
-        for (int i = 0; i < ncomp; ++i) {
-            res.ratio[i] = res.integral[i] / res.integral[0];
-            res.ratioerror[i] = abs(res.ratio[i] * std::sqrt(
-                std::pow(res.error[i] / res.integral[i], 2) +
-                std::pow(res.error[0] / res.integral[0], 2))
-            );
-        }
-        outFile << std::setw(10) << xB_val  
-                << std::setw(15) << 2 * res.ratio[1] << std::setw(15) << 2 * res.ratioerror[1]
-                << std::setw(15) << res.ratio[2] << std::setw(15) << res.ratioerror[2]
-                << std::setw(15) << res.ratio[3] << std::setw(15) << res.ratioerror[3]
-                << std::setw(15) << 2 * res.ratio[4] << std::setw(15) << 2 * res.ratioerror[4]
-                << std::setw(15) << res.ratio[5] << std::setw(15) << res.ratioerror[5]
-                << std::setw(15) << res.ratio[6] << std::setw(15) << res.ratioerror[6]
-                << std::setw(15) << res.ratio[7] << std::setw(15) << res.ratioerror[7]
-                << std::setw(15) << res.ratio[8] << std::setw(15) << res.ratioerror[8]
-                << std::setw(15) << res.ratio[9] << std::setw(15) << res.ratioerror[9]
-                << std::setw(15) << res.ratio[10] << std::setw(15) << res.ratioerror[10]
-                << std::setw(15) << res.ratio[11] << std::setw(15) << res.ratioerror[11]
-                << std::setw(15) << res.ratio[12] << std::setw(15) << res.ratioerror[12]
-                << std::setw(15) << res.integral[0] << std::setw(15) << res.error[0]
-                << std::setw(15) << res.integral[1] << std::setw(15) << res.error[1]
-                << std::setw(15) << res.integral[2] << std::setw(15) << res.error[2]
-                << std::setw(15) << res.integral[3] << std::setw(15) << res.error[3]
-                << std::setw(15) << res.integral[4] << std::setw(15) << res.error[4]
-                << std::setw(15) << res.integral[5] << std::setw(15) << res.error[5]
-                << std::setw(15) << res.integral[6] << std::setw(15) << res.error[6]
-                << std::setw(15) << res.integral[7] << std::setw(15) << res.error[7]
-                << std::setw(15) << res.integral[8] << std::setw(15) << res.error[8]
-                << std::setw(15) << res.integral[9] << std::setw(15) << res.error[9]
-                << std::setw(15) << res.integral[10] << std::setw(15) << res.error[10]
-                << std::setw(15) << res.integral[11] << std::setw(15) << res.error[11]
-                << std::setw(15) << res.integral[12] << std::setw(15) << res.error[12]
-                << std::setw(15) << res.elapsed_seconds
-                << std::setw(10) << res.neval << std::setw(10) << res.fail
-                << std::endl;
+    //     // Calculate ratios and ratio errors 
+    //     for (int i = 0; i < ncomp; ++i) {
+    //         res.ratio[i] = res.integral[i] / res.integral[0];
+    //         res.ratioerror[i] = abs(res.ratio[i] * std::sqrt(
+    //             std::pow(res.error[i] / res.integral[i], 2) +
+    //             std::pow(res.error[0] / res.integral[0], 2))
+    //         );
+    //     }
+    //     outFile << std::setw(10) << xB_val  
+    //             << std::setw(15) << 2 * res.ratio[1] << std::setw(15) << 2 * res.ratioerror[1]
+    //             << std::setw(15) << res.ratio[2] << std::setw(15) << res.ratioerror[2]
+    //             << std::setw(15) << res.ratio[3] << std::setw(15) << res.ratioerror[3]
+    //             << std::setw(15) << 2 * res.ratio[4] << std::setw(15) << 2 * res.ratioerror[4]
+    //             << std::setw(15) << res.ratio[5] << std::setw(15) << res.ratioerror[5]
+    //             << std::setw(15) << res.ratio[6] << std::setw(15) << res.ratioerror[6]
+    //             << std::setw(15) << res.ratio[7] << std::setw(15) << res.ratioerror[7]
+    //             << std::setw(15) << res.ratio[8] << std::setw(15) << res.ratioerror[8]
+    //             << std::setw(15) << res.ratio[9] << std::setw(15) << res.ratioerror[9]
+    //             << std::setw(15) << res.ratio[10] << std::setw(15) << res.ratioerror[10]
+    //             << std::setw(15) << res.ratio[11] << std::setw(15) << res.ratioerror[11]
+    //             << std::setw(15) << res.ratio[12] << std::setw(15) << res.ratioerror[12]
+    //             << std::setw(15) << res.integral[0] << std::setw(15) << res.error[0]
+    //             << std::setw(15) << res.integral[1] << std::setw(15) << res.error[1]
+    //             << std::setw(15) << res.integral[2] << std::setw(15) << res.error[2]
+    //             << std::setw(15) << res.integral[3] << std::setw(15) << res.error[3]
+    //             << std::setw(15) << res.integral[4] << std::setw(15) << res.error[4]
+    //             << std::setw(15) << res.integral[5] << std::setw(15) << res.error[5]
+    //             << std::setw(15) << res.integral[6] << std::setw(15) << res.error[6]
+    //             << std::setw(15) << res.integral[7] << std::setw(15) << res.error[7]
+    //             << std::setw(15) << res.integral[8] << std::setw(15) << res.error[8]
+    //             << std::setw(15) << res.integral[9] << std::setw(15) << res.error[9]
+    //             << std::setw(15) << res.integral[10] << std::setw(15) << res.error[10]
+    //             << std::setw(15) << res.integral[11] << std::setw(15) << res.error[11]
+    //             << std::setw(15) << res.integral[12] << std::setw(15) << res.error[12]
+    //             << std::setw(15) << res.elapsed_seconds
+    //             << std::setw(10) << res.neval << std::setw(10) << res.fail
+    //             << std::endl;
 
-        std::cout << " --> time=" << res.elapsed_seconds << "s, neval=" << res.neval << std::endl;
-    }
+    //     std::cout << " --> time=" << res.elapsed_seconds << "s, neval=" << res.neval << std::endl;
+    // }
 
-    outFile.close();
+    // outFile.close();
 
-    std::ofstream outFile1("Fixed_y.txt");  
-    outFile1 << std::setw(10) << "y" 
-            << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
-            << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
-            << std::setw(15) << "<ALL|0,0>" << std::setw(15) << "err[3]"
-            << std::setw(15) << "<ALL|+1,0>" << std::setw(15) << "err[4]"
-            << std::setw(15) << "<dsig|0,+1> " << std::setw(15) << "err[5]"
-            << std::setw(15) << "<dsig|+1,-1>" << std::setw(15) << "err[6]"
-            << std::setw(15) << "dsig|+1,+1>" << std::setw(15) << "err[7]"
-            << std::setw(15) << "<dsig|+2,+1> " << std::setw(15) << "err[8]"
-            << std::setw(15) << "<dsig|+2,-1> " << std::setw(15) << "err[9]"
-            << std::setw(15) << "<ALL|0,+1>" << std::setw(15) << "err[10]"
-            << std::setw(15) << "<ALL|+1,-1>" << std::setw(15) << "err[11]"
-            << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"
-            << std::setw(15) << "AUzi" << std::setw(15) << "err[13]"
-            << std::setw(15) << "AUcfqzi" << std::setw(15) << "err[14]"
-            << std::setw(15) << "AUc2fqzi" << std::setw(15) << "err[15]"
-            << std::setw(15) << "ALzi" << std::setw(15) << "err[16]"
-            << std::setw(15) << "ALcfqzi" << std::setw(15) << "err[17]"
-            << std::setw(15) << "BUcf12zi" << std::setw(15) << "err[18]"
-            << std::setw(15) << "BUcfqmf12zi" << std::setw(15) << "err[19]"
-            << std::setw(15) << "BUcfqpf12zi" << std::setw(15) << "err[20]"
-            << std::setw(15) << "BUc2fqmf12zi" << std::setw(15) << "err[21]"
-            << std::setw(15) << "BUc2fqpf12zi" << std::setw(15) << "err[22]"
-            << std::setw(15) << "BLcf12zi" << std::setw(15) << "err[23]"
-            << std::setw(15) << "BLcfqmf12zi" << std::setw(15) << "err[24]"
-            << std::setw(15) << "BLcfqpf12zi" << std::setw(15) << "err[25]"        
-            << std::setw(15) << "time[s]"
-            << std::setw(10) << "neval" << std::setw(10) << "fail"
-            << std::endl;
+    // std::ofstream outFile1("Fixed_y.txt");  
+    // outFile1 << std::setw(10) << "y" 
+    //         << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
+    //         << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
+    //         << std::setw(15) << "<ALL|0,0>" << std::setw(15) << "err[3]"
+    //         << std::setw(15) << "<ALL|+1,0>" << std::setw(15) << "err[4]"
+    //         << std::setw(15) << "<dsig|0,+1> " << std::setw(15) << "err[5]"
+    //         << std::setw(15) << "<dsig|+1,-1>" << std::setw(15) << "err[6]"
+    //         << std::setw(15) << "dsig|+1,+1>" << std::setw(15) << "err[7]"
+    //         << std::setw(15) << "<dsig|+2,+1> " << std::setw(15) << "err[8]"
+    //         << std::setw(15) << "<dsig|+2,-1> " << std::setw(15) << "err[9]"
+    //         << std::setw(15) << "<ALL|0,+1>" << std::setw(15) << "err[10]"
+    //         << std::setw(15) << "<ALL|+1,-1>" << std::setw(15) << "err[11]"
+    //         << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"
+    //         << std::setw(15) << "AUzi" << std::setw(15) << "err[13]"
+    //         << std::setw(15) << "AUcfqzi" << std::setw(15) << "err[14]"
+    //         << std::setw(15) << "AUc2fqzi" << std::setw(15) << "err[15]"
+    //         << std::setw(15) << "ALzi" << std::setw(15) << "err[16]"
+    //         << std::setw(15) << "ALcfqzi" << std::setw(15) << "err[17]"
+    //         << std::setw(15) << "BUcf12zi" << std::setw(15) << "err[18]"
+    //         << std::setw(15) << "BUcfqmf12zi" << std::setw(15) << "err[19]"
+    //         << std::setw(15) << "BUcfqpf12zi" << std::setw(15) << "err[20]"
+    //         << std::setw(15) << "BUc2fqmf12zi" << std::setw(15) << "err[21]"
+    //         << std::setw(15) << "BUc2fqpf12zi" << std::setw(15) << "err[22]"
+    //         << std::setw(15) << "BLcf12zi" << std::setw(15) << "err[23]"
+    //         << std::setw(15) << "BLcfqmf12zi" << std::setw(15) << "err[24]"
+    //         << std::setw(15) << "BLcfqpf12zi" << std::setw(15) << "err[25]"        
+    //         << std::setw(15) << "time[s]"
+    //         << std::setw(10) << "neval" << std::setw(10) << "fail"
+    //         << std::endl;
 
-    for (double y_val : y_values) {
+    // for (double y_val : y_values) {
         
-        fixed_y = y_val; 
-        std::cout << "Running scan for fixed y = " << fixed_y << std::endl;
+    //     fixed_y = y_val; 
+    //     std::cout << "Running scan for fixed y = " << fixed_y << std::endl;
         
-        IntegrationResults res;
-        res.maxeval = maxeval;
-        res.nstart  = nstart;
+    //     IntegrationResults res;
+    //     res.maxeval = maxeval;
+    //     res.nstart  = nstart;
 
-        auto t0 = std::chrono::high_resolution_clock::now();
+    //     auto t0 = std::chrono::high_resolution_clock::now();
 
-        Vegas(ndim, ncomp, integrand_fixedy, nullptr,
-                nvec, epsrel, epsabs,
-                flags, seed, mineval, maxeval,
-                nstart, nincrease, nbatch,
-                gridno, statefile, spin,
-                &res.neval, &res.fail,
-                res.integral, res.error, res.prob);
+    //     Vegas(ndim, ncomp, integrand_fixedy, nullptr,
+    //             nvec, epsrel, epsabs,
+    //             flags, seed, mineval, maxeval,
+    //             nstart, nincrease, nbatch,
+    //             gridno, statefile, spin,
+    //             &res.neval, &res.fail,
+    //             res.integral, res.error, res.prob);
 
-        auto t1 = std::chrono::high_resolution_clock::now();
-        res.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
-        // Calculate ratios and ratio errors
-        for (int i = 0; i < ncomp; ++i) {
-            res.ratio[i] = res.integral[i] / res.integral[0];
-            res.ratioerror[i] =abs( res.ratio[i] * std::sqrt(
-                std::pow(res.error[i] / res.integral[i], 2) +
-                std::pow(res.error[0] / res.integral[0], 2))
-            );
-        }
+    //     auto t1 = std::chrono::high_resolution_clock::now();
+    //     res.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
+    //     // Calculate ratios and ratio errors
+    //     for (int i = 0; i < ncomp; ++i) {
+    //         res.ratio[i] = res.integral[i] / res.integral[0];
+    //         res.ratioerror[i] =abs( res.ratio[i] * std::sqrt(
+    //             std::pow(res.error[i] / res.integral[i], 2) +
+    //             std::pow(res.error[0] / res.integral[0], 2))
+    //         );
+    //     }
         
-        outFile1 << std::setw(10) << y_val 
-                << std::setw(15) << 2 * res.ratio[1] << std::setw(15) << 2 * res.ratioerror[1]
-                << std::setw(15) << res.ratio[2] << std::setw(15) << res.ratioerror[2]
-                << std::setw(15) << res.ratio[3] << std::setw(15) << res.ratioerror[3]
-                << std::setw(15) << 2 * res.ratio[4] << std::setw(15) << 2 * res.ratioerror[4]
-                << std::setw(15) << res.ratio[5] << std::setw(15) << res.ratioerror[5]
-                << std::setw(15) << res.ratio[6] << std::setw(15) << res.ratioerror[6]
-                << std::setw(15) << res.ratio[7] << std::setw(15) << res.ratioerror[7]
-                << std::setw(15) << res.ratio[8] << std::setw(15) << res.ratioerror[8]
-                << std::setw(15) << res.ratio[9] << std::setw(15) << res.ratioerror[9]
-                << std::setw(15) << res.ratio[10] << std::setw(15) << res.ratioerror[10]
-                << std::setw(15) << res.ratio[11] << std::setw(15) << res.ratioerror[11]
-                << std::setw(15) << res.ratio[12] << std::setw(15) << res.ratioerror[12]
-                << std::setw(15) << res.integral[0] << std::setw(15) << res.error[0]
-                << std::setw(15) << res.integral[1] << std::setw(15) << res.error[1]
-                << std::setw(15) << res.integral[2] << std::setw(15) << res.error[2]
-                << std::setw(15) << res.integral[3] << std::setw(15) << res.error[3]
-                << std::setw(15) << res.integral[4] << std::setw(15) << res.error[4]
-                << std::setw(15) << res.integral[5] << std::setw(15) << res.error[5]
-                << std::setw(15) << res.integral[6] << std::setw(15) << res.error[6]
-                << std::setw(15) << res.integral[7] << std::setw(15) << res.error[7]
-                << std::setw(15) << res.integral[8] << std::setw(15) << res.error[8]
-                << std::setw(15) << res.integral[9] << std::setw(15) << res.error[9]
-                << std::setw(15) << res.integral[10] << std::setw(15) << res.error[10]
-                << std::setw(15) << res.integral[11] << std::setw(15) << res.error[11]
-                << std::setw(15) << res.integral[12] << std::setw(15) << res.error[12]
-                << std::setw(15) << res.elapsed_seconds
-                << std::setw(10) << res.neval << std::setw(10) << res.fail
-                << std::endl;
+    //     outFile1 << std::setw(10) << y_val 
+    //             << std::setw(15) << 2 * res.ratio[1] << std::setw(15) << 2 * res.ratioerror[1]
+    //             << std::setw(15) << res.ratio[2] << std::setw(15) << res.ratioerror[2]
+    //             << std::setw(15) << res.ratio[3] << std::setw(15) << res.ratioerror[3]
+    //             << std::setw(15) << 2 * res.ratio[4] << std::setw(15) << 2 * res.ratioerror[4]
+    //             << std::setw(15) << res.ratio[5] << std::setw(15) << res.ratioerror[5]
+    //             << std::setw(15) << res.ratio[6] << std::setw(15) << res.ratioerror[6]
+    //             << std::setw(15) << res.ratio[7] << std::setw(15) << res.ratioerror[7]
+    //             << std::setw(15) << res.ratio[8] << std::setw(15) << res.ratioerror[8]
+    //             << std::setw(15) << res.ratio[9] << std::setw(15) << res.ratioerror[9]
+    //             << std::setw(15) << res.ratio[10] << std::setw(15) << res.ratioerror[10]
+    //             << std::setw(15) << res.ratio[11] << std::setw(15) << res.ratioerror[11]
+    //             << std::setw(15) << res.ratio[12] << std::setw(15) << res.ratioerror[12]
+    //             << std::setw(15) << res.integral[0] << std::setw(15) << res.error[0]
+    //             << std::setw(15) << res.integral[1] << std::setw(15) << res.error[1]
+    //             << std::setw(15) << res.integral[2] << std::setw(15) << res.error[2]
+    //             << std::setw(15) << res.integral[3] << std::setw(15) << res.error[3]
+    //             << std::setw(15) << res.integral[4] << std::setw(15) << res.error[4]
+    //             << std::setw(15) << res.integral[5] << std::setw(15) << res.error[5]
+    //             << std::setw(15) << res.integral[6] << std::setw(15) << res.error[6]
+    //             << std::setw(15) << res.integral[7] << std::setw(15) << res.error[7]
+    //             << std::setw(15) << res.integral[8] << std::setw(15) << res.error[8]
+    //             << std::setw(15) << res.integral[9] << std::setw(15) << res.error[9]
+    //             << std::setw(15) << res.integral[10] << std::setw(15) << res.error[10]
+    //             << std::setw(15) << res.integral[11] << std::setw(15) << res.error[11]
+    //             << std::setw(15) << res.integral[12] << std::setw(15) << res.error[12]
+    //             << std::setw(15) << res.elapsed_seconds
+    //             << std::setw(10) << res.neval << std::setw(10) << res.fail
+    //             << std::endl;
 
-        std::cout << " --> time=" << res.elapsed_seconds << "s, neval=" << res.neval << std::endl;
-    }
+    //     std::cout << " --> time=" << res.elapsed_seconds << "s, neval=" << res.neval << std::endl;
+    // }
 
-    outFile1.close();      
+    // outFile1.close();      
     std::ofstream outFile2("Fixed_Q2.txt");  
     outFile2 << std::setw(10) << "Q2" 
             << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"

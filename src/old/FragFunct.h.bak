@@ -1,0 +1,40 @@
+#ifndef _FragFunct_H_
+#define _FragFunct_H_
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cstring>
+#include <math.h>
+#include <vector>
+    
+namespace FRAG{
+
+    using namespace std;
+    
+class getFF{
+    
+    public:
+        
+        getFF(){
+            
+            theFF.resize(13);
+                
+        };
+   
+        ~getFF(){};
+
+        std::vector<double> theFF;
+     
+        void FF_eval(const std::string FFset_in, const int & iset_ff_in, const int & hadron_in, const int & charge_in, const int & order_in, const double & av_z_in, const double & Q2_in);
+
+        void FF_plot(const std::string frag_name, const std::string FFset_in, const int & iset_ff_in, const int & hadron_in, const int & charge_in, const int & order_in, const double & Q2_in);
+};
+
+
+}
+
+#endif

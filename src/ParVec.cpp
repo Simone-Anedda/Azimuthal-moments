@@ -1,0 +1,172 @@
+//
+// Author: Carlo Flore <carlo.flore@ijclab.in2p3.fr>
+//
+
+#include "ParVec.h"
+
+namespace PARVECTOR{
+
+using namespace std;
+
+void ParVec::setName(const char * name){
+    
+     sprintf(parname,"%s", name);
+     
+//      cout<<"setting pars file name: "<<name<<endl;
+     
+     getNoRows(name);
+     
+     getNoCols(name);
+          
+     readData(name);
+     
+     par = gsl_vector_calloc(Ncol);
+               
+     get_gsl_vector(Ncol);
+}
+
+void ParVec::readData(const char * name){
+    
+    vector<double> data;
+    ifstream input (name);
+    string lineData;
+    
+    //check in file opening
+    if(!input) cerr<<"Error in opening your file "<<name<<" (check filename)\n";
+
+    while(getline(input, lineData,'\n')){
+        if (lineData[0] == '#') continue;
+        char d[20];
+        stringstream lineStream(lineData);
+        
+        while (lineStream >> d){
+            
+            double num = atof(d);
+            data.push_back(num);
+        }
+        cout <<endl;
+    }
+    
+    everything.swap(data);
+}
+
+string ParVec::GetStdout(string cmd){
+
+    string data;
+    FILE * stream;
+    const int max_buffer = 256;
+    char buffer[max_buffer];
+    cmd.append(" 2>&1");
+
+    stream = popen(cmd.c_str(), "r");
+    if (stream) {
+    while (!feof(stream))
+    if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
+        pclose(stream);
+    }
+
+    return data;
+}
+
+void ParVec::getNoCols(const char *name){
+
+    string s, file = name;
+    
+    string cmd = "head -n 1 " + file + " | awk '{print NF}'";
+    
+    s = GetStdout(cmd);
+    
+    Ncol = stoi(s);
+    
+}
+
+void ParVec::getNoRows(const char * name){
+    
+    int rows = 0;
+    ifstream input (name);
+    string lineData;
+    
+    //check in file opening
+    if(!input) cerr<<"Error in opening your file "<<name<<" (check filename)\n";
+    
+    while(getline(input, lineData,'\n')){
+    if (lineData[0] == '#') continue;
+        rows++;
+    }    
+    
+    Nrow = rows;
+}
+
+
+void ParVec::getCol(int ncol){
+
+    int m = ncol-1;
+    vector<double> col;
+       if(ncol>Ncol){ 
+        cerr<<"ERROR: File has only "<< Ncol <<" columns\n"; 
+        cout<<"Choose a different column\n";
+        cin >> ncol;
+        m = ncol - 1;
+    }
+        
+    col.push_back(everything[m]);
+        for (int i = 1; i < Nrow; i++){
+            col.push_back(everything[m+i*Ncol]);
+        }
+        
+        col_temp.swap(col);
+}        
+
+void ParVec::getRow(int nrow){
+
+    int n = nrow - 1;
+    vector<double> row;
+    if(nrow > Nrow){
+        cerr<<"ERROR: File has only "<< Nrow <<" rows\n"; 
+        cout<<"Choose a different row\n";
+        cin >> nrow;
+        n = nrow - 1;
+    }
+
+    for (int i = (Ncol * n); i < (Ncol * n + Ncol); i++){
+            row.push_back(everything[i]);       
+        }
+        
+        bin.swap(row);
+}
+
+
+void ParVec::get_gsl_vector(const int size){
+    
+    gsl_vector * a = gsl_vector_alloc(size);
+    
+    getRow(1);
+    for(int i = 0; i<bin.size(); i++) gsl_vector_set(a, i, bin[i]);
+    
+    gsl_vector_memcpy(par,a);
+    gsl_vector_free(a);
+    
+}
+
+void ParVec::print(){
+    
+    cout<<"printing GSL vector:\n";
+    for(int i = 0; i < (par->size); i++){
+        cout<<"("<<i<<"):"<<scientific<<gsl_vector_get(par, i)<<"\t";
+    }
+    cout<<endl;
+}
+
+void ParVec::print(const char *filename){
+    
+    FILE *file = fopen(filename,"w+");
+    
+     for(int i = 0; i < (par->size); i++){
+        fprintf(file,"%.4e\t",gsl_vector_get(par, i));
+    }
+    fprintf(file,"\n");
+       
+    fclose(file);
+}
+
+}

@@ -143,9 +143,9 @@ def create_scatter_plots(filename, save_plots=True, show_plots=True):
             import os
             plot_dir = os.path.join('plots', os.path.splitext(filename)[0])
             os.makedirs(plot_dir, exist_ok=True)
-            plt.savefig(os.path.join(plot_dir, f'plot_{idx+1}_{clean_y_label}_vs_{x_label}.png'), 
+            plt.savefig(os.path.join(plot_dir, f'plot_{idx+1}_{clean_y_label}_vs_{x_label}_new2.png'), 
                        dpi=300, bbox_inches='tight')
-            print(f"Salvato: plot_{idx+1}_{clean_y_label}_vs_{x_label}.png")
+            print(f"Salvato: plot_{idx+1}_{clean_y_label}_vs_{x_label}_new2.png")
         
         if show_plots:
             plt.show()
@@ -188,7 +188,8 @@ def analyze_data_structure(filename):
 
 # Esempio di utilizzo
 if __name__ == "__main__":
-    filenames = ["Fixed_xB.txt", "Fixed_y.txt", "Fixed_Q2.txt"]  # Sostituisci con i nomi dei tuoi file
+    # filenames = ["Fixed_xB.txt", "Fixed_y.txt", "Fixed_Q2.txt"]  # Sostituisci con i nomi dei tuoi file
+    filenames = ["Fixed_Q2.txt"]  # Sostituisci con i nomi dei tuoi file
 
     for filename in filenames:
         print(f"\n=== Elaborazione file: {filename} ===")

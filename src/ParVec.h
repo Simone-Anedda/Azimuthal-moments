@@ -1,0 +1,90 @@
+//
+// Author: Carlo Flore <carlo.flore@ijclab.in2p3.fr>
+//
+
+#pragma once
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cstring>
+#include <math.h>
+#include <vector>
+#include "gsl/gsl_vector.h"
+#include "gsl/gsl_matrix.h"
+#include "gsl/gsl_linalg.h"
+    
+namespace PARVECTOR{
+
+    using namespace std;
+    
+class ParVec{
+
+ public:
+     
+   ParVec(){};  
+   
+   ParVec(const char* parname_in){
+     
+     sprintf(parname,"%s",parname_in);
+     
+     getNoRows(parname_in);
+     
+     getNoCols(parname_in);
+          
+     readData(parname_in);
+     
+     par = gsl_vector_calloc(Ncol);
+               
+     get_gsl_vector(Ncol);
+     
+};
+   
+   ~ParVec(){};
+     
+    //initialize
+   
+     void setName(const char * name);
+   
+     void readData(const char * name);
+     
+     string GetStdout(string cmd); 
+
+     void getNoCols(const char * name);
+     
+     void getNoRows(const char * name);
+     
+     void getCol(int ncol);
+     
+     void getRow(int nrow);
+     
+     void get_gsl_vector(const int size);
+          
+     //print
+     void print_bin();
+       
+     void print();
+
+     void print(const char *filename);  //to print on a specific file
+     
+     int Nrow;
+     
+     int Ncol;
+     
+     char parname[2500], filename[2500];
+          
+     vector<double> everything;
+     
+     gsl_vector *par;
+     
+     vector<double> bin;
+     
+     vector<double> col_temp;
+     
+};
+
+
+}
