@@ -16,7 +16,7 @@
 
 #include "constants.h"
 
-std::vector<double> pars = {0.5316, -.7290, .8246, 3.2293, 0.8568, -.3539, 1.7524, .2551};
+std::vector<double> pars = {0.5316, -.7290, .8246, 3.2293, 0.8568, -.3539, 1.7524, 0.0, 0.2551};
 std::vector<double> COL_z(13), COL_ppz1(13), COL_ppz2(13), COL_pmz1(13), COL_pmz2(13);
 std::vector<double> FF(13), FF_ppz1(13), FF_ppz2(13), FF_pmz1(13), FF_pmz2(13),\
     FF_ppz1_fixedQ2(13), FF_ppz2_fixedQ2(13), FF_pmz1_fixedQ2(13), FF_pmz2_fixedQ2(13),\
@@ -30,7 +30,11 @@ double  numU = 0.0, denU = 0.0,\
         numL = 0.0, denL = 0.0,\
         numC = 0.0, denC = 0.0,\
         numFact = 0.0, denFact = 0.0,\
-        z1 = 0.0, z2 = 0.0;
+        z1 = 0.0, z2 = 0.0, pperp2 = 0.12;
+        
+double MC2 = pars.back();
+double pperp2Col = MC2 * pperp2 / (MC2 + pperp2);
+double prefact = (pi * EulerConst / 2) * (pow(pperp2Col, 3) / (pperp2 * pperp2 * MC2));
 
 int charge = 1, hadron = 1;
 
@@ -118,8 +122,6 @@ void Collins_epem_loop(const std::vector<double> &COL_ppz1_in, const std::vector
     }
     
 }
-
-
 
 
 
@@ -638,19 +640,19 @@ void ValuesfixedQ2(const std::vector<double> &x, double results[])
         //calling the loop to calculate numerator and denominator of A0
         Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2);
 
-        results[0]  = pc.AUzi()*pc.KQx() * denU; // moltiplicare per D1D1
-        results[1]  = pc.AUcfqzi()*pc.KQx() * denU; // moltiplicare per D1D1
-        results[2]  = pc.AUc2fqzi()*pc.KQx() * denU; // moltiplicare per D1D1
-        results[3]  = pc.ALzi()*pc.KQx() * denU; // moltiplicare per D1D1
-        results[4]  = pc.ALcfqzi()*pc.KQx() * denU; // moltiplicare per D1D1
-        results[5]  = pc.BUcf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
-        results[6]  = pc.BUcfqmf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
-        results[7]  = pc.BUcfqpf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
-        results[8]  = pc.BUc2fqmf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
-        results[9]  = pc.BUc2fqpf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
-        results[10] = pc.BLcf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
-        results[11] = pc.BLcfqmf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
-        results[12] = pc.BLcfqpf12zi()*pc.KQx() * numU; // moltiplicare per H1p1H1p
+        results[0]  = pc.AUzi()*pc.KQx();// * denU; // moltiplicare per D1D1
+        results[1]  = pc.AUcfqzi()*pc.KQx();// * denU; // moltiplicare per D1D1
+        results[2]  = pc.AUc2fqzi()*pc.KQx();// * denU; // moltiplicare per D1D1
+        results[3]  = pc.ALzi()*pc.KQx();// * denU; // moltiplicare per D1D1
+        results[4]  = pc.ALcfqzi()*pc.KQx();// * denU; // moltiplicare per D1D1
+        results[5]  = pc.BUcf12zi()*pc.KQx();// * numU * prefact; // moltiplicare per H1p1H1p
+        results[6]  = pc.BUcfqmf12zi()*pc.KQx();// * numU * prefact; // moltiplicare per H1p1H1p
+        results[7]  = pc.BUcfqpf12zi()*pc.KQx();// * numU * prefact; // moltiplicare per H1p1H1p
+        results[8]  = pc.BUc2fqmf12zi()*pc.KQx();// * numU * prefact; // moltiplicare per H1p1H1p
+        results[9]  = pc.BUc2fqpf12zi()*pc.KQx();// * numU * prefact; // moltiplicare per H1p1H1p
+        results[10] = pc.BLcf12zi()*pc.KQx();// * numU * prefact; // moltiplicare per H1p1H1p
+        results[11] = pc.BLcfqmf12zi()*pc.KQx();// * numU * prefact; // moltiplicare per H1p1H1p
+        results[12] = pc.BLcfqpf12zi()*pc.KQx();// * numU * prefact; // moltiplicare per H1p1H1p
     }
     else
     {
@@ -718,16 +720,18 @@ int main(int argc,char *argv[]) {
     const int nstart  = static_cast<int>(1e6);
 
     //TO DO: input arguments here
-    stringstream modelstr, widthsstr, evostr;
+    stringstream modelstr, widthsstr, evostr, epemstr;
     modelstr << argv[2];
     widthsstr << argv[4];
     evostr << argv[6];
-    z1 = atof(argv[8]);
-    z2 = atof(argv[10]);
+    epemstr << argv[8];
+    z1 = atof(argv[10]);
+    z2 = atof(argv[12]);
     
     std::string model = modelstr.str();
     std::string widths = widthsstr.str();
     std::string evo = evostr.str();
+    std::string epem_sign = epemstr.str();
 
     myFF.use_LHAPDF(true);
     cout << myFF.FFset << "\t" << myFF.FForder << endl;
@@ -746,6 +750,8 @@ int main(int argc,char *argv[]) {
     myCol.set_model(model);
     myCol.set_widths(widths);
     myCol.set_evolution(evo);
+    
+//     cout << MC2 << "\t" << pperp2 << "\t"<< pperp2Col  << "\t" << prefact <<endl;
 
     // Fixed values for xB, y, and Q2
     std::vector<double> xB_values;
@@ -1009,6 +1015,13 @@ int main(int argc,char *argv[]) {
         //Calculate ratios and ratio errors
         for (int i = 0; i < ncomp; ++i) {
             res.ratio[i] = res.integral[i] / res.integral[0];
+            
+            if (i >= 5){
+                
+                if(epem_sign == "UL") res.ratio[i] *= prefact * ( numU / denU - numL / denL );
+                if(epem_sign == "UC") res.ratio[i] *= prefact * ( numU / denU - (numU + numL) / (denU + denL) );
+            }
+            
             res.ratioerror[i] = abs(res.ratio[i]) * std::sqrt(
                 std::pow(res.error[i] / res.integral[i], 2) +
                 std::pow(res.error[0] / res.integral[0], 2)

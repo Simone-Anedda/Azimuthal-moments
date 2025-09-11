@@ -9,5 +9,5 @@
 //Mp=proton mass, Mpi=charged pion mass (all measured in GeV)
 #define Mp 0.9383 
 #define Mpi 0.1396
-#define pi 3.141592654
+#define pi 3.14159265358979323846
 #define EulerConst exp(1.)

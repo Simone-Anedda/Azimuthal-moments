@@ -1,5 +1,6 @@
 model   fit-2015
 widths  latest
 evo     DGLAP
-z1  0.1
-z2  0.3
+epem_sign   UL
+z1  0.2
+z2  0.4
