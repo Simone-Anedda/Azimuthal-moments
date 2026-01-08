@@ -2,28 +2,36 @@ CXX = g++
 FF = gfortran
  
 #CXXFLAGS = -w -std=gnu++0x -O2 -g
-CXXFLAGS = -w -O2 -std=c++14 -g 
+CXXFLAGS = -w -O2 -std=c++20 -g 
 FFOPT = -w -ffixed-line-length-0 -std=legacy
 
 HOMEDIR = ~/research/Azimuthal_moments
 SRCDIR = src
 OBJDIR = obj
 #OBJDIR = src
-DSSDIR = dss
+DSSDIR = /hpe-gr4/flore/libs
 # TRANSVDIR = transversity
 EXEDIR = exe
 INPUTDIR = input
 
 MAINEXE = Azimuthal_moments
+PREDEXE = Azimuthal_moments_predictions
 
 MAIN = $(SRCDIR)/Azimuthal_moments.cpp
+PRED_MAIN = $(SRCDIR)/Azimuthal_moments_predictions.cpp
 
 INPUT = Azimuthal_moments.input
+PREDINPUT = Azimuthal_moments_predictions.input
 
 # Root is the same for both systems...
 ROOTCFLAGS = $(shell root-config --cflags)
 ROOTLIBS = $(shell root-config --libs)
 ROOTGLIBS = $(shell root-config --glibs)
+
+# HOPPETDIR1 = /st100-gr4/codes/hoppet-1.1.5-modified_cf-build/lib
+# HOPPETDIR2 = /st100-gr4/codes/hoppet-1.1.5-modified_cff-build/lib
+# LHAPDFDIR = /u/lib
+# CUBADIR = /st100-gr4/codes/Cuba-4.2.2-build/lib
 
 # CXXFLAGS += $(ROOTCFLAGS)
 
@@ -68,7 +76,8 @@ OBJS = $(DISTROBJ) $(COLOBJ) $(TRANSVOBJ)
 # LIBS = $(ROOTLIBS) -ltbb -lMinuit2 -lgomp -lff -lgrv -lhoppet_v1 -lgfortran -lLHAPDF -lm   
 # LIBS = -lMinuit2 -lgomp -lff -lgrv -ltransv -lcuba -lhoppet_v1 -lhoppet_v1_collins -lhoppet_v1_collins2 -lgfortran -lLHAPDF -lm # -lceres   
 # LIBS = -lMinuit2 -fopenmp -lstdc++fs -lboost_iostreams -lboost_system -lboost_filesystem -lff -lgrv -ltransv -lcuba -lhoppet_v1 -lhoppet_v1_collins -lhoppet_v1_collins2 -lgfortran -lLHAPDF -lm 
-LIBS = -lff -lcuba -lhoppet_v1 -lhoppet_v1_collins -lhoppet_v1_collins2 -lgfortran -lLHAPDF -lm 
+# LIBS = -lLHAPDF -L/st100-gr4/flore/libs -lff -lcuba -L$(HOPPETDIR1) -lhoppet_v1_collins -L$(HOPPETDIR2) -lhoppet_v1_collins2 -lgfortran  -lm
+LIBS = -lLHAPDF -L/st100-gr4/flore/libs -lff -lcuba -lhoppet_v1_collins -lhoppet_v1_collins2 -lgfortran  -lm
 # BANDSLIBS = -lMinuit2 -fopenmp -lstdc++fs -lboost_iostreams -lboost_system -lboost_filesystem -lff -lgrv -ltransv -lcuba -lhoppet_v1 -lhoppet_v1_collins -lhoppet_v1_collins2 -lgfortran -lLHAPDF -lgsl -lgslcblas -lm 
 # TENSORCHARGELIBS = -lstdc++fs -lboost_iostreams -lboost_system -lboost_filesystem -lgrv -ltransv -lcuba -lhoppet_v1 -lgfortran -lLHAPDF -lm
 # -lceres   
@@ -83,6 +92,17 @@ main: $(OBJS) $(EXEDIR)/$(MAINEXE)
 		echo "could not create executable for '$(MAINEXE)'";\
 	fi
 	
+
+predictions: $(OBJS) $(EXEDIR)/$(PREDEXE)
+	@make sources
+	$(CXX) $(CXXFLAGS) $(PRED_MAIN) \
+	$(OBJS)  $(LIBS) -lc -o $(PREDEXE)
+	@if [ -f $(PREDEXE) ]; then \
+		mv $(PREDEXE) $(EXEDIR); echo "...................Azimuthal_moments_predictions done.\n"; \
+	else \
+		echo "could not create executable for '$(PREDEXE)'";\
+	fi
+
 
 sources:
 	$(MAKE) --directory=src sources

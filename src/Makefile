@@ -24,7 +24,7 @@ $(OBJDIR)FCN.o: FCN.h FCN.cpp
 	
 	
 $(OBJDIR)FragFunct.o: FragFunct.h FragFunct.cpp
-	$(CXX) $(CXXFLAGS) FragFunct.cpp -c -lff -lgfortran
+	$(CXX) $(CXXFLAGS) FragFunct.cpp -c -L/st100-gr4/flore/libs/ -lff -lgfortran
 	@mv FragFunct.o $(OBJDIR)
 	@echo "................FragFunct done.\n"
 	

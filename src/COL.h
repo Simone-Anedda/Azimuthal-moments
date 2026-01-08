@@ -14,15 +14,13 @@
 #include <math.h>
 #include <vector>
 
-#include<LHAPDF/LHAPDF.h>
 #include "dss_wrapper.h"
 //#include "FCN.h"
 #include "FragFunct.h"
 
 //HOPPET
-#include <hoppet_v1.h>
-#include <hoppet_v1_collins.h>
-#include <hoppet_v1_collins2.h>
+#include "/st100-gr4/codes/hoppet-1.1.5-modified_cf-build/include/hoppet_v1_collins.h"
+#include "/st100-gr4/codes/hoppet-1.1.5-modified_cff-build/include/hoppet_v1_collins2.h"
 
     
 namespace COL{
