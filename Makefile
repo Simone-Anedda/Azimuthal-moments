@@ -16,9 +16,11 @@ INPUTDIR = input
 
 MAINEXE = Azimuthal_moments
 PREDEXE = Azimuthal_moments_predictions
+PREDEXE2 = Azimuthal_moments_predictions_2
 
 MAIN = $(SRCDIR)/Azimuthal_moments.cpp
 PRED_MAIN = $(SRCDIR)/Azimuthal_moments_predictions.cpp
+PRED_MAIN2 = $(SRCDIR)/Azimuthal_moments_predictions_2.cpp
 
 INPUT = Azimuthal_moments.input
 PREDINPUT = Azimuthal_moments_predictions.input
@@ -101,6 +103,16 @@ predictions: $(OBJS) $(EXEDIR)/$(PREDEXE)
 		mv $(PREDEXE) $(EXEDIR); echo "...................Azimuthal_moments_predictions done.\n"; \
 	else \
 		echo "could not create executable for '$(PREDEXE)'";\
+	fi
+
+predictions2: $(OBJS) $(EXEDIR)/$(PREDEXE2)
+	@make sources
+	$(CXX) $(CXXFLAGS) $(PRED_MAIN2) \
+	$(OBJS)  $(LIBS) -lc -o $(PREDEXE2)
+	@if [ -f $(PREDEXE2) ]; then \
+		mv $(PREDEXE2) $(EXEDIR); echo "...................Azimuthal_moments_predictions_2 done.\n"; \
+	else \
+		echo "could not create executable for '$(PREDEXE2)'";\
 	fi
 
 
