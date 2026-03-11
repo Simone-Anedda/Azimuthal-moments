@@ -1,22 +1,34 @@
 #include <cmath>
 #include <iostream>
-#include <tuple>
 #include <vector>
-#include <array>
-#include <cuba.h>
-#include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <string>
-#include <cstring>
 #include <chrono>
-#include <iomanip>
-#include <numeric>
+#include <cuba.h>
 
 #include "FragFunct.h"
 #include "COL.h"
 #include <rapidcsv.h>
 
 #include "constants.h"
+
+namespace
+{
+constexpr int kNumComponents = 13;
+constexpr int kUserDataSqrts = 0;
+constexpr int kUserDataQ20 = 1;
+constexpr int kUserDataThetac = 2;
+constexpr int kUserDataFixedValue = 3;
+constexpr int kUserDataZ1Min = 4;
+constexpr int kUserDataZ1Max = 5;
+constexpr int kUserDataZ2 = 6;
+
+double userdata_value(void* userdata, int index)
+{
+    return *static_cast<double **>(userdata)[index];
+}
+}
 
 std::vector<double> pars = {0.5316, -.7290, .8246, 3.2293, 0.8568, -.3539, 1.7524, 0.0, 0.2551};
 std::vector<double> COL_z(13), COL_ppz1(13), COL_ppz2(13), COL_pmz1(13), COL_pmz2(13);
@@ -242,6 +254,11 @@ void Collins_epem_loop(const std::vector<double> &COL_ppz1_in, const std::vector
 
 }
 
+std::vector<double> integration_point_to_vector(const int* ndim, const double x[])
+{
+    return std::vector<double>(x, x + *ndim);
+}
+
 
 
 class PhysicsCalculator
@@ -330,6 +347,7 @@ public:
         fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
         DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + 2 * me * me * csi * csi * (1.0 / Q2max - 1.0 / Q2min));
     }
+    //qua iniziare a mettere le variabili per yy
 
     void setVariablesWithQ2(double xB_val, double Q2_val, double csi_val)
     {
@@ -370,11 +388,13 @@ public:
     {
         return xB * (1 + 4 * Q20 / Q2_val);
     }
+    // csimax = 1
 
     double ymin(double Q2_val) const
     {
         return xB * (1 + 4 * Q20 / Q2_val);
     }
+    // ymax = 1
 
     // K factors for different differentials
     double Kxy() const
@@ -392,7 +412,7 @@ public:
         return 1.0 / (Q2 * y * y * csi * csi * csi);
     }
 
-    // A coefficients // Il extra 2 term is for the denominator in the azimuthal moments... ->> PERCHé??
+    // A coefficients // The extra 2 term is for the denominator in the azimuthal moments... 
     double AU() const
     {
         double term1 = (1 + (1 - y) * (1 - y)) * (xB * xB + (csi - xB) * (csi - xB));
@@ -478,10 +498,10 @@ public:
         return term1 * term2 * DLfgl;
     }
 
-    // Coefficienti AU,AL,BU,BL integrati sul range permesso di zeta *)
-    // A eccezione di quelli che integrano a zero tra zetamin e zetamax per simmetria, integrati solo da zeta = 1/2 a zetamax *)
-    // per cui bisogna ricordarsi che consistentemente vanno divisi per AU/2 *)
-    // Nota: usato 1 - zetamax = zetamin e viceversa *)
+    // AU, AL, BU, BL coefficients integrated over the allowed zeta range
+    // Except for those that integrate to zero between zetamin and zetamax by symmetry, integrated only from zeta = 1/2 to zetamax
+    // therefore, one must remember that, consistently, they should be divided by AU/2
+    // Note: used 1 - zetamax = zetamin and vice versa
     // Integrated coefficients over zeta range
     double AUzi() const
     {
@@ -571,7 +591,7 @@ public:
         return term1 * term2 * DLfgl;
     }
 
-    // Getter functions for current variable values1
+    // Getter functions for the current variable values
     double getXB() const { return xB; }
     double getY() const { return y; }
     double getCsi() const { return csi; }
@@ -581,33 +601,28 @@ public:
     double getFgl() const { return fgl; }
     double getDLfgl() const { return DLfgl; }
 
-    // Static getters for constants
-    static double getAlphaem() { return alphaem; }
-    // static
-    double getThetac() { return thetac; }
-    static double getMe() { return me; }
-    // static
-    double getSqrtS() { return SqrtS; }
-    // static
-    double getS() { return S; }
-    // static
-    double getQ20() { return Q20; }
-    // static
-    double getQ2M() { return Q2M; }
-    static double getCost() { return Cost; }
 };
 
-static double fixed_xB ; // Global variable to hold fixed xB value
-static double fixed_y ; // Global variable to hold fixed y value
-static double fixed_Q2 ; // Global variable to hold fixed Q2 value
+void fill_azimuthal_results(const PhysicsCalculator& pc, double norm, double results[])
+{
+    results[0]  = pc.AUzi() * norm;
+    results[1]  = pc.AUcfqzi() * norm;
+    results[2]  = pc.AUc2fqzi() * norm;
+    results[3]  = pc.ALzi() * norm;
+    results[4]  = pc.ALcfqzi() * norm;
+    results[5]  = pc.BUcf12zi() * norm;
+    results[6]  = pc.BUcfqmf12zi() * norm;
+    results[7]  = pc.BUcfqpf12zi() * norm;
+    results[8]  = pc.BUc2fqmf12zi() * norm;
+    results[9]  = pc.BUc2fqpf12zi() * norm;
+    results[10] = pc.BLcf12zi() * norm;
+    results[11] = pc.BLcfqmf12zi() * norm;
+    results[12] = pc.BLcfqpf12zi() * norm;
+}
 
-//Cut function to check if the input values are within the allowed ranges
+// Cut function to check if the input values are within the allowed ranges
 bool cut(const PhysicsCalculator& pscut)
 {
-    // double S = PhysicsCalculator::getS();
-    // double Q20 = PhysicsCalculator::getQ20();
-    // double Q2M = PhysicsCalculator::getQ2M();
-    double S = pscut.S;
     double Q20 = pscut.Q20;
     double Q2M = pscut.Q2M;
 
@@ -628,13 +643,14 @@ bool cut(const PhysicsCalculator& pscut)
     return true;
 }
 
-//example functions to calculate azimuthal moments NOT used in the main program
+// Example function to calculate azimuthal moments, not used in the main program
 void Values(const std::vector<double> &x, double results[])
 {
     PhysicsCalculator pc;
-
     pc.setVariables(x[0], x[1], x[2]);
-    if(cut(pc) == false)
+    const bool passes_cut = cut(pc);
+
+    if (!passes_cut)
     {
         std::cerr << "Cut condition failed for input values: "
                   << "xB = " << x[0] << ", y = " << x[1] << ", csi = " << x[2] << std::endl;
@@ -645,25 +661,12 @@ void Values(const std::vector<double> &x, double results[])
                   << "xB = " << x[0] << ", y = " << x[1] << ", csi = " << x[2] << std::endl;
     }
 
-    if(cut(pc)==true){
-
-        results[0]  = pc.AUzi();
-        results[1]  = pc.AUcfqzi();
-        results[2]  = pc.AUc2fqzi();
-        results[3]  = pc.ALzi();
-        results[4]  = pc.ALcfqzi();
-        results[5]  = pc.BUcf12zi();
-        results[6]  = pc.BUcfqmf12zi();
-        results[7]  = pc.BUcfqpf12zi();
-        results[8]  = pc.BUc2fqmf12zi();
-        results[9]  = pc.BUc2fqpf12zi();
-        results[10] = pc.BLcf12zi();
-        results[11] = pc.BLcfqmf12zi();
-        results[12] = pc.BLcfqpf12zi();
-    }
+    if (passes_cut) {
+        fill_azimuthal_results(pc, 1.0, results);
+    } 
     else
     {
-        std::fill(results, results + 13, 0.0); // Fill results with zeros if cut fails
+        std::fill(results, results + kNumComponents, 0.0); // Fill results with zeros if cut fails
     }
 
     // Print the results for debugging
@@ -686,9 +689,14 @@ void Values(const std::vector<double> &x, double results[])
                 << "BLcfqpf12zi: " << results[12] << std::endl;
 }
 
-void ValuesfixedxB(const std::vector<double> &x, double results[])
+void ValuesfixedxB(const std::vector<double> &x, double results[], void *userdata)
 {
-    // x[0] = y, x[1] = csi; fixed_xB is provided externally
+    // x[0] = y, x[1] = csi; fixed_xB is passed via userdata
+    const double sqrts = userdata_value(userdata, kUserDataSqrts);
+    const double Q20 = userdata_value(userdata, kUserDataQ20);
+    const double thetac = userdata_value(userdata, kUserDataThetac);
+    const double fixed_xB = userdata_value(userdata, kUserDataFixedValue);
+
     PhysicsCalculator pc;
     pc.setExperiment(sqrts, Q20, thetac);
 
@@ -696,65 +704,41 @@ void ValuesfixedxB(const std::vector<double> &x, double results[])
 
     if (cut(pc))
     {
-        results[0]  = pc.AUzi() *pc.Kxy();
-        results[1]  = pc.AUcfqzi()*pc.Kxy();
-        results[2]  = pc.AUc2fqzi()*pc.Kxy();
-        results[3]  = pc.ALzi()*pc.Kxy();
-        results[4]  = pc.ALcfqzi()*pc.Kxy();
-        results[5]  = pc.BUcf12zi()*pc.Kxy();
-        results[6]  = pc.BUcfqmf12zi()*pc.Kxy();
-        results[7]  = pc.BUcfqpf12zi()*pc.Kxy();
-        results[8]  = pc.BUc2fqmf12zi()*pc.Kxy();
-        results[9]  = pc.BUc2fqpf12zi()*pc.Kxy();
-        results[10] = pc.BLcf12zi()*pc.Kxy();
-        results[11] = pc.BLcfqmf12zi()*pc.Kxy();
-        results[12] = pc.BLcfqpf12zi()*pc.Kxy();
-    }
+        fill_azimuthal_results(pc, pc.Kxy(), results);
+    } 
     else
     {
-        std::fill(results, results + 13, 0.0);
+        std::fill(results, results + kNumComponents, 0.0);
     }
 }
-void Valuesfixedy(const std::vector<double> &x, double results[])
+void Valuesfixedy(const std::vector<double> &x, double results[], void *userdata)
 {
-    // x[0] = xB, x[1] = csi; fixed_y is provided externally
+    // x[0] = xB, x[1] = csi; fixed_y is passed via userdata
+    const double sqrts = userdata_value(userdata, kUserDataSqrts);
+    const double Q20 = userdata_value(userdata, kUserDataQ20);
+    const double thetac = userdata_value(userdata, kUserDataThetac);
+    const double fixed_y = userdata_value(userdata, kUserDataFixedValue);
+
     PhysicsCalculator pc;
     pc.setExperiment(sqrts, Q20, thetac);
 
     pc.setVariables(x[0], fixed_y, x[1]);
     if (cut(pc))
     {
-        results[0]  = pc.AUzi()*pc.Kxy();
-        results[1]  = pc.AUcfqzi()*pc.Kxy();
-        results[2]  = pc.AUc2fqzi()*pc.Kxy();
-        results[3]  = pc.ALzi()*pc.Kxy();
-        results[4]  = pc.ALcfqzi()*pc.Kxy();
-        results[5]  = pc.BUcf12zi()*pc.Kxy();
-        results[6]  = pc.BUcfqmf12zi()*pc.Kxy();
-        results[7]  = pc.BUcfqpf12zi()*pc.Kxy();
-        results[8]  = pc.BUc2fqmf12zi()*pc.Kxy();
-        results[9]  = pc.BUc2fqpf12zi()*pc.Kxy();
-        results[10] = pc.BLcf12zi()*pc.Kxy();
-        results[11] = pc.BLcfqmf12zi()*pc.Kxy();
-        results[12] = pc.BLcfqpf12zi()*pc.Kxy();
-    }
-    else
+        fill_azimuthal_results(pc, pc.Kxy(), results);
+    } else
     {
-        std::fill(results, results + 13, 0.0);
+        std::fill(results, results + kNumComponents, 0.0);
     }
 }
 
 void ValuesfixedQ2(const std::vector<double> &x, double results[], void *userdata)
 {
-    // x[0] = xB, x[1] = csi; fixed Q2 is provided externally
-
-    double sqrts = *static_cast<double **>(userdata)[0];
-    double Q20 = *static_cast<double **>(userdata)[1];
-    double thetac = *static_cast<double **>(userdata)[2];
-    // double z1_min = *static_cast<double **>(userdata)[2];
-    // double z1_max = *static_cast<double **>(userdata)[2];
-
-    // std::cout << "In ValuesfixedQ2: "<< sqrts << "\t" << Q20 << "\t" << thetac << std::endl;
+    // x[0] = xB, x[1] = csi; fixed Q2 is passed via userdata
+    const double sqrts = userdata_value(userdata, kUserDataSqrts);
+    const double Q20 = userdata_value(userdata, kUserDataQ20);
+    const double thetac = userdata_value(userdata, kUserDataThetac);
+    const double fixed_Q2 = userdata_value(userdata, kUserDataFixedValue);
 
     PhysicsCalculator pc;
     pc.setExperiment(sqrts, Q20, thetac);
@@ -763,66 +747,42 @@ void ValuesfixedQ2(const std::vector<double> &x, double results[], void *userdat
 
     if (cut(pc))
     {
-        results[0]  = pc.AUzi()*pc.KQx();
-        results[1]  = pc.AUcfqzi()*pc.KQx();
-        results[2]  = pc.AUc2fqzi()*pc.KQx();
-        results[3]  = pc.ALzi()*pc.KQx();
-        results[4]  = pc.ALcfqzi()*pc.KQx();
-        results[5]  = pc.BUcf12zi()*pc.KQx();
-        results[6]  = pc.BUcfqmf12zi()*pc.KQx();
-        results[7]  = pc.BUcfqpf12zi()*pc.KQx();
-        results[8]  = pc.BUc2fqmf12zi()*pc.KQx();
-        results[9]  = pc.BUc2fqpf12zi()*pc.KQx();
-        results[10] = pc.BLcf12zi()*pc.KQx();
-        results[11] = pc.BLcfqmf12zi()*pc.KQx();
-        results[12] = pc.BLcfqpf12zi()*pc.KQx();
-    }
+        fill_azimuthal_results(pc, pc.KQx(), results);
+    } 
     else
     {
-        std::fill(results, results + 13, 0.0);
+        std::fill(results, results + kNumComponents, 0.0); // Fill results with zeros if cut fails
     }
 }
 
 int integrand_fixedxB(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata)
 {
-    std::vector<double> xv;
-    for (int i = 0; i < *ndim; i++)
-    {
-        xv.push_back(x[i]);
-    }
-
-    ValuesfixedxB(xv, f);
+    (void)ncomp;
+    ValuesfixedxB(integration_point_to_vector(ndim, x), f, userdata);
 
     return 0;
 }
 
 int integrand_fixedy(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata)
 {
-    std::vector<double> xv;
-    for (int i = 0; i < *ndim; i++)
-    {
-        xv.push_back(x[i]);
-    }
-
-    Valuesfixedy(xv, f);
+    (void)ncomp;
+    Valuesfixedy(integration_point_to_vector(ndim, x), f, userdata);
 
     return 0;
 }
 int integrand_fixedQ2(const int *ndim, const double x[], const int *ncomp, double f[], void *userdata)
 {
-    std::vector<double> xv;
-    for (int i = 0; i < *ndim; i++)
-    {
-        xv.push_back(x[i]);
-    }
-
-    ValuesfixedQ2(xv, f, userdata);
+    (void)ncomp;
+    
+    ValuesfixedQ2(integration_point_to_vector(ndim, x), f, userdata);
 
     return 0;
 }
 
 int integrand_Collins(const int *ndim, const double x[], const int *ncomp, double ff[], void *userdata)
 {
+    (void)ndim;
+    (void)ncomp;
 
 #define f0 ff[0]
 #define f1 ff[1]
@@ -831,10 +791,10 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 
     // std::cout<< "Integrating Collins functions on z1" << std::endl;
 
-    double Q2 = *static_cast<double **>(userdata)[3];
-    double z1_min = *static_cast<double **>(userdata)[4];
-    double z1_max = *static_cast<double **>(userdata)[5];
-    double z2     = *static_cast<double **>(userdata)[6];
+    const double Q2 = userdata_value(userdata, kUserDataFixedValue);
+    const double z1_min = userdata_value(userdata, kUserDataZ1Min);
+    const double z1_max = userdata_value(userdata, kUserDataZ1Max);
+    const double z2 = userdata_value(userdata, kUserDataZ2);
 
     // std::cout << "In integrand: z1_min = "<< z1_min << "  z1_max = "<< z1_max << "  z2 = " << z2 << "   Q2 = "<< Q2 <<std::endl;
 
@@ -910,19 +870,18 @@ struct IntegrationResults {
     int neval;
     int fail;
     int nregions;
-    double integral[13];
-    double error[13];
-    double prob[13];
-    double ratio[13];
-    double ratioerror[13];
+    double integral[kNumComponents];
+    double error[kNumComponents];
+    double prob[kNumComponents];
+    double ratio[kNumComponents];
+    double ratioerror[kNumComponents];
     double elapsed_seconds;
 };
 
 
-PhysicsCalculator pc;
+int main(int argc, char *argv[]) {
+    (void)argc;
 
-
-int main(int argc,char *argv[]) {
     // Fixed integration settings
     const int maxeval = static_cast<int>(1e7);
     const int nstart  = static_cast<int>(1e6);
@@ -991,7 +950,7 @@ int main(int argc,char *argv[]) {
 
 
     //set parameters for the integration
-    int ndim = 2, ncomp = 13, nvec = 1, verbose = 0, last = 4, key = 13;
+    int ndim = 2, ncomp = kNumComponents, nvec = 1, verbose = 0, last = 4, key = 13;
     double epsrel = 1e-6, epsabs = 1e-12;
     int flags = 2, seed = 0, mineval = 0, nincrease = 0, nbatch = 1000, gridno = 0;
     char statefile[64] = "";
@@ -1282,10 +1241,9 @@ int main(int argc,char *argv[]) {
 
     for (double z2 : z2_values) {
 
-        fixed_Q2 = Q2val;
         std::cout << "Running scan for fixed Q2 = " << Q2val << "  z2 = " << z2 <<std::endl;
 
-        // for
+        // Shared integration context: {sqrts, Q20, thetac, fixed Q2, z1_min, z1_max, z2}
         void *USERDATA[] = {&sqrts, &Q20, &thetac, &Q2val, &z1_min, &z1_max, &z2};
 
         IntegrationResults col;
