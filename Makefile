@@ -1,5 +1,7 @@
 CXX = g++
 FF = gfortran
+
+.DEFAULT_GOAL := predictions_all
  
 #CXXFLAGS = -w -std=gnu++0x -O2 -g
 CXXFLAGS = -w -O2 -std=c++20 -g 
@@ -84,8 +86,11 @@ LIBS = -lLHAPDF -L/st100-gr4/flore/libs -lff -lcuba -lhoppet_v1_collins -lhoppet
 # TENSORCHARGELIBS = -lstdc++fs -lboost_iostreams -lboost_system -lboost_filesystem -lgrv -ltransv -lcuba -lhoppet_v1 -lgfortran -lLHAPDF -lm
 # -lceres   
 
-main: $(OBJS) $(EXEDIR)/$(MAINEXE)
-	@make sources
+.PHONY: main predictions predictions2 predictions_all sources all clean clean_all
+
+predictions_all: predictions predictions2
+
+main: sources | $(EXEDIR)
 	$(CXX) $(CXXFLAGS) $(MAIN) \
 	$(OBJS)  $(LIBS) -lc -o $(MAINEXE)
 	@if [ -f $(MAINEXE) ]; then \
@@ -95,8 +100,7 @@ main: $(OBJS) $(EXEDIR)/$(MAINEXE)
 	fi
 	
 
-predictions: $(OBJS) $(EXEDIR)/$(PREDEXE)
-	@make sources
+predictions: sources | $(EXEDIR)
 	$(CXX) $(CXXFLAGS) $(PRED_MAIN) \
 	$(OBJS)  $(LIBS) -lc -o $(PREDEXE)
 	@if [ -f $(PREDEXE) ]; then \
@@ -105,8 +109,7 @@ predictions: $(OBJS) $(EXEDIR)/$(PREDEXE)
 		echo "could not create executable for '$(PREDEXE)'";\
 	fi
 
-predictions2: $(OBJS) $(EXEDIR)/$(PREDEXE2)
-	@make sources
+predictions2: sources | $(EXEDIR)
 	$(CXX) $(CXXFLAGS) $(PRED_MAIN2) \
 	$(OBJS)  $(LIBS) -lc -o $(PREDEXE2)
 	@if [ -f $(PREDEXE2) ]; then \
@@ -115,12 +118,17 @@ predictions2: $(OBJS) $(EXEDIR)/$(PREDEXE2)
 		echo "could not create executable for '$(PREDEXE2)'";\
 	fi
 
+$(EXEDIR):
+	@mkdir -p $(EXEDIR)
 
-sources:
-	$(MAKE) --directory=src sources
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
+
+
+sources: | $(OBJDIR)
+	$(MAKE) --directory=src sources CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)"
 	
-all:
-	$(MAKE) --directory=src sources
+all: predictions_all
 
 # run_fit:
 # 	$(MAKE) fit_main
