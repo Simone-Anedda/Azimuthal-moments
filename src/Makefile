@@ -2,7 +2,7 @@
 # CXXFLAGS = -std=c++14
 
 OBJDIR = ../obj/
-MODULES := FragFunct COL 
+MODULES := FragFunct COL photon_flux
 SOURCES := $(MODULES).cpp
 OBJS := $(OBJDIR)/$(MODULES).o
 
@@ -28,15 +28,10 @@ $(OBJDIR)FragFunct.o: FragFunct.h FragFunct.cpp
 	@mv FragFunct.o $(OBJDIR)
 	@echo "................FragFunct done.\n"
 	
-# $(OBJDIR)COL_z.o: COL_z.h COL_z.cpp
-# 	$(CXX) $(CXXFLAGS) COL_z.cpp -c
-# 	@mv COL_z.o $(OBJDIR)
-# 	@echo "................COL_z done.\n"
-# 	
-# $(OBJDIR)TRANSV_x.o: TRANSV_x.h TRANSV_x.cpp
-# 	$(CXX) $(CXXFLAGS) TRANSV_x.cpp -c
-# 	@mv TRANSV_x.o $(OBJDIR)
-# 	@echo "................TRANSV_x done.\n"
+$(OBJDIR)photon_flux.o: photon_flux.h photon_flux.cpp
+	$(CXX) $(CXXFLAGS) photon_flux.cpp -c
+	@mv photon_flux.o $(OBJDIR)
+	@echo "................photon_flux done.\n"
 
 $(OBJDIR)COL.o: COL.h COL.cpp
 	$(CXX) $(CXXFLAGS) COL.cpp -c
@@ -46,14 +41,6 @@ $(OBJDIR)COL.o: COL.h COL.cpp
 	
 
 sources:
-# 	$(MAKE) $(OBJDIR)Data.o
-# 	$(MAKE) $(OBJDIR)FCN.o
-# 	$(MAKE) $(OBJDIR)Hessian_engine.o
-# 	$(MAKE) $(OBJDIR)MC_engine.o
-# 	$(MAKE) $(OBJDIR)ParVec.o
-# 	$(MAKE) $(OBJDIR)CovMat.o
-# 	$(MAKE) $(OBJDIR)CollPDF.o
 	$(MAKE) $(OBJDIR)FragFunct.o
 	$(MAKE) $(OBJDIR)COL.o
-# 	$(MAKE) $(OBJDIR)TRANSV.o
-# 	$(MAKE) $(OBJDIR)auxiliary_funcs.o
+	$(MAKE) $(OBJDIR)photon_flux.o

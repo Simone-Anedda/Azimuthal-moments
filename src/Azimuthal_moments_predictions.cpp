@@ -14,6 +14,7 @@
 
 #include "FragFunct.h"
 #include "COL.h"
+#include "photon_flux.h"
 #include <rapidcsv.h>
 
 #include "constants.h"
@@ -43,6 +44,7 @@ int charge = 1, hadron = 1;
 
 FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
+EPA::EPA_flux flux;
 
 rapidcsv::Document * CSV = new rapidcsv::Document;
 
@@ -319,16 +321,25 @@ public:
         zetamin = 0.5 * (1 - sqrt_term);
         zetamax = 0.5 * (1 + sqrt_term);
 
-        // WW function parameters
-        Q2min = me * me * csi * csi / (1 - csi);
-        Q2max = (S / 4) * thetac * thetac * (1 - csi) + Q2min;
 
-        // Calculate WW functions
-        double log_ratio = log(Q2max / Q2min);
-        double me2_term = 2 * me * me * csi * (1.0 / Q2max - 1.0 / Q2min);
+        ww = flux.eval(csi);
+        flux.set_polarisation(-1);
+        DLfgl = flux.eval(csi);
+        flux.set_polarisation(1);
 
-        fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
-        DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + 2 * me * me * csi * csi * (1.0 / Q2max - 1.0 / Q2min));
+        // // WW function parameters
+        // Q2min = me * me * csi * csi / (1 - csi);
+        // Q2max = (S / 4) * thetac * thetac * (1 - csi) + Q2min;
+        //
+        // // Calculate WW functions
+        // double log_ratio = log(Q2max / Q2min);
+        // double me2_term = 2 * me * me * csi * (1.0 / Q2max - 1.0 / Q2min);
+        //
+        // fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
+        // // DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + 2 * me * me * csi * csi * (1.0 / Q2max - 1.0 / Q2min));
+        // DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
+        //
+        // std::cout << "Check WW:   " << fgl << "  "<< ww << " ... " << DLfgl << "  "<< Dww << std::endl;
     }
 
     void setVariablesWithQ2(double xB_val, double Q2_val, double csi_val)
@@ -345,14 +356,21 @@ public:
         zetamin = 0.5 * (1 - sqrt_term);
         zetamax = 0.5 * (1 + sqrt_term);
 
-        Q2min = me * me * csi * csi / (1 - csi);
-        Q2max = (S / 4) * thetac * thetac * (1 - csi) + Q2min;
+        fgl = flux.eval(csi);
+        flux.set_polarisation(-1);
+        Dfgl = flux.eval(csi);
+        flux.set_polarisation(1);
 
-        double log_ratio = log(Q2max / Q2min);
-        double me2_term = 2 * me * me * csi * (1.0 / Q2max - 1.0 / Q2min);
+        // Q2min = me * me * csi * csi / (1 - csi);
+        // Q2max = (S / 4) * thetac * thetac * (1 - csi) + Q2min;
+        //
+        // double log_ratio = log(Q2max / Q2min);
+        // double me2_term = 2 * me * me * csi * (1.0 / Q2max - 1.0 / Q2min);
+        //
+        // fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
+        // // DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + 2 * me * me * csi * csi * (1.0 / Q2max - 1.0 / Q2min));
+        // DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
 
-        fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
-        DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + 2 * me * me * csi * csi * (1.0 / Q2max - 1.0 / Q2min));
     }
 
     // Utility functions for variable bounds
@@ -928,7 +946,7 @@ int main(int argc,char *argv[]) {
     const int nstart  = static_cast<int>(1e6);
 
     //TO DO: input arguments here
-    stringstream modelstr, widthsstr, evostr, MCnamestring;
+    stringstream modelstr, widthsstr, evostr, MCnamestring, EPAnamestring;
     modelstr << argv[2];
     widthsstr << argv[4];
     evostr << argv[6];
@@ -940,9 +958,10 @@ int main(int argc,char *argv[]) {
     Q20 = atof(argv[16]);
     double Q2val = atof(argv[18]);
     thetac = atof(argv[20]);
-    MCnamestring << argv[22];
+    EPAnamestring << argv[22];
+    MCnamestring << argv[24];
 
-    std::string MCname = MCnamestring.str();
+    std::string MCname = MCnamestring.str(), EPAname = EPAnamestring.str();
 
     CSV->Load(MCname);
     int Nrep = CSV->GetRowCount();
@@ -953,6 +972,13 @@ int main(int argc,char *argv[]) {
     // std::cout<<std::endl;
     // .push_back(i * (z2_max - z2_min) + z2_min);
 
+    flux.set_source(EPAname);
+    if (flux._leptonMasses.find(EPAname) != flux._leptonMasses.end()){
+
+        std::cout << EPAname << std::endl;
+        flux.set_thetac(thetac);
+        flux.set_s(sqrts * sqrts);
+    }
 
     // std::cout << sqrts << "\t" << Q20 << "\t" << Q2val << "\t" << thetac << std::endl;
 
@@ -1313,11 +1339,13 @@ int main(int argc,char *argv[]) {
         col.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
         std::cout << " --> time=" << col.elapsed_seconds << "s, neval=" << col.neval << std::endl;
 
-        IntegrationResults res;
-        res.maxeval = maxeval;
-        res.nstart  = nstart;
 
         auto t2 = std::chrono::high_resolution_clock::now();
+
+        IntegrationResults res;
+
+        res.maxeval = maxeval;
+        res.nstart  = nstart;
         Vegas(ndim, ncomp, integrand_fixedQ2, USERDATA,
                 nvec, epsrel, epsabs,
                 flags, seed, mineval, maxeval,
@@ -1325,6 +1353,7 @@ int main(int argc,char *argv[]) {
                 gridno, statefile, spin,
                 &res.neval, &res.fail,
                 res.integral, res.error, res.prob);
+
 
         auto t3 = std::chrono::high_resolution_clock::now();
         res.elapsed_seconds = std::chrono::duration<double>(t3 - t2).count();
