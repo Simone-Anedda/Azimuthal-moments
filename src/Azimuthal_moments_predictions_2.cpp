@@ -11,6 +11,7 @@
 
 #include "FragFunct.h"
 #include "COL.h"
+#include "photon_flux.h"
 #include <rapidcsv.h>
 
 #include "constants.h"
@@ -62,7 +63,7 @@ std::vector<double> FF(13), FF_ppz1(13), FF_ppz2(13), FF_pmz1(13), FF_pmz2(13),\
     FF_ppz1_fixedQ2(13), FF_ppz2_fixedQ2(13), FF_pmz1_fixedQ2(13), FF_pmz2_fixedQ2(13),\
     FF_evo(13);
 
-double f[13], h1[13]; //for HOPPET and transversity
+double f[13]; //for HOPPET and transversity
 
 const double charges[13] = {-2./3., 1./3., -2./3., 1./3., -2./3., 1./3., 0, -1./3., 2./3., -1./3., 2./3., -1./3., 2./3.};
 
@@ -80,6 +81,8 @@ constexpr int kNegativeCharge = -1;
 
 FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
+EPA::EPA_flux *flux1 = new EPA::EPA_flux();
+EPA::EPA_flux *flux2 = new EPA::EPA_flux();
 
 rapidcsv::Document * CSV = new rapidcsv::Document;
 
@@ -293,12 +296,12 @@ std::vector<double> integration_point_to_vector(const int* ndim, const double x[
 class PhysicsCalculator
 {
 private:
-    static constexpr double alphaem = 1.0 / 137.036;
-    static constexpr double me = 5.11e-4;
-    static constexpr double PI = 3.14159265358979323846;
+    // static constexpr double alphaem = 1.0 / 137.036;
+    // static constexpr double me = 5.11e-4;
+    // static constexpr double PI = 3.14159265358979323846;
 
     double etaq = 0.0;
-    double etabarq = 0.0;
+    double etaqbar = 0.0;
     double kT = 0.0;
     double csi1 = 0.0;
     double csi2 = 0.0;
@@ -358,57 +361,77 @@ public:
         const double etaqmin = std::log(0.5 * (SqrtS / kT - sqrt_term));
         etaq = (etaqmax - etaqmin) * x1_val + etaqmin;
 
-        const double etabarqmax_arg = SqrtS / kT - std::exp(etaq);
-        const double etabarqmin_arg = SqrtS / kT - std::exp(-etaq);
-        if (etabarqmax_arg <= 0.0 || etabarqmin_arg <= 0.0) {
+        const double etaqbarmax_arg = SqrtS / kT - std::exp(etaq);
+        const double etaqbarmin_arg = SqrtS / kT - std::exp(-etaq);
+        if (etaqbarmax_arg <= 0.0 || etaqbarmin_arg <= 0.0) {
             return;
         }
 
-        const double etabarqmax = std::log(etabarqmax_arg);
-        const double etabarqmin = -std::log(etabarqmin_arg);
-        jacob = (etaqmax - etaqmin) * (etabarqmax - etabarqmin);
-        etabarq = (etabarqmax - etabarqmin) * x2_val + etabarqmin;
+        const double etaqbarmax = std::log(etaqbarmax_arg);
+        const double etaqbarmin = -std::log(etaqbarmin_arg);
+        jacob = (etaqmax - etaqmin) * (etaqbarmax - etaqbarmin);
+        etaqbar = (etaqbarmax - etaqbarmin) * x2_val + etaqbarmin;
 
-        csi1 = (kT / SqrtS) * (std::exp(etaq) + std::exp(etabarq));
-        csi2 = (kT / SqrtS) * (std::exp(-etaq) + std::exp(-etabarq));
+        csi1 = (kT / SqrtS) * (std::exp(etaq) + std::exp(etaqbar));
+        csi2 = (kT / SqrtS) * (std::exp(-etaq) + std::exp(-etaqbar));
         if (!(csi1 > 0.0 && csi1 < 1.0 && csi2 > 0.0 && csi2 < 1.0)) {
             return;
         }
 
-        Q2min_csi1 = me * me * csi1 * csi1 / (1.0 - csi1);
-        Q2max_csi1 = (S / 4.0) * thetac * thetac * (1.0 - csi1) + Q2min_csi1;
-        Q2min_csi2 = me * me * csi2 * csi2 / (1.0 - csi2);
-        Q2max_csi2 = (S / 4.0) * thetac * thetac * (1.0 - csi2) + Q2min_csi2;
-        if (!(Q2min_csi1 > 0.0 && Q2max_csi1 > Q2min_csi1 &&
-              Q2min_csi2 > 0.0 && Q2max_csi2 > Q2min_csi2)) {
-            return;
+        // Q2min_csi1 = me * me * csi1 * csi1 / (1.0 - csi1);
+        // Q2max_csi1 = (S / 4.0) * thetac * thetac * (1.0 - csi1) + Q2min_csi1;
+        // Q2min_csi2 = me * me * csi2 * csi2 / (1.0 - csi2);
+        // Q2max_csi2 = (S / 4.0) * thetac * thetac * (1.0 - csi2) + Q2min_csi2;
+        // if (!(Q2min_csi1 > 0.0 && Q2max_csi1 > Q2min_csi1 &&
+        //       Q2min_csi2 > 0.0 && Q2max_csi2 > Q2min_csi2)) {
+        //     return;
+        // }
+
+        // const double log_ratio_csi1 = std::log(Q2max_csi1 / Q2min_csi1);
+        // const double me2_term_csi1 = 2.0 * me * me * csi1 * (1.0 / Q2max_csi1 - 1.0 / Q2min_csi1);
+        // const double log_ratio_csi2 = std::log(Q2max_csi2 / Q2min_csi2);
+        // const double me2_term_csi2 = 2.0 * me * me * csi2 * (1.0 / Q2max_csi2 - 1.0 / Q2min_csi2);
+
+        // fgl1 = (alphaem / (2.0 * PI)) * ((1.0 + (1.0 - csi1) * (1.0 - csi1)) / csi1 * log_ratio_csi1 + me2_term_csi1);
+        // DLfgl1 = (alphaem / (2.0 * PI)) * ((1.0 - (1.0 - csi1) * (1.0 - csi1)) / csi1 * log_ratio_csi1 +
+        //                                    2.0 * me * me * csi1 * csi1 * (1.0 / Q2max_csi1 - 1.0 / Q2min_csi1));
+        // fgl2 = (alphaem / (2.0 * PI)) * ((1.0 + (1.0 - csi2) * (1.0 - csi2)) / csi2 * log_ratio_csi2 + me2_term_csi2);
+        // DLfgl2 = (alphaem / (2.0 * PI)) * ((1.0 - (1.0 - csi2) * (1.0 - csi2)) / csi2 * log_ratio_csi2 +
+        //                                    2.0 * me * me * csi2 * csi2 * (1.0 / Q2max_csi2 - 1.0 / Q2min_csi2));
+
+        fgl1 = flux1 -> eval(csi1);
+        flux1 -> set_polarisation(-1);
+        DLfgl1 = flux1 -> eval(csi1);
+        flux1 -> set_polarisation(1);
+
+        if(flux2 != nullptr){
+        
+            fgl2 = flux2 -> eval(csi2);
+            flux2 -> set_polarisation(-1);
+            DLfgl1 = flux2 -> eval(csi2);
+            flux2 -> set_polarisation(1);
         }
+        else{
 
-        const double log_ratio_csi1 = std::log(Q2max_csi1 / Q2min_csi1);
-        const double me2_term_csi1 = 2.0 * me * me * csi1 * (1.0 / Q2max_csi1 - 1.0 / Q2min_csi1);
-        const double log_ratio_csi2 = std::log(Q2max_csi2 / Q2min_csi2);
-        const double me2_term_csi2 = 2.0 * me * me * csi2 * (1.0 / Q2max_csi2 - 1.0 / Q2min_csi2);
-
-        fgl1 = (alphaem / (2.0 * PI)) * ((1.0 + (1.0 - csi1) * (1.0 - csi1)) / csi1 * log_ratio_csi1 + me2_term_csi1);
-        DLfgl1 = (alphaem / (2.0 * PI)) * ((1.0 - (1.0 - csi1) * (1.0 - csi1)) / csi1 * log_ratio_csi1 +
-                                           2.0 * me * me * csi1 * csi1 * (1.0 / Q2max_csi1 - 1.0 / Q2min_csi1));
-        fgl2 = (alphaem / (2.0 * PI)) * ((1.0 + (1.0 - csi2) * (1.0 - csi2)) / csi2 * log_ratio_csi2 + me2_term_csi2);
-        DLfgl2 = (alphaem / (2.0 * PI)) * ((1.0 - (1.0 - csi2) * (1.0 - csi2)) / csi2 * log_ratio_csi2 +
-                                           2.0 * me * me * csi2 * csi2 * (1.0 / Q2max_csi2 - 1.0 / Q2min_csi2));
+            fgl2 = flux1 -> eval(csi2);
+            flux1 -> set_polarisation(-1);
+            DLfgl2 = flux1 -> eval(csi2);
+            flux1 -> set_polarisation(1);
+        }
 
         valid_kinematics = std::isfinite(fgl1) && std::isfinite(DLfgl1) &&
                            std::isfinite(fgl2) && std::isfinite(DLfgl2);
     }
 
     bool isValid() const { return valid_kinematics; }
-    double K() const { return valid_kinematics ? 1.0 / (S * kT * kT * (1.0 + std::cosh(etaq - etabarq))) : 0.0; }
-    double AU() const { return valid_kinematics ? std::cosh(etaq - etabarq) * fgl1 * fgl2 : 0.0; }
+    double K() const { return valid_kinematics ? 1.0 / (S * kT * kT * (1.0 + std::cosh(etaq - etaqbar))) : 0.0; }
+    double AU() const { return valid_kinematics ? std::cosh(etaq - etaqbar) * fgl1 * fgl2 : 0.0; }
     double BU() const { return valid_kinematics ? fgl1 * fgl2 / 4.0 : 0.0; }
-    double AL() const { return valid_kinematics ? std::cosh(etaq - etabarq) * DLfgl1 * DLfgl2 : 0.0; }
+    double AL() const { return valid_kinematics ? std::cosh(etaq - etaqbar) * DLfgl1 * DLfgl2 : 0.0; }
     double BL() const { return valid_kinematics ? DLfgl1 * DLfgl2 / 4.0 : 0.0; }
 
     double getEtaq() const { return etaq; }
-    double getEtabarq() const { return etabarq; }
+    double getetaqbar() const { return etaqbar; }
     double getKT() const { return kT; }
     double getCsi1() const { return csi1; }
     double getCsi2() const { return csi2; }
@@ -453,7 +476,7 @@ void Values(const std::vector<double> &x, double results[])
 
 void ValuesfixedkT(const std::vector<double> &x, double results[], void *userdata)
 {
-    // x[0] PROP ETAQ, x[1] PROP ETABARQ; fixed kT is passed via userdata
+    // x[0] PROP ETAQ, x[1] PROP etaqbar; fixed kT is passed via userdata
     const double sqrts = userdata_value(userdata, kUserDataSqrts);
     const double kT0 = userdata_value(userdata, kUserDataQ20);
     const double thetac = userdata_value(userdata, kUserDataThetac);
@@ -579,7 +602,7 @@ int main(int argc, char *argv[])
     const int maxeval = static_cast<int>(1e7);
     const int nstart  = static_cast<int>(1e6);
 
-    stringstream modelstr, widthsstr, evostr, MCnamestring;
+    stringstream modelstr, widthsstr, evostr, MCnamestring, EPA1namestr, EPA2namestr;
     modelstr << argv[2];
     widthsstr << argv[4];
     evostr << argv[6];
@@ -592,9 +615,11 @@ int main(int argc, char *argv[])
     Q20 = atof(argv[16]); // kept for input compatibility, interpreted here as kT_min
     double fixed_kT = atof(argv[18]);
     thetac = atof(argv[20]);
-    MCnamestring << argv[22];
+    EPA1namestr << argv[22];
+    EPA2namestr << argv[24];
+    MCnamestring << argv[26];
 
-    const std::string MCname = MCnamestring.str();
+    const std::string MCname = MCnamestring.str(), EPA1name = EPA1namestr.str(), EPA2name = EPA2namestr.str();
     CSV->Load(MCname);
 
     std::vector<double> z2_values;
@@ -619,6 +644,24 @@ int main(int argc, char *argv[])
     myCol.set_model(model);
     myCol.set_widths(widths);
     myCol.set_evolution(evo);
+
+    flux1 -> set_source(EPA1name);
+    flux1 -> set_thetac(thetac);
+    flux1 -> set_s(sqrts * sqrts);
+
+    if (EPA1name == EPA2name){
+
+        cout<<"Set EPA flux for " << EPA1name << endl;
+        delete flux2;
+        flux2 = nullptr;
+    }
+    else{
+
+        cout<<"Setting EPA fluxes for " << EPA1name << " and " << EPA2name << endl;
+        flux2->set_source(EPA2name);
+        flux2 -> set_thetac(thetac);
+        flux2 -> set_s(sqrts * sqrts);
+    }
 
     int ndim = 2, ncomp = kNumComponents, nvec = 1, verbose = 0, last = 4, key = 13;
     double epsrel = 1e-6, epsabs = 1e-12;

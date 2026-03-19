@@ -4,12 +4,14 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <numeric>
 #include <chrono>
 #include <cuba.h>
 
 #include "FragFunct.h"
 #include "COL.h"
 #include <rapidcsv.h>
+#include "photon_flux.h"
 
 #include "constants.h"
 
@@ -55,6 +57,7 @@ int charge = 1, hadron = 1;
 
 FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
+EPA::EPA_flux * flux = new EPA::EPA_flux();
 
 rapidcsv::Document * CSV = new rapidcsv::Document;
 
@@ -345,7 +348,12 @@ public:
         double me2_term = 2 * me * me * csi * (1.0 / Q2max - 1.0 / Q2min);
 
         fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
-        DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + 2 * me * me * csi * csi * (1.0 / Q2max - 1.0 / Q2min));
+        DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
+
+        cout << "csi = " << csi << " \t" << fgl << "  " << flux -> eval(csi);
+        flux -> set_polarisation(-1);
+        cout << "\t" << DLfgl << "  " << flux -> eval(csi) << endl;
+        flux -> set_polarisation(1);
     }
     //qua iniziare a mettere le variabili per yy
 
@@ -370,7 +378,12 @@ public:
         double me2_term = 2 * me * me * csi * (1.0 / Q2max - 1.0 / Q2min);
 
         fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
-        DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + 2 * me * me * csi * csi * (1.0 / Q2max - 1.0 / Q2min));
+        DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
+
+        cout << "csi = " << csi << " \t" << fgl << "  " << flux -> eval(csi);
+        flux -> set_polarisation(-1);
+        cout << "\t" << DLfgl << "  " << flux -> eval(csi) << endl;
+        flux -> set_polarisation(1);
     }
 
     // Utility functions for variable bounds
@@ -791,10 +804,10 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 
     // std::cout<< "Integrating Collins functions on z1" << std::endl;
 
-    const double Q2 = userdata_value(userdata, kUserDataFixedValue);
-    const double z1_min = userdata_value(userdata, kUserDataZ1Min);
-    const double z1_max = userdata_value(userdata, kUserDataZ1Max);
-    const double z2 = userdata_value(userdata, kUserDataZ2);
+    double Q2 = userdata_value(userdata, kUserDataFixedValue);
+    double z1_min = userdata_value(userdata, kUserDataZ1Min);
+    double z1_max = userdata_value(userdata, kUserDataZ1Max);
+    double z2 = userdata_value(userdata, kUserDataZ2);
 
     // std::cout << "In integrand: z1_min = "<< z1_min << "  z1_max = "<< z1_max << "  z2 = " << z2 << "   Q2 = "<< Q2 <<std::endl;
 
@@ -887,7 +900,7 @@ int main(int argc, char *argv[]) {
     const int nstart  = static_cast<int>(1e6);
 
     //TO DO: input arguments here
-    stringstream modelstr, widthsstr, evostr, MCnamestring;
+    stringstream modelstr, widthsstr, evostr, MCnamestring, EPAnamestr;
     modelstr << argv[2];
     widthsstr << argv[4];
     evostr << argv[6];
@@ -899,9 +912,10 @@ int main(int argc, char *argv[]) {
     Q20 = atof(argv[16]);
     double Q2val = atof(argv[18]);
     thetac = atof(argv[20]);
-    MCnamestring << argv[22];
+    EPAnamestr << argv[22];
+    MCnamestring << argv[26];
 
-    std::string MCname = MCnamestring.str();
+    std::string MCname = MCnamestring.str(), EPAname = EPAnamestr.str();
 
     CSV->Load(MCname);
     int Nrep = CSV->GetRowCount();
@@ -912,9 +926,11 @@ int main(int argc, char *argv[]) {
     // std::cout<<std::endl;
     // .push_back(i * (z2_max - z2_min) + z2_min);
 
-
+    cout << EPAname << endl; 
     // std::cout << sqrts << "\t" << Q20 << "\t" << Q2val << "\t" << thetac << std::endl;
-
+    flux -> set_source(EPAname);
+    flux -> set_thetac(thetac);
+    flux -> set_s(sqrts * sqrts);
 
     std::string model = modelstr.str();
     std::string widths = widthsstr.str();
@@ -1283,6 +1299,7 @@ int main(int argc, char *argv[]) {
                 gridno, statefile, spin,
                 &res.neval, &res.fail,
                 res.integral, res.error, res.prob);
+       
 
         auto t3 = std::chrono::high_resolution_clock::now();
         res.elapsed_seconds = std::chrono::duration<double>(t3 - t2).count();

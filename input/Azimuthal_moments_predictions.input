@@ -7,5 +7,7 @@ sqrts 92.0
 Q20 3.0
 Q2  100.0
 thetac 3.0e-2
+EPA1 electron
+EPA2 electron
 filename    ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full
 iset    0

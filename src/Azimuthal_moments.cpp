@@ -183,6 +183,7 @@ public:
         fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
         DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + 2 * me * me * csi * csi * (1.0 / Q2max - 1.0 / Q2min));
     }
+
     void setVariablesWithQ2(double xB_val, double Q2_val, double csi_val)
     {
         xB = xB_val;
@@ -588,58 +589,9 @@ void ValuesfixedQ2(const std::vector<double> &x, double results[])
     // x[0] = xB, x[1] = csi; fixed Q2 is provided externally
     PhysicsCalculator pc;
     pc.setVariablesWithQ2(x[0], fixed_Q2, x[1]);
+
     if (cut(pc))
     {
-       
-        double Q2 = fixed_Q2;
-
-        Collins_FF(hadron, charge, z1, z2, Q2);
-
-
-        //call for the Collins functions
-        if(myCol.evo == "DGLAP" || myCol.evo == "none"){ 
-            
-            myCol.eval(z1, Q2, charge, FF_ppz1, pars);
-            for(int i = 0; i < COL_ppz1.size(); i++) COL_ppz1[i] = myCol.COL_z[i];
-            
-            myCol.eval(z2, Q2, charge, FF_ppz2, pars);
-            for(int i = 0; i < COL_ppz2.size(); i++) COL_ppz2[i] = myCol.COL_z[i];
-            
-            charge *= -1; //to call pi- Collins
-                
-            myCol.eval(z1, Q2, charge, FF_pmz1, pars);
-            for(int i = 0; i < COL_pmz1.size(); i++) COL_pmz1[i] = myCol.COL_z[i];
-            
-            myCol.eval(z2, Q2, charge, FF_pmz2, pars);
-            for(int i = 0; i < COL_pmz2.size(); i++) COL_pmz2[i] = myCol.COL_z[i];
-        }
-        
-        if(myCol.evo == "CT3"){
-        
-            //call for the Collins functions
-            hoppetEvalcf(z1, sqrt(Q2), f);
-//             COL_ppz1 = CollinsHoppetEval(z1, int_charge, f);
-            for(int i = 0; i < COL_ppz1.size(); i++) COL_ppz1[i] = f[i] / z1;
-
-            hoppetEvalcf(z2, sqrt(Q2), f);
-//             COL_ppz2 = CollinsHoppetEval(z2, int_charge, f);
-            for(int i = 0; i < COL_ppz2.size(); i++) COL_ppz2[i] = f[i] / z2;
-            
-            charge *= -1; //to call pi- Collins
-                
-            hoppetEvalcff(z1, sqrt(Q2), f);      //modified to use proper hoppet calls for pip and pim
-//             COL_pmz1 = CollinsHoppetEval(z1, int_charge, f);    
-            for(int i = 0; i < COL_pmz1.size(); i++) COL_pmz1[i] = f[i] / z1;
-
-            hoppetEvalcff(z2, sqrt(Q2), f);
-//             COL_pmz2 = CollinsHoppetEval(z2, int_charge, f);
-            for(int i = 0; i < COL_pmz2.size(); i++) COL_pmz2[i] = f[i] / z2;
-
-        }
-        
-        //calling the loop to calculate numerator and denominator of A0
-        Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2);
-
         results[0]  = pc.AUzi()*pc.KQx();// * denU; // moltiplicare per D1D1
         results[1]  = pc.AUcfqzi()*pc.KQx();// * denU; // moltiplicare per D1D1
         results[2]  = pc.AUc2fqzi()*pc.KQx();// * denU; // moltiplicare per D1D1
@@ -690,6 +642,7 @@ int integrand_fixedQ2(const int *ndim, const double x[], const int *ncomp, doubl
     std::vector<double> xv;
     for (int i = 0; i < *ndim; i++)
     {
+        // std::cout << "i = " << i << "x[" << i << "] = " << x[i] << std::endl;
         xv.push_back(x[i]);
     }
 
@@ -768,36 +721,36 @@ int main(int argc,char *argv[]) {
     char statefile[64] = "";
     void* spin = nullptr;
     
-    std::ofstream outFile("Fixed_xB.txt");  
-    outFile << std::setw(10) << "xB" 
-            << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
-            << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
-            << std::setw(15) << "<ALL|0,0>" << std::setw(15) << "err[3]"
-            << std::setw(15) << "<ALL|+1,0>" << std::setw(15) << "err[4]"
-            << std::setw(15) << "<dsig|0,+1> " << std::setw(15) << "err[5]"
-            << std::setw(15) << "<dsig|+1,-1>" << std::setw(15) << "err[6]"
-            << std::setw(15) << "<dsig|+1,+1>" << std::setw(15) << "err[7]"
-            << std::setw(15) << "<dsig|+2,+1> " << std::setw(15) << "err[8]"
-            << std::setw(15) << "<dsig|+2,-1> " << std::setw(15) << "err[9]"
-            << std::setw(15) << "<ALL|0,+1>" << std::setw(15) << "err[10]"
-            << std::setw(15) << "<ALL|+1,-1>" << std::setw(15) << "err[11]"
-            << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"
-            << std::setw(15) << "AUzi" << std::setw(15) << "err[13]"
-            << std::setw(15) << "AUcfqzi" << std::setw(15) << "err[14]"
-            << std::setw(15) << "AUc2fqzi" << std::setw(15) << "err[15]"
-            << std::setw(15) << "ALzi" << std::setw(15) << "err[16]"
-            << std::setw(15) << "ALcfqzi" << std::setw(15) << "err[17]"
-            << std::setw(15) << "BUcf12zi" << std::setw(15) << "err[18]"
-            << std::setw(15) << "BUcfqmf12zi" << std::setw(15) << "err[19]"
-            << std::setw(15) << "BUcfqpf12zi" << std::setw(15) << "err[20]"
-            << std::setw(15) << "BUc2fqmf12zi" << std::setw(15) << "err[21]"
-            << std::setw(15) << "BUc2fqpf12zi" << std::setw(15) << "err[22]"
-            << std::setw(15) << "BLcf12zi" << std::setw(15) << "err[23]"
-            << std::setw(15) << "BLcfqmf12zi" << std::setw(15) << "err[24]"
-            << std::setw(15) << "BLcfqpf12zi" << std::setw(15) << "err[25]"
-            << std::setw(15) << "time[s]"
-            << std::setw(10) << "neval" << std::setw(10) << "fail"
-            << std::endl;
+    // std::ofstream outFile("Fixed_xB.txt");
+    // outFile << std::setw(10) << "xB"
+    //         << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
+    //         << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
+    //         << std::setw(15) << "<ALL|0,0>" << std::setw(15) << "err[3]"
+    //         << std::setw(15) << "<ALL|+1,0>" << std::setw(15) << "err[4]"
+    //         << std::setw(15) << "<dsig|0,+1> " << std::setw(15) << "err[5]"
+    //         << std::setw(15) << "<dsig|+1,-1>" << std::setw(15) << "err[6]"
+    //         << std::setw(15) << "<dsig|+1,+1>" << std::setw(15) << "err[7]"
+    //         << std::setw(15) << "<dsig|+2,+1> " << std::setw(15) << "err[8]"
+    //         << std::setw(15) << "<dsig|+2,-1> " << std::setw(15) << "err[9]"
+    //         << std::setw(15) << "<ALL|0,+1>" << std::setw(15) << "err[10]"
+    //         << std::setw(15) << "<ALL|+1,-1>" << std::setw(15) << "err[11]"
+    //         << std::setw(15) << "<ALL|+1,+1>" << std::setw(15) << "err[12]"
+    //         << std::setw(15) << "AUzi" << std::setw(15) << "err[13]"
+    //         << std::setw(15) << "AUcfqzi" << std::setw(15) << "err[14]"
+    //         << std::setw(15) << "AUc2fqzi" << std::setw(15) << "err[15]"
+    //         << std::setw(15) << "ALzi" << std::setw(15) << "err[16]"
+    //         << std::setw(15) << "ALcfqzi" << std::setw(15) << "err[17]"
+    //         << std::setw(15) << "BUcf12zi" << std::setw(15) << "err[18]"
+    //         << std::setw(15) << "BUcfqmf12zi" << std::setw(15) << "err[19]"
+    //         << std::setw(15) << "BUcfqpf12zi" << std::setw(15) << "err[20]"
+    //         << std::setw(15) << "BUc2fqmf12zi" << std::setw(15) << "err[21]"
+    //         << std::setw(15) << "BUc2fqpf12zi" << std::setw(15) << "err[22]"
+    //         << std::setw(15) << "BLcf12zi" << std::setw(15) << "err[23]"
+    //         << std::setw(15) << "BLcfqmf12zi" << std::setw(15) << "err[24]"
+    //         << std::setw(15) << "BLcfqpf12zi" << std::setw(15) << "err[25]"
+    //         << std::setw(15) << "time[s]"
+    //         << std::setw(10) << "neval" << std::setw(10) << "fail"
+    //         << std::endl;
 
     // for (double xB_val : xB_values) {
         
@@ -959,7 +912,7 @@ int main(int argc,char *argv[]) {
     // }
 
     // outFile1.close();      
-    std::ofstream outFile2("Fixed_Q2.txt");  
+    std::ofstream outFile2("Fixed_Q2.txt");
     outFile2 << std::setw(10) << "Q2" 
             << std::setw(15) << "<dsig|+1,0>" << std::setw(15) << "err[1]"
             << std::setw(15) << "<dsig|+2,0>" << std::setw(15) << "err[2]"
@@ -994,7 +947,57 @@ int main(int argc,char *argv[]) {
         
         fixed_Q2 = Q2_val; 
         std::cout << "Running scan for fixed Q2 = " << fixed_Q2 << std::endl;
-        
+
+        double Q2 = fixed_Q2;
+
+        Collins_FF(hadron, charge, z1, z2, Q2);
+
+
+        //call for the Collins functions
+        if(myCol.evo == "DGLAP" || myCol.evo == "none"){
+
+            myCol.eval(z1, Q2, charge, FF_ppz1, pars);
+            for(int i = 0; i < COL_ppz1.size(); i++) COL_ppz1[i] = myCol.COL_z[i];
+
+            myCol.eval(z2, Q2, charge, FF_ppz2, pars);
+            for(int i = 0; i < COL_ppz2.size(); i++) COL_ppz2[i] = myCol.COL_z[i];
+
+            charge *= -1; //to call pi- Collins
+
+            myCol.eval(z1, Q2, charge, FF_pmz1, pars);
+            for(int i = 0; i < COL_pmz1.size(); i++) COL_pmz1[i] = myCol.COL_z[i];
+
+            myCol.eval(z2, Q2, charge, FF_pmz2, pars);
+            for(int i = 0; i < COL_pmz2.size(); i++) COL_pmz2[i] = myCol.COL_z[i];
+        }
+
+        if(myCol.evo == "CT3"){
+
+            //call for the Collins functions
+            hoppetEvalcf(z1, sqrt(Q2), f);
+//             COL_ppz1 = CollinsHoppetEval(z1, int_charge, f);
+            for(int i = 0; i < COL_ppz1.size(); i++) COL_ppz1[i] = f[i] / z1;
+
+            hoppetEvalcf(z2, sqrt(Q2), f);
+//             COL_ppz2 = CollinsHoppetEval(z2, int_charge, f);
+            for(int i = 0; i < COL_ppz2.size(); i++) COL_ppz2[i] = f[i] / z2;
+
+            charge *= -1; //to call pi- Collins
+
+            hoppetEvalcff(z1, sqrt(Q2), f);      //modified to use proper hoppet calls for pip and pim
+//             COL_pmz1 = CollinsHoppetEval(z1, int_charge, f);
+            for(int i = 0; i < COL_pmz1.size(); i++) COL_pmz1[i] = f[i] / z1;
+
+            hoppetEvalcff(z2, sqrt(Q2), f);
+//             COL_pmz2 = CollinsHoppetEval(z2, int_charge, f);
+            for(int i = 0; i < COL_pmz2.size(); i++) COL_pmz2[i] = f[i] / z2;
+
+        }
+
+        //calling the loop to calculate numerator and denominator of A0
+        Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2);
+
+
         IntegrationResults res;
         res.maxeval = maxeval;
         res.nstart  = nstart;

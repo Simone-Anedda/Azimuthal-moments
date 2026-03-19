@@ -123,7 +123,7 @@ class EPA_flux{
 
         double _R0 = 1.2; //Fermi radius, 1.2 fm
 
-        double _alphaem = 1./137.;
+        double _alphaem = 1./137.036;
 
         double _fmToGeV = 5.068; //fm -> GeV^-1 (ħc = 0.1973 GeV fm)
 
