@@ -35,7 +35,7 @@ double userdata_value(void* userdata, int index)
 
 double safe_ratio(double numerator, double denominator)
 {
-    constexpr double kTolerance = 1e-15;
+    constexpr double kTolerance = 1e-60;
     if (std::abs(denominator) < kTolerance) {
         return 0.0;
     }
@@ -44,7 +44,7 @@ double safe_ratio(double numerator, double denominator)
 
 double safe_ratio_error(double numerator, double numerator_error, double denominator, double denominator_error)
 {
-    constexpr double kTolerance = 1e-15;
+    constexpr double kTolerance = 1e-60;
     if (std::abs(numerator) < kTolerance || std::abs(denominator) < kTolerance) {
         return 0.0;
     }
