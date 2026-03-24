@@ -4,7 +4,7 @@
 .DEFAULT_GOAL := sources
 
 OBJDIR = ../obj/
-MODULES := FragFunct COL photon_flux
+MODULES := FragFunct COL photon_flux PhysicsCalculator
 SOURCES := $(MODULES).cpp
 OBJS := $(OBJDIR)/$(MODULES).o
 
@@ -40,6 +40,11 @@ $(OBJDIR)photon_flux.o: photon_flux.h photon_flux.cpp
 	@mv photon_flux.o $(OBJDIR)
 	@echo "................photon_flux done.\n"
 
+$(OBJDIR)PhysicsCalculator.o: PhysicsCalculator.h PhysicsCalculator.cpp photon_flux.h | $(OBJDIR)
+	$(CXX) $(CXXFLAGS) PhysicsCalculator.cpp -c
+	@mv PhysicsCalculator.o $(OBJDIR)
+	@echo "................PhysicsCalculator done.\n"
+
 $(OBJDIR)COL.o: COL.h COL.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) COL.cpp -c
 	@mv COL.o $(OBJDIR)
@@ -51,3 +56,4 @@ sources:
 	$(MAKE) $(OBJDIR)FragFunct.o
 	$(MAKE) $(OBJDIR)COL.o
 	$(MAKE) $(OBJDIR)photon_flux.o
+	$(MAKE) $(OBJDIR)PhysicsCalculator.o

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -10,6 +11,7 @@
 
 #include "FragFunct.h"
 #include "COL.h"
+#include "PhysicsCalculator.h"
 #include <rapidcsv.h>
 #include "photon_flux.h"
 
@@ -264,404 +266,34 @@ std::vector<double> integration_point_to_vector(const int* ndim, const double x[
 
 
 
-class PhysicsCalculator
+void fill_azimuthal_results(const YStarYKinematics& kin, double norm, double results[])
 {
-private:
-    // Constants
-    static constexpr double alphaem = 1.0 / 137.036;
-    static double _thetac; // rad [value for FCC-ee]; search for adequate values for other colliders
-    static constexpr double me = 5.11e-4;    // in GeV
-    static constexpr double mmu = 1.056e-1;    // in GeV
-    static double _SqrtS;    // GeV [value for FCC-ee: 92.]
-    static double _S;
-    static constexpr double PI = 3.14159265358979323846;
-
-    // Variable extremes
-    // static constexpr double Q20 = 10.0; // GeV
-    // static constexpr double Q2M = S - 4 * Q20;
-    static double _Q20; // GeV
-    static double _Q2M;
-    static constexpr double csimax = 1.0;
-    static constexpr double ymax = 1.0;
-
-    // Cost factor
-    static constexpr double Cost = 3 * alphaem * alphaem * alphaem / (4 * PI);
-
-    // Member variables for current calculation
-    double xB, y, csi, Q2;//, SqrtS, Q20, Q2M, S, thetac;
-    double zeta, zetamin, zetamax;
-    double shat;
-    double Q2min, Q2max;
-    double fgl, DLfgl;
-
-
-public:
-
-    double SqrtS, S, Q20, Q2M, thetac;
-
-    // Constructor
-    PhysicsCalculator() : xB(0), y(0), csi(0), Q2(0), zeta(0), zetamin(0), zetamax(0), shat(0), Q2min(0), Q2max(0), fgl(0), DLfgl(0) {}
-
-    void set_SqrtS(double val){
-
-        SqrtS = val;
-        S = SqrtS * SqrtS;
-
-    }
-
-    void set_Q20(double val){
-
-        Q20 = val;
-        Q2M = S - 4 * Q20;
-
-    }
-
-    void setExperiment(double sqrts_val, double Q20_val, double thetac_val){
-
-        set_SqrtS(sqrts_val);
-        set_Q20(Q20_val);
-        thetac = thetac_val;
-
-    }
-
-    // Set variables
-    void setVariables(double xB_val, double y_val, double csi_val)
-    {
-        xB = xB_val;
-        y = y_val;
-        csi = csi_val;
-        Q2 = xB * y * S;
-
-        shat = (csi - xB) * y * S;
-
-        // Calculate zeta bounds
-        double sqrt_term = sqrt(1 - 4 * Q20 / shat);
-        zetamin = 0.5 * (1 - sqrt_term);
-        zetamax = 0.5 * (1 + sqrt_term);
-
-        // WW function parameters
-        Q2min = me * me * csi * csi / (1 - csi);
-        Q2max = (S / 4) * thetac * thetac * (1 - csi) + Q2min;
-
-        // Calculate WW functions
-        double log_ratio = log(Q2max / Q2min);
-        double me2_term = 2 * me * me * csi * (1.0 / Q2max - 1.0 / Q2min);
-
-        fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
-        DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
-
-        cout << "csi = " << csi << " \t" << fgl << "  " << flux -> eval(csi);
-        flux -> set_polarisation(-1);
-        cout << "\t" << DLfgl << "  " << flux -> eval(csi) << endl;
-        flux -> set_polarisation(1);
-    }
-    //qua iniziare a mettere le variabili per yy
-
-    void setVariablesWithQ2(double xB_val, double Q2_val, double csi_val)
-    {
-        xB = xB_val;
-        Q2 = Q2_val;
-        csi = csi_val;
-
-        y = Q2 / (xB * S);
-
-        shat = (csi - xB) * y * S;
-
-        double sqrt_term = sqrt(1 - 4 * Q20 / shat);
-        zetamin = 0.5 * (1 - sqrt_term);
-        zetamax = 0.5 * (1 + sqrt_term);
-
-        Q2min = me * me * csi * csi / (1 - csi);
-        Q2max = (S / 4) * thetac * thetac * (1 - csi) + Q2min;
-
-        double log_ratio = log(Q2max / Q2min);
-        double me2_term = 2 * me * me * csi * (1.0 / Q2max - 1.0 / Q2min);
-
-        fgl = (alphaem / (2 * PI)) * ((1 + (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
-        DLfgl = (alphaem / (2 * PI)) * ((1 - (1 - csi) * (1 - csi)) / csi * log_ratio + me2_term);
-
-        cout << "csi = " << csi << " \t" << fgl << "  " << flux -> eval(csi);
-        flux -> set_polarisation(-1);
-        cout << "\t" << DLfgl << "  " << flux -> eval(csi) << endl;
-        flux -> set_polarisation(1);
-    }
-
-    // Utility functions for variable bounds
-    double xBmin(double Q2_val) const
-    {
-        return Q2_val / S;
-    }
-
-    double xBmax(double Q2_val) const
-    {
-        return Q2_val / (Q2_val + 4 * Q20);
-    }
-
-    double csimin(double Q2_val) const
-    {
-        return xB * (1 + 4 * Q20 / Q2_val);
-    }
-    // csimax = 1
-
-    double ymin(double Q2_val) const
-    {
-        return xB * (1 + 4 * Q20 / Q2_val);
-    }
-    // ymax = 1
-
-    // K factors for different differentials
-    double Kxy() const
-    {
-        return 1.0 / (xB * y * y * csi * csi * csi * S);
-    }
-
-    double KQx() const
-    {
-        return 1.0 / (csi * csi * csi * Q2 * Q2);
-    }
-
-    double KQy() const
-    {
-        return 1.0 / (Q2 * y * y * csi * csi * csi);
-    }
-
-    // A coefficients // The extra 2 term is for the denominator in the azimuthal moments... 
-    double AU() const
-    {
-        double term1 = (1 + (1 - y) * (1 - y)) * (xB * xB + (csi - xB) * (csi - xB));
-        double term2 = (1 - 2 * zeta * (1 - zeta)) / (zeta * (1 - zeta));
-        double term3 = 16 * (1 - y) * xB * (csi - xB);
-        return 2 * (term1 * term2 + term3) * fgl;
-    }
-
-    double AUcfq() const
-    {
-        double term1 = -8 * (2 - y) * sqrt(1 - y) * (csi - 2 * xB);
-        double term2 = sqrt(xB * (csi - xB)) * (1 - 2 * zeta) / sqrt(zeta * (1 - zeta));
-        return term1 * term2 * fgl;
-    }
-
-    double AUc2fq() const
-    {
-        return 16 * (1 - y) * xB * (csi - xB) * fgl;
-    }
-
-    double AL() const
-    {
-        double term1 = -2 * y * (2 - y) * csi * (csi - 2 * xB);
-        double term2 = (1 - 2 * zeta * (1 - zeta)) / (zeta * (1 - zeta));
-        return term1 * term2 * DLfgl;
-    }
-
-    double ALcfq() const
-    {
-        double term1 = 8 * y * sqrt(1 - y) * csi * sqrt(xB * (csi - xB));
-        double term2 = (1 - 2 * zeta) / sqrt(zeta * (1 - zeta));
-        return term1 * term2 * DLfgl;
-    }
-
-    // B coefficients
-    double BUcf12() const
-    {
-        double term1 = (1 + (1 - y) * (1 - y)) * (xB * xB + (csi - xB) * (csi - xB));
-        double term2 = 8 * (1 - y) * xB * (csi - xB);
-        return (term1 - term2) * fgl;
-    }
-
-    double BUcfqmf12() const
-    {
-        double term1 = -2 * (2 - y) * sqrt(1 - y) * (csi - 2 * xB);
-        double term2 = sqrt(xB * (csi - xB)) * sqrt(zeta / (1 - zeta));
-        return term1 * term2 * fgl;
-    }
-
-    double BUcfqpf12() const
-    {
-        double term1 = 2 * (2 - y) * sqrt(1 - y) * (csi - 2 * xB);
-        double term2 = sqrt(xB * (csi - xB)) * sqrt((1 - zeta) / zeta);
-        return term1 * term2 * fgl;
-    }
-
-    double BUc2fqmf12() const
-    {
-        return 2 * (1 - y) * xB * (csi - xB) * zeta / (1 - zeta) * fgl;
-    }
-
-    double BUc2fqpf12() const
-    {
-        return 2 * (1 - y) * xB * (csi - xB) * (1 - zeta) / zeta * fgl;
-    }
-
-    double BLcf12() const
-    {
-        return -y * (2 - y) * csi * (csi - 2 * xB) * DLfgl;
-    }
-
-    double BLcfqmf12() const
-    {
-        double term1 = 2 * y * sqrt(1 - y) * csi * sqrt(xB * (csi - xB));
-        double term2 = sqrt(zeta / (1 - zeta));
-        return term1 * term2 * DLfgl;
-    }
-
-    double BLcfqpf12() const
-    {
-        double term1 = -2 * y * sqrt(1 - y) * csi * sqrt(xB * (csi - xB));
-        double term2 = sqrt((1 - zeta) / zeta);
-        return term1 * term2 * DLfgl;
-    }
-
-    // AU, AL, BU, BL coefficients integrated over the allowed zeta range
-    // Except for those that integrate to zero between zetamin and zetamax by symmetry, integrated only from zeta = 1/2 to zetamax
-    // therefore, one must remember that, consistently, they should be divided by AU/2
-    // Note: used 1 - zetamax = zetamin and vice versa
-    // Integrated coefficients over zeta range
-    double AUzi() const
-    {
-        double term1 = (1 + (1 - y) * (1 - y)) * (xB * xB + (csi - xB) * (csi - xB));
-        double term2 = -2 * (zetamax - zetamin) + 2 * log(zetamax / zetamin);
-        double term3 = 16 * (1 - y) * xB * (csi - xB) * (zetamax - zetamin);
-        return 2 * (term1 * term2 + term3) * fgl;
-    }
-
-    double AUcfqzi() const
-    {
-        double term1 = -8 * (2 - y) * sqrt(1 - y) * (csi - 2 * xB);
-        double term2 = sqrt(xB * (csi - xB)) * ( 2 * sqrt(zetamax * zetamin) - 1);
-        return term1 * term2 * fgl; // half-range
-    }
-
-    double AUc2fqzi() const
-    {
-        return 16 * (1 - y) * xB * (csi - xB) * (zetamax - zetamin) * fgl;
-    }
-
-    double ALzi() const
-    {
-        double term1 = -2 * y * (2 - y) * csi * (csi - 2 * xB);
-        double term2 = -2 * (zetamax - zetamin) + 2 * log(zetamax / zetamin);
-        return term1 * term2 * DLfgl;
-    }
-
-    double ALcfqzi() const
-    {
-        double term1 = 8 * y * sqrt(1 - y) * csi * sqrt(xB * (csi - xB));
-        double term2 = 2 * sqrt(zetamax * zetamin) - 1;
-        return term1 * term2 * DLfgl; // half-range
-    }
-
-    double BUcf12zi() const
-    {
-        double term1 = (1 + (1 - y) * (1 - y)) * (xB * xB + (csi - xB) * (csi - xB));
-        double term2 = 8 * (1 - y) * xB * (csi - xB);
-        return (term1 - term2) * (zetamax - zetamin) * fgl;
-    }
-
-    double BUcfqmf12zi() const
-    {
-        double term1 = -2 * (2 - y) * sqrt(1 - y) * (csi - 2 * xB) * sqrt(xB * (csi - xB));
-        double term2 = -atan(sqrt(zetamin / zetamax)) + atan(sqrt(zetamax / zetamin));
-        return term1 * term2 * fgl;
-    }
-
-    double BUcfqpf12zi() const
-    {
-        double term1 = 2 * (2 - y) * sqrt(1 - y) * (csi - 2 * xB) * sqrt(xB * (csi - xB));
-        double term2 = -atan(sqrt(zetamin / zetamax)) + atan(sqrt(zetamax / zetamin));
-        return term1 * term2 * fgl;
-    }
-
-    double BUc2fqmf12zi() const
-    {
-        double term1 = 2 * (1 - y) * xB * (csi - xB);
-        double term2 = -(zetamax - zetamin) + log(zetamax / zetamin);
-        return term1 * term2 * fgl;
-    }
-
-    double BUc2fqpf12zi() const
-    {
-        double term1 = 2 * (1 - y) * xB * (csi - xB);
-        double term2 = -(zetamax - zetamin) + log(zetamax / zetamin);
-        return term1 * term2 * fgl;
-    }
-
-    double BLcf12zi() const
-    {
-        return -y * (2 - y) * csi * (csi - 2 * xB) * (zetamax - zetamin) * DLfgl;
-    }
-
-    double BLcfqmf12zi() const
-    {
-        double term1 = 2 * y * sqrt(1 - y) * csi * sqrt(xB * (csi - xB));
-        double term2 = -atan(sqrt(zetamin / zetamax)) + atan(sqrt(zetamax / zetamin));
-        return term1 * term2 * DLfgl;
-    }
-
-    double BLcfqpf12zi() const
-    {
-        double term1 = -2 * y * sqrt(1 - y) * csi * sqrt(xB * (csi - xB));
-        double term2 = -atan(sqrt(zetamin / zetamax)) + atan(sqrt(zetamax / zetamin));
-        return term1 * term2 * DLfgl;
-    }
-
-    // Getter functions for the current variable values
-    double getXB() const { return xB; }
-    double getY() const { return y; }
-    double getCsi() const { return csi; }
-    double getQ2() const { return Q2; }
-    double getZetamin() const { return zetamin; }
-    double getZetamax() const { return zetamax; }
-    double getFgl() const { return fgl; }
-    double getDLfgl() const { return DLfgl; }
-
-};
-
-void fill_azimuthal_results(const PhysicsCalculator& pc, double norm, double results[])
-{
-    results[0]  = pc.AUzi() * norm;
-    results[1]  = pc.AUcfqzi() * norm;
-    results[2]  = pc.AUc2fqzi() * norm;
-    results[3]  = pc.ALzi() * norm;
-    results[4]  = pc.ALcfqzi() * norm;
-    results[5]  = pc.BUcf12zi() * norm;
-    results[6]  = pc.BUcfqmf12zi() * norm;
-    results[7]  = pc.BUcfqpf12zi() * norm;
-    results[8]  = pc.BUc2fqmf12zi() * norm;
-    results[9]  = pc.BUc2fqpf12zi() * norm;
-    results[10] = pc.BLcf12zi() * norm;
-    results[11] = pc.BLcfqmf12zi() * norm;
-    results[12] = pc.BLcfqpf12zi() * norm;
+    std::fill(results, results + kNumComponents, 0.0);
+    results[0]  = kin.AUzi * norm;
+    results[1]  = kin.AUcfqzi * norm;
+    results[2]  = kin.AUc2fqzi * norm;
+    results[3]  = kin.ALzi * norm;
+    results[4]  = kin.ALcfqzi * norm;
+    results[5]  = kin.BUcf12zi * norm;
+    results[6]  = kin.BUcfqmf12zi * norm;
+    results[7]  = kin.BUcfqpf12zi * norm;
+    results[8]  = kin.BUc2fqmf12zi * norm;
+    results[9]  = kin.BUc2fqpf12zi * norm;
+    results[10] = kin.BLcf12zi * norm;
+    results[11] = kin.BLcfqmf12zi * norm;
+    results[12] = kin.BLcfqpf12zi * norm;
 }
 
-// Cut function to check if the input values are within the allowed ranges
-bool cut(const PhysicsCalculator& pscut)
+bool cut(const YStarYKinematics& kin)
 {
-    double Q20 = pscut.Q20;
-    double Q2M = pscut.Q2M;
-
-    double xB = pscut.getXB();
-    double y = pscut.getY();
-    double csi = pscut.getCsi();
-    double Q2 = pscut.getQ2();
-
-    if (Q2 < Q20 || Q2 > Q2M)
-        return false;
-    if (xB < pscut.xBmin(Q2) || xB > pscut.xBmax(Q2))
-        return false;
-    if (csi < pscut.csimin(Q2) || csi > 1.0)
-        return false;
-    if (y < pscut.ymin(Q2) || y > 1.0)
-        return false;
-
-    return true;
+    return kin.valid;
 }
 
 // Example function to calculate azimuthal moments, not used in the main program
 void Values(const std::vector<double> &x, double results[])
 {
-    PhysicsCalculator pc;
-    pc.setVariables(x[0], x[1], x[2]);
-    const bool passes_cut = cut(pc);
+    const YStarYKinematics kin = PhysicsCalculator::computeYStarY(sqrts, Q20, thetac, x[0], x[1], x[2]);
+    const bool passes_cut = cut(kin);
 
     if (!passes_cut)
     {
@@ -675,7 +307,7 @@ void Values(const std::vector<double> &x, double results[])
     }
 
     if (passes_cut) {
-        fill_azimuthal_results(pc, 1.0, results);
+        fill_azimuthal_results(kin, 1.0, results);
     } 
     else
     {
@@ -684,9 +316,9 @@ void Values(const std::vector<double> &x, double results[])
 
     // Print the results for debugging
     std::cout << "Results of Azimuthal Moments Calculation:" << std::endl
-                << "xB: " << pc.getXB() << std::endl
-                << "y: " << pc.getY() << std::endl
-                << "csi: " << pc.getCsi() << std::endl
+                << "xB: " << kin.xB << std::endl
+                << "y: " << kin.y << std::endl
+                << "csi: " << kin.csi << std::endl
                 << "AUzi: " << results[0] << std::endl
                 << "AUcfqzi: " << results[1] << std::endl
                 << "AUc2fqzi: " << results[2] << std::endl
@@ -710,14 +342,11 @@ void ValuesfixedxB(const std::vector<double> &x, double results[], void *userdat
     const double thetac = userdata_value(userdata, kUserDataThetac);
     const double fixed_xB = userdata_value(userdata, kUserDataFixedValue);
 
-    PhysicsCalculator pc;
-    pc.setExperiment(sqrts, Q20, thetac);
+    const YStarYKinematics kin = PhysicsCalculator::computeYStarY(sqrts, Q20, thetac, fixed_xB, x[0], x[1]);
 
-    pc.setVariables(fixed_xB, x[0], x[1]);
-
-    if (cut(pc))
+    if (cut(kin))
     {
-        fill_azimuthal_results(pc, pc.Kxy(), results);
+        fill_azimuthal_results(kin, kin.Kxy, results);
     } 
     else
     {
@@ -732,13 +361,10 @@ void Valuesfixedy(const std::vector<double> &x, double results[], void *userdata
     const double thetac = userdata_value(userdata, kUserDataThetac);
     const double fixed_y = userdata_value(userdata, kUserDataFixedValue);
 
-    PhysicsCalculator pc;
-    pc.setExperiment(sqrts, Q20, thetac);
-
-    pc.setVariables(x[0], fixed_y, x[1]);
-    if (cut(pc))
+    const YStarYKinematics kin = PhysicsCalculator::computeYStarY(sqrts, Q20, thetac, x[0], fixed_y, x[1]);
+    if (cut(kin))
     {
-        fill_azimuthal_results(pc, pc.Kxy(), results);
+        fill_azimuthal_results(kin, kin.Kxy, results);
     } else
     {
         std::fill(results, results + kNumComponents, 0.0);
@@ -753,14 +379,11 @@ void ValuesfixedQ2(const std::vector<double> &x, double results[], void *userdat
     const double thetac = userdata_value(userdata, kUserDataThetac);
     const double fixed_Q2 = userdata_value(userdata, kUserDataFixedValue);
 
-    PhysicsCalculator pc;
-    pc.setExperiment(sqrts, Q20, thetac);
+    const YStarYKinematics kin = PhysicsCalculator::computeYStarYQ2(sqrts, Q20, thetac, x[0], fixed_Q2, x[1]);
 
-    pc.setVariablesWithQ2(x[0], fixed_Q2, x[1]);
-
-    if (cut(pc))
+    if (cut(kin))
     {
-        fill_azimuthal_results(pc, pc.KQx(), results);
+        fill_azimuthal_results(kin, kin.KQx, results);
     } 
     else
     {

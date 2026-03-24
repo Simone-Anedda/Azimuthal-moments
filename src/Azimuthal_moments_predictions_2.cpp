@@ -11,6 +11,7 @@
 
 #include "FragFunct.h"
 #include "COL.h"
+#include "PhysicsCalculator.h"
 #include "photon_flux.h"
 #include <rapidcsv.h>
 
@@ -224,64 +225,101 @@ void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
                        const std::vector<double>& FF_ppz2_in,
                        const std::vector<double>& FF_pmz1_in,
                        const std::vector<double>& FF_pmz2_in,
-                       double& numU,
-                       double& denU,
-                       double& numL,
-                       double& denL)
+                       double& Coll_piPpiM,
+                       double& Coll_piMpiP,
+                       double& Coll_piPpiP,
+                       double& Coll_piMpiM,
+                       double& Unp_piPpiM,
+                       double& Unp_piMpiP,
+                       double& Unp_piPpiP,
+                       double& Unp_piMpiM)
 {
-    numU = 0.0;
-    denU = 0.0;
-    numL = 0.0;
-    denL = 0.0;
+    Coll_piPpiM = 0.0;
+    Coll_piMpiP = 0.0;
+    Coll_piPpiP = 0.0;
+    Coll_piMpiM = 0.0;
+    Unp_piPpiM = 0.0;
+    Unp_piMpiP = 0.0;
+    Unp_piPpiP = 0.0;
+    Unp_piMpiM = 0.0;
+
 
     for (int i = 3; i <= 9; ++i) {
         if (i == 3) { // sb
-            numU += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i + 6] + COL_pmz1_in[i] * COL_ppz2_in[i + 6]);
-            denU += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i + 6] + FF_pmz1_in[i] * FF_ppz2_in[i + 6]);
-            numL += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i + 6] + COL_pmz1_in[i] * COL_pmz2_in[i + 6]);
-            denL += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i + 6] + FF_pmz1_in[i] * FF_pmz2_in[i + 6]);
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 6];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 6];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 6];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 6];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 6];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 6];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 6];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 6];
         }
 
         if (i == 4) { // ub
-            numU += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i + 4] + COL_pmz1_in[i] * COL_ppz2_in[i + 4]);
-            denU += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i + 4] + FF_pmz1_in[i] * FF_ppz2_in[i + 4]);
-            numL += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i + 4] + COL_pmz1_in[i] * COL_pmz2_in[i + 4]);
-            denL += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i + 4] + FF_pmz1_in[i] * FF_pmz2_in[i + 4]);
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 4];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 4];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 4];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 4];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 4];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 4];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 4];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 4];
         }
 
         if (i == 5) { // db
-            numU += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i + 2] + COL_pmz1_in[i] * COL_ppz2_in[i + 2]);
-            denU += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i + 2] + FF_pmz1_in[i] * FF_ppz2_in[i + 2]);
-            numL += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i + 2] + COL_pmz1_in[i] * COL_pmz2_in[i + 2]);
-            denL += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i + 2] + FF_pmz1_in[i] * FF_pmz2_in[i + 2]);
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 2];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 2];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 2];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 2];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 2];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 2];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 2];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 2];
         }
 
         if (i == 6) { // g
-            numU += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i] + COL_pmz1_in[i] * COL_ppz2_in[i]);
-            denU += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i] + FF_pmz1_in[i] * FF_ppz2_in[i]);
-            numL += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i] + COL_pmz1_in[i] * COL_pmz2_in[i]);
-            denL += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i] + FF_pmz1_in[i] * FF_pmz2_in[i]);
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i];
         }
 
         if (i == 7) { // d
-            numU += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i - 2] + COL_pmz1_in[i] * COL_ppz2_in[i - 2]);
-            denU += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i - 2] + FF_pmz1_in[i] * FF_ppz2_in[i - 2]);
-            numL += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i - 2] + COL_pmz1_in[i] * COL_pmz2_in[i - 2]);
-            denL += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i - 2] + FF_pmz1_in[i] * FF_pmz2_in[i - 2]);
+                        Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 2];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 2];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 2];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 2];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 2];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 2];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 2];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 2];
         }
 
         if (i == 8) { // u
-            numU += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i - 4] + COL_pmz1_in[i] * COL_ppz2_in[i - 4]);
-            denU += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i - 4] + FF_pmz1_in[i] * FF_ppz2_in[i - 4]);
-            numL += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i - 4] + COL_pmz1_in[i] * COL_pmz2_in[i - 4]);
-            denL += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i - 4] + FF_pmz1_in[i] * FF_pmz2_in[i - 4]);
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 4];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 4];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 4];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 4];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 4];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 4];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 4];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 4];
         }
 
         if (i == 9) { // s
-            numU += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i - 6] + COL_pmz1_in[i] * COL_ppz2_in[i - 6]);
-            denU += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_pmz2_in[i - 6] + FF_pmz1_in[i] * FF_ppz2_in[i - 6]);
-            numL += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_ppz2_in[i - 6] + COL_pmz1_in[i] * COL_pmz2_in[i - 6]);
-            denL += std::pow(charges[i], 4) * (FF_ppz1_in[i] * FF_ppz2_in[i - 6] + FF_pmz1_in[i] * FF_pmz2_in[i - 6]);
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 6];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 6];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 6];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 6];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 6];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 6];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 6];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 6];
         }
     }
 }
@@ -293,168 +331,19 @@ std::vector<double> integration_point_to_vector(const int* ndim, const double x[
 
 
 
-class PhysicsCalculator
-{
-private:
-    // static constexpr double alphaem = 1.0 / 137.036;
-    // static constexpr double me = 5.11e-4;
-    // static constexpr double PI = 3.14159265358979323846;
-
-    double etaq = 0.0;
-    double etaqbar = 0.0;
-    double kT = 0.0;
-    double csi1 = 0.0;
-    double csi2 = 0.0;
-    double Q2min_csi1 = 0.0;
-    double Q2max_csi1 = 0.0;
-    double Q2min_csi2 = 0.0;
-    double Q2max_csi2 = 0.0;
-    double fgl1 = 0.0;
-    double DLfgl1 = 0.0;
-    double fgl2 = 0.0;
-    double DLfgl2 = 0.0;
-    double jacob = 0.0;
-    bool valid_kinematics = false;
-
-public:
-    double SqrtS = 0.0;
-    double S = 0.0;
-    double kT0 = 0.0;
-    double kTM = 0.0;
-    double thetac = 0.0;
-
-    void set_SqrtS(double val)
-    {
-        SqrtS = val;
-        S = SqrtS * SqrtS;
-        kTM = SqrtS / 2.0;
-    }
-
-    void set_kT0(double val)
-    {
-        kT0 = val;
-    }
-
-    void setExperiment(double sqrts_val, double kT0_val, double thetac_val)
-    {
-        set_SqrtS(sqrts_val);
-        set_kT0(kT0_val);
-        thetac = thetac_val;
-    }
-
-    void setVariables(double x1_val, double x2_val, double kT_val)
-    {
-        valid_kinematics = false;
-        kT = kT_val;
-        jacob = 0.0;
-        if (SqrtS <= 0.0 || thetac <= 0.0 || kT <= 0.0 || kT < kT0 || kT >= kTM) {
-            return;
-        }
-
-        const double sqrt_arg = S / (kT * kT) - 4.0;
-        if (sqrt_arg <= 0.0) {
-            return;
-        }
-
-        const double sqrt_term = std::sqrt(sqrt_arg);
-        const double etaqmax = std::log(0.5 * (SqrtS / kT + sqrt_term));
-        const double etaqmin = std::log(0.5 * (SqrtS / kT - sqrt_term));
-        etaq = (etaqmax - etaqmin) * x1_val + etaqmin;
-
-        const double etaqbarmax_arg = SqrtS / kT - std::exp(etaq);
-        const double etaqbarmin_arg = SqrtS / kT - std::exp(-etaq);
-        if (etaqbarmax_arg <= 0.0 || etaqbarmin_arg <= 0.0) {
-            return;
-        }
-
-        const double etaqbarmax = std::log(etaqbarmax_arg);
-        const double etaqbarmin = -std::log(etaqbarmin_arg);
-        jacob = (etaqmax - etaqmin) * (etaqbarmax - etaqbarmin);
-        etaqbar = (etaqbarmax - etaqbarmin) * x2_val + etaqbarmin;
-
-        csi1 = (kT / SqrtS) * (std::exp(etaq) + std::exp(etaqbar));
-        csi2 = (kT / SqrtS) * (std::exp(-etaq) + std::exp(-etaqbar));
-        if (!(csi1 > 0.0 && csi1 < 1.0 && csi2 > 0.0 && csi2 < 1.0)) {
-            return;
-        }
-
-        // Q2min_csi1 = me * me * csi1 * csi1 / (1.0 - csi1);
-        // Q2max_csi1 = (S / 4.0) * thetac * thetac * (1.0 - csi1) + Q2min_csi1;
-        // Q2min_csi2 = me * me * csi2 * csi2 / (1.0 - csi2);
-        // Q2max_csi2 = (S / 4.0) * thetac * thetac * (1.0 - csi2) + Q2min_csi2;
-        // if (!(Q2min_csi1 > 0.0 && Q2max_csi1 > Q2min_csi1 &&
-        //       Q2min_csi2 > 0.0 && Q2max_csi2 > Q2min_csi2)) {
-        //     return;
-        // }
-
-        // const double log_ratio_csi1 = std::log(Q2max_csi1 / Q2min_csi1);
-        // const double me2_term_csi1 = 2.0 * me * me * csi1 * (1.0 / Q2max_csi1 - 1.0 / Q2min_csi1);
-        // const double log_ratio_csi2 = std::log(Q2max_csi2 / Q2min_csi2);
-        // const double me2_term_csi2 = 2.0 * me * me * csi2 * (1.0 / Q2max_csi2 - 1.0 / Q2min_csi2);
-
-        // fgl1 = (alphaem / (2.0 * PI)) * ((1.0 + (1.0 - csi1) * (1.0 - csi1)) / csi1 * log_ratio_csi1 + me2_term_csi1);
-        // DLfgl1 = (alphaem / (2.0 * PI)) * ((1.0 - (1.0 - csi1) * (1.0 - csi1)) / csi1 * log_ratio_csi1 +
-        //                                    2.0 * me * me * csi1 * csi1 * (1.0 / Q2max_csi1 - 1.0 / Q2min_csi1));
-        // fgl2 = (alphaem / (2.0 * PI)) * ((1.0 + (1.0 - csi2) * (1.0 - csi2)) / csi2 * log_ratio_csi2 + me2_term_csi2);
-        // DLfgl2 = (alphaem / (2.0 * PI)) * ((1.0 - (1.0 - csi2) * (1.0 - csi2)) / csi2 * log_ratio_csi2 +
-        //                                    2.0 * me * me * csi2 * csi2 * (1.0 / Q2max_csi2 - 1.0 / Q2min_csi2));
-
-        fgl1 = flux1 -> eval(csi1);
-        flux1 -> set_polarisation(-1);
-        DLfgl1 = flux1 -> eval(csi1);
-        flux1 -> set_polarisation(1);
-
-        if(flux2 != nullptr){
-        
-            fgl2 = flux2 -> eval(csi2);
-            flux2 -> set_polarisation(-1);
-            DLfgl1 = flux2 -> eval(csi2);
-            flux2 -> set_polarisation(1);
-        }
-        else{
-
-            fgl2 = flux1 -> eval(csi2);
-            flux1 -> set_polarisation(-1);
-            DLfgl2 = flux1 -> eval(csi2);
-            flux1 -> set_polarisation(1);
-        }
-
-        valid_kinematics = std::isfinite(fgl1) && std::isfinite(DLfgl1) &&
-                           std::isfinite(fgl2) && std::isfinite(DLfgl2);
-    }
-
-    bool isValid() const { return valid_kinematics; }
-    double K() const { return valid_kinematics ? 1.0 / (S * kT * kT * (1.0 + std::cosh(etaq - etaqbar))) : 0.0; }
-    double AU() const { return valid_kinematics ? std::cosh(etaq - etaqbar) * fgl1 * fgl2 : 0.0; }
-    double BU() const { return valid_kinematics ? fgl1 * fgl2 / 4.0 : 0.0; }
-    double AL() const { return valid_kinematics ? std::cosh(etaq - etaqbar) * DLfgl1 * DLfgl2 : 0.0; }
-    double BL() const { return valid_kinematics ? DLfgl1 * DLfgl2 / 4.0 : 0.0; }
-
-    double getEtaq() const { return etaq; }
-    double getetaqbar() const { return etaqbar; }
-    double getKT() const { return kT; }
-    double getCsi1() const { return csi1; }
-    double getCsi2() const { return csi2; }
-    double getQ2minCsi1() const { return Q2min_csi1; }
-    double getQ2maxCsi1() const { return Q2max_csi1; }
-    double getQ2minCsi2() const { return Q2min_csi2; }
-    double getQ2maxCsi2() const { return Q2max_csi2; }
-    double getJacob() const { return jacob; }
-};
-
-void fill_azimuthal_results(const PhysicsCalculator& pc, double norm, double results[])
+void fill_azimuthal_results(const YYKinematics& kin, double norm, double results[])
 {
     std::fill(results, results + kNumComponents, 0.0);
-    const double total_norm = norm * pc.getJacob();
-    results[0]  = pc.AU() * total_norm;
-    results[1]  = pc.BU() * total_norm;
-    results[2]  = pc.AL() * total_norm;
-    results[3]  = pc.BL() * total_norm;
+    const double total_norm = norm * kin.jacob;
+    results[0]  = kin.AU * total_norm;
+    results[1]  = kin.BU * total_norm;
+    results[2]  = kin.AL * total_norm;
+    results[3]  = kin.BL * total_norm;
 }
 
-bool cut(const PhysicsCalculator& pscut)
+bool cut(const YYKinematics& kin)
 {
-    return pscut.isValid();
+    return kin.valid;
 }
 
 void Values(const std::vector<double> &x, double results[])
@@ -464,12 +353,10 @@ void Values(const std::vector<double> &x, double results[])
         return;
     }
 
-    PhysicsCalculator pc;
-    pc.setExperiment(sqrts, Q20, thetac);
-    pc.setVariables(x[0], x[1], x[2]);
+    const YYKinematics kin = PhysicsCalculator::computeYY(sqrts, Q20, thetac, x[0], x[1], x[2], *flux1, flux2);
 
-    if (cut(pc)) {
-        fill_azimuthal_results(pc, 1.0, results);
+    if (cut(kin)) {
+        fill_azimuthal_results(kin, 1.0, results);
     }
 }
 
@@ -482,14 +369,11 @@ void ValuesfixedkT(const std::vector<double> &x, double results[], void *userdat
     const double thetac = userdata_value(userdata, kUserDataThetac);
     const double fixed_kT = userdata_value(userdata, kUserDataFixedValue);
 
-    PhysicsCalculator pc;
-    pc.setExperiment(sqrts, kT0, thetac);
+    const YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, thetac, x[0], x[1], fixed_kT, *flux1, flux2);
 
-    pc.setVariables(x[0], x[1], fixed_kT);
-
-    if (cut(pc))
+    if (cut(kin))
     {
-        fill_azimuthal_results(pc, pc.K(), results);
+        fill_azimuthal_results(kin, kin.K, results);
     } 
     else
     {
@@ -515,21 +399,30 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 #define f1 ff[1]
 #define f2 ff[2]
 #define f3 ff[3]
+#define f4 ff[4]
+#define f5 ff[5]
+#define f6 ff[6]
+#define f7 ff[7]
 
     std::fill(ff, ff + kNumComponents, 0.0);
 
-    const double hard_scale = userdata_value(userdata, kUserDataFixedValue);
-    const double hard_scale_sq = hard_scale * hard_scale;
-    const double z1_min = userdata_value(userdata, kUserDataZ1Min);
-    const double z1_max = userdata_value(userdata, kUserDataZ1Max);
-    const double z2 = userdata_value(userdata, kUserDataZ2);
+    double hard_scale = userdata_value(userdata, kUserDataFixedValue);
+    double hard_scale_sq = hard_scale * hard_scale;
+    double z1_min = userdata_value(userdata, kUserDataZ1Min);
+    double z1_max = userdata_value(userdata, kUserDataZ1Max);
+    double z2 = userdata_value(userdata, kUserDataZ2);
 
-    const double z1 = z1_min + x[0] * (z1_max - z1_min);
+    double z1 = z1_min + x[0] * (z1_max - z1_min);
     double evolved_collins[13];
-    double numU = 0.0;
-    double denU = 0.0;
-    double numL = 0.0;
-    double denL = 0.0;
+    double Coll_piPpiM = 0.0;
+    double Coll_piMpiP = 0.0;
+    double Coll_piPpiP = 0.0;
+    double Coll_piMpiM = 0.0;
+    double Unp_piPpiM = 0.0;
+    double Unp_piMpiP = 0.0;
+    double Unp_piPpiP = 0.0;
+    double Unp_piMpiM = 0.0;
+
 
     Collins_FF(kPionHadron, z1, z2, hard_scale_sq);
 
@@ -562,12 +455,17 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
     }
 
     Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2,
-                      numU, denU, numL, denL);
+                      Coll_piPpiM, Coll_piMpiP, Coll_piPpiP, Coll_piMpiM,
+                      Unp_piPpiM, Unp_piMpiP, Unp_piPpiP, Unp_piMpiM);
 
-    f0 = denU;
-    f1 = numU;
-    f2 = denL;
-    f3 = numL;
+    f0 = Coll_piPpiM;
+    f1 = Coll_piMpiP;
+    f2 = Coll_piPpiP;
+    f3 = Coll_piMpiM;
+    f4 = Unp_piPpiM;
+    f5 = Unp_piMpiP;
+    f6 = Unp_piPpiP;
+    f7 = Unp_piMpiM;
 
     return 0;
 
@@ -577,6 +475,10 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 #undef f1
 #undef f2
 #undef f3
+#undef f4
+#undef f5
+#undef f6
+#undef f7
 
 
 
@@ -651,19 +553,19 @@ int main(int argc, char *argv[])
 
     if (EPA1name == EPA2name){
 
-        cout<<"Set EPA flux for " << EPA1name << endl;
+        cout << "Set EPA flux for " << EPA1name << endl;
         delete flux2;
         flux2 = nullptr;
     }
     else{
 
         cout<<"Setting EPA fluxes for " << EPA1name << " and " << EPA2name << endl;
-        flux2->set_source(EPA2name);
+        flux2 -> set_source(EPA2name);
         flux2 -> set_thetac(thetac);
         flux2 -> set_s(sqrts * sqrts);
     }
 
-    int ndim = 2, ncomp = kNumComponents, nvec = 1, verbose = 0, last = 4, key = 13;
+    int ndim = 2, ndimColl=1, ncomp = kNumComponents, ncompColl = 8, nvec = 1, verbose = 0, last = 4, key = 13;
     double epsrel = 1e-6, epsabs = 1e-12;
     int flags = 2, seed = 0, mineval = 0, nincrease = 0, nbatch = 1000, gridno = 0;
     char statefile[64] = "";
@@ -678,6 +580,18 @@ int main(int argc, char *argv[])
     std::ofstream outFile_sep("Fixed_kT_" + LHAPDF::to_str(fixed_kT) + "_Vs_" + LHAPDF::to_str(sqrts) +
                               "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
                               LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_separated.txt");
+    std::ofstream outFile_piPpiM("Fixed_kT_" + LHAPDF::to_str(fixed_kT) + "_Vs_" + LHAPDF::to_str(sqrts) + 
+                                "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
+                                LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_piPpiM.txt");
+    std::ofstream outFile_piMpiP("Fixed_kT_" + LHAPDF::to_str(fixed_kT) + "_Vs_" + LHAPDF::to_str(sqrts) + 
+                                "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
+                                LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_piMpiP.txt");
+    std::ofstream outFile_piPpiP("Fixed_kT_" + LHAPDF::to_str(fixed_kT) + "_Vs_" + LHAPDF::to_str(sqrts) + 
+                                "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
+                                LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_piPpiP.txt");
+    std::ofstream outFile_piMpiM("Fixed_kT_" + LHAPDF::to_str(fixed_kT) + "_Vs_" + LHAPDF::to_str(sqrts) + 
+                                "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
+                                LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_piMpiM.txt");
 
     outFile_UL << "z2"
                << ",AL_over_AU" << ",err_AL_over_AU"
@@ -723,7 +637,7 @@ int main(int argc, char *argv[])
         col.nstart  = nstart;
 
         auto t0 = std::chrono::high_resolution_clock::now();
-        Cuhre(ndim, ncomp, integrand_Collins, USERDATA, nvec,
+        Cuhre(ndimColl, ncompColl, integrand_Collins, USERDATA, nvec,
               epsrel, epsabs, verbose | last,
               mineval, maxeval, key,
               statefile, spin,
@@ -732,10 +646,16 @@ int main(int argc, char *argv[])
         auto t1 = std::chrono::high_resolution_clock::now();
         col.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
 
-        const double ratio_U = safe_ratio(col.integral[1], col.integral[0]);
-        const double ratio_L = safe_ratio(col.integral[3], col.integral[2]);
+        double numU = col.integral[0] + col.integral[1];
+        double numL = col.integral[2] + col.integral[3];
+        double denU = col.integral[4] + col.integral[5];
+        double denL = col.integral[6] + col.integral[7];
+        
+
+        const double ratio_U = safe_ratio( numU, denU );
+        const double ratio_L = safe_ratio( numL, denL );
         const double ratio_UL = ratio_U - ratio_L;
-        const double ratio_UC = ratio_U - safe_ratio(col.integral[1] + col.integral[3], col.integral[0] + col.integral[2]);
+        const double ratio_UC = ratio_U - safe_ratio( numU + numL, denU + denL );
 
         std::cout << "Collins ratios: UL = " << ratio_UL
                   << "  UC = " << ratio_UC
@@ -759,22 +679,22 @@ int main(int argc, char *argv[])
         auto t3 = std::chrono::high_resolution_clock::now();
         res.elapsed_seconds = std::chrono::duration<double>(t3 - t2).count();
 
-        const double al_over_au = safe_ratio(res.integral[2], res.integral[0]);
-        const double al_over_au_error = safe_ratio_error(res.integral[2], res.error[2], res.integral[0], res.error[0]);
-        const double bu_over_au = safe_ratio(res.integral[1], res.integral[0]);
-        const double bu_over_au_error = safe_ratio_error(res.integral[1], res.error[1], res.integral[0], res.error[0]);
-        const double bl_over_au = safe_ratio(res.integral[3], res.integral[0]);
-        const double bl_over_au_error = safe_ratio_error(res.integral[3], res.error[3], res.integral[0], res.error[0]);
+        const double AL_over_AU = safe_ratio(res.integral[2], res.integral[0]);
+        const double AL_over_AU_error = safe_ratio_error(res.integral[2], res.error[2], res.integral[0], res.error[0]);
+        const double BU_over_AU = safe_ratio(res.integral[1], res.integral[0]);
+        const double BU_over_AU_error = safe_ratio_error(res.integral[1], res.error[1], res.integral[0], res.error[0]);
+        const double BL_over_AU = safe_ratio(res.integral[3], res.integral[0]);
+        const double BL_over_AU_error = safe_ratio_error(res.integral[3], res.error[3], res.integral[0], res.error[0]);
 
-        const double scale_ul = prefact * ratio_UL;
-        const double scale_uc = prefact * ratio_UC;
-        const double scale_u = prefact * ratio_U;
-        const double scale_l = prefact * ratio_L;
+        const double scale_UL = prefact * ratio_UL;
+        const double scale_UC = prefact * ratio_UC;
+        const double scale_U = prefact * ratio_U;
+        const double scale_L = prefact * ratio_L;
 
         outFile_UL << "," << z2_value
-                   << "," << al_over_au << "," << al_over_au_error
-                   << "," << bu_over_au * scale_ul << "," << bu_over_au_error * std::abs(scale_ul)
-                   << "," << bl_over_au * scale_ul << "," << bl_over_au_error * std::abs(scale_ul)
+                   << "," << AL_over_AU << "," << AL_over_AU_error
+                   << "," << BU_over_AU * scale_UL << "," << BU_over_AU_error * std::abs(scale_UL)
+                   << "," << BL_over_AU * scale_UL << "," << BL_over_AU_error * std::abs(scale_UL)
                    << "," << res.integral[0] << "," << res.error[0]
                    << "," << res.integral[1] << "," << res.error[1]
                    << "," << res.integral[2] << "," << res.error[2]
@@ -784,9 +704,9 @@ int main(int argc, char *argv[])
                    << std::endl;
 
         outFile_UC << "," << z2_value
-                   << "," << al_over_au << "," << al_over_au_error
-                   << "," << bu_over_au * scale_uc << "," << bu_over_au_error * std::abs(scale_uc)
-                   << "," << bl_over_au * scale_uc << "," << bl_over_au_error * std::abs(scale_uc)
+                   << "," << AL_over_AU << "," << AL_over_AU_error
+                   << "," << BU_over_AU * scale_UC << "," << BU_over_AU_error * std::abs(scale_UC)
+                   << "," << BL_over_AU * scale_UC << "," << BL_over_AU_error * std::abs(scale_UC)
                    << "," << res.integral[0] << "," << res.error[0]
                    << "," << res.integral[1] << "," << res.error[1]
                    << "," << res.integral[2] << "," << res.error[2]
@@ -796,11 +716,11 @@ int main(int argc, char *argv[])
                    << std::endl;
 
         outFile_sep << "," << z2_value
-                    << "," << al_over_au << "," << al_over_au_error
-                    << "," << bu_over_au * scale_u << "," << bu_over_au_error * std::abs(scale_u)
-                    << "," << bu_over_au * scale_l << "," << bu_over_au_error * std::abs(scale_l)
-                    << "," << bl_over_au * scale_u << "," << bl_over_au_error * std::abs(scale_u)
-                    << "," << bl_over_au * scale_l << "," << bl_over_au_error * std::abs(scale_l)
+                    << "," << AL_over_AU << "," << AL_over_AU_error
+                    << "," << BU_over_AU * scale_U << "," << BU_over_AU_error * std::abs(scale_U)
+                    << "," << BU_over_AU * scale_L << "," << BU_over_AU_error * std::abs(scale_L)
+                    << "," << BL_over_AU * scale_U << "," << BL_over_AU_error * std::abs(scale_U)
+                    << "," << BL_over_AU * scale_L << "," << BL_over_AU_error * std::abs(scale_L)
                     << "," << ratio_U << "," << ratio_L
                     << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
                     << std::endl;
