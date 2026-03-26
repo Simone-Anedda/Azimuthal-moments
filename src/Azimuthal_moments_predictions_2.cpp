@@ -64,21 +64,19 @@ std::vector<double> FF(13), FF_ppz1(13), FF_ppz2(13), FF_pmz1(13), FF_pmz2(13),\
     FF_ppz1_fixedQ2(13), FF_ppz2_fixedQ2(13), FF_pmz1_fixedQ2(13), FF_pmz2_fixedQ2(13),\
     FF_evo(13);
 
-double f[13]; //for HOPPET and transversity
+double f[13], h1[13]; //for HOPPET and transversity
 
 const double charges[13] = {-2./3., 1./3., -2./3., 1./3., -2./3., 1./3., 0, -1./3., 2./3., -1./3., 2./3., -1./3., 2./3.};
 
-double  numFact = 0.0, denFact = 0.0,\
-        sqrts = 0.0, thetac = 0.0, Q20 = 0.0,\
+double  sqrts = 0.0, thetac = 0.0, Q20 = 0.0,\
         z1 = 0.0, z2 = 0.0, pperp2 = 0.12;
-
+double     Coll_piPpiM = 0.0, Coll_piMpiP = 0.0, Coll_piPpiP = 0.0, Coll_piMpiM = 0.0;
+double     Unp_piPpiM = 0.0, Unp_piMpiP = 0.0, Unp_piPpiP = 0.0, Unp_piMpiM = 0.0;
 double MC2 = pars.back();
 double pperp2Col = MC2 * pperp2 / (MC2 + pperp2);
 double prefact = (pi * EulerConst / 2) * (pow(pperp2Col, 3) / (pperp2 * pperp2 * MC2));
 
-constexpr int kPionHadron = 1;
-constexpr int kPositiveCharge = 1;
-constexpr int kNegativeCharge = -1;
+int charge = 1, hadron = 1;
 
 FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
@@ -201,18 +199,20 @@ std::pair<double, double> calculateDiscreteInterval(
 
 
 
-void Collins_FF(const int hadron, const double z1, const double z2, const double hard_scale_sq)
+void Collins_FF( int & hadron, int & charge , double & z1, double & z2, double & hard_scale_sq)
 {
-    myFF.FF_eval(hadron, kPositiveCharge, z1, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
     for (int i = 0; i < FF_ppz1.size(); ++i) FF_ppz1[i] = myFF.theFF[i] / z1;
 
-    myFF.FF_eval(hadron, kPositiveCharge, z2, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z2, hard_scale_sq);
     for (int i = 0; i < FF_ppz2.size(); ++i) FF_ppz2[i] = myFF.theFF[i] / z2;
+    
+    charge *= -1; //to call pi- FFs
 
-    myFF.FF_eval(hadron, kNegativeCharge, z1, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
     for (int i = 0; i < FF_pmz1.size(); ++i) FF_pmz1[i] = myFF.theFF[i] / z1;
 
-    myFF.FF_eval(hadron, kNegativeCharge, z2, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z2, hard_scale_sq);
     for (int i = 0; i < FF_pmz2.size(); ++i) FF_pmz2[i] = myFF.theFF[i] / z2;
 }
 
@@ -224,26 +224,8 @@ void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
                        const std::vector<double>& FF_ppz1_in,
                        const std::vector<double>& FF_ppz2_in,
                        const std::vector<double>& FF_pmz1_in,
-                       const std::vector<double>& FF_pmz2_in,
-                       double& Coll_piPpiM,
-                       double& Coll_piMpiP,
-                       double& Coll_piPpiP,
-                       double& Coll_piMpiM,
-                       double& Unp_piPpiM,
-                       double& Unp_piMpiP,
-                       double& Unp_piPpiP,
-                       double& Unp_piMpiM)
+                       const std::vector<double>& FF_pmz2_in)
 {
-    Coll_piPpiM = 0.0;
-    Coll_piMpiP = 0.0;
-    Coll_piPpiP = 0.0;
-    Coll_piMpiM = 0.0;
-    Unp_piPpiM = 0.0;
-    Unp_piMpiP = 0.0;
-    Unp_piPpiP = 0.0;
-    Unp_piMpiM = 0.0;
-
-
     for (int i = 3; i <= 9; ++i) {
         if (i == 3) { // sb
             Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 6];
@@ -404,7 +386,6 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 #define f6 ff[6]
 #define f7 ff[7]
 
-    std::fill(ff, ff + kNumComponents, 0.0);
 
     double hard_scale = userdata_value(userdata, kUserDataFixedValue);
     double hard_scale_sq = hard_scale * hard_scale;
@@ -413,50 +394,41 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
     double z2 = userdata_value(userdata, kUserDataZ2);
 
     double z1 = z1_min + x[0] * (z1_max - z1_min);
-    double evolved_collins[13];
-    double Coll_piPpiM = 0.0;
-    double Coll_piMpiP = 0.0;
-    double Coll_piPpiP = 0.0;
-    double Coll_piMpiM = 0.0;
-    double Unp_piPpiM = 0.0;
-    double Unp_piMpiP = 0.0;
-    double Unp_piPpiP = 0.0;
-    double Unp_piMpiM = 0.0;
+    double f[13];
 
-
-    Collins_FF(kPionHadron, z1, z2, hard_scale_sq);
+    Collins_FF(hadron, charge, z1, z2, hard_scale_sq);
 
     if (myCol.evo == "DGLAP" || myCol.evo == "none") {
-        myCol.eval(z1, hard_scale_sq, kPositiveCharge, FF_ppz1, pars);
+        myCol.eval(z1, hard_scale_sq, charge, FF_ppz1, pars);
         for (int i = 0; i < COL_ppz1.size(); ++i) COL_ppz1[i] = myCol.COL_z[i];
 
-        myCol.eval(z2, hard_scale_sq, kPositiveCharge, FF_ppz2, pars);
+        myCol.eval(z2, hard_scale_sq, charge, FF_ppz2, pars);
         for (int i = 0; i < COL_ppz2.size(); ++i) COL_ppz2[i] = myCol.COL_z[i];
 
-        myCol.eval(z1, hard_scale_sq, kNegativeCharge, FF_pmz1, pars);
+        charge *= -1; //to call pi- Collins
+
+        myCol.eval(z1, hard_scale_sq, charge, FF_pmz1, pars);
         for (int i = 0; i < COL_pmz1.size(); ++i) COL_pmz1[i] = myCol.COL_z[i];
 
-        myCol.eval(z2, hard_scale_sq, kNegativeCharge, FF_pmz2, pars);
+        myCol.eval(z2, hard_scale_sq, charge, FF_pmz2, pars);
         for (int i = 0; i < COL_pmz2.size(); ++i) COL_pmz2[i] = myCol.COL_z[i];
     }
 
     if (myCol.evo == "CT3") {
-        hoppetEvalcf(z1, hard_scale, evolved_collins);
-        for (int i = 0; i < COL_ppz1.size(); ++i) COL_ppz1[i] = evolved_collins[i] / z1;
+        hoppetEvalcf(z1, hard_scale, f);
+        for (int i = 0; i < COL_ppz1.size(); ++i) COL_ppz1[i] = f[i] / z1;
 
-        hoppetEvalcf(z2, hard_scale, evolved_collins);
-        for (int i = 0; i < COL_ppz2.size(); ++i) COL_ppz2[i] = evolved_collins[i] / z2;
+        hoppetEvalcf(z2, hard_scale, f);
+        for (int i = 0; i < COL_ppz2.size(); ++i) COL_ppz2[i] = f[i] / z2;
 
-        hoppetEvalcff(z1, hard_scale, evolved_collins);
-        for (int i = 0; i < COL_pmz1.size(); ++i) COL_pmz1[i] = evolved_collins[i] / z1;
+        hoppetEvalcff(z1, hard_scale, f);
+        for (int i = 0; i < COL_pmz1.size(); ++i) COL_pmz1[i] = f[i] / z1;
 
-        hoppetEvalcff(z2, hard_scale, evolved_collins);
-        for (int i = 0; i < COL_pmz2.size(); ++i) COL_pmz2[i] = evolved_collins[i] / z2;
+        hoppetEvalcff(z2, hard_scale, f );
+        for (int i = 0; i < COL_pmz2.size(); ++i) COL_pmz2[i] = f[i] / z2;
     }
 
-    Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2,
-                      Coll_piPpiM, Coll_piMpiP, Coll_piPpiP, Coll_piMpiM,
-                      Unp_piPpiM, Unp_piMpiP, Unp_piPpiP, Unp_piMpiM);
+    Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2);
 
     f0 = Coll_piPpiM;
     f1 = Coll_piMpiP;
@@ -471,14 +443,6 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 
 }
 
-#undef f0
-#undef f1
-#undef f2
-#undef f3
-#undef f4
-#undef f5
-#undef f6
-#undef f7
 
 
 
