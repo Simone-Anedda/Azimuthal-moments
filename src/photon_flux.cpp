@@ -82,10 +82,11 @@ namespace EPA
         {
             if (Q2min(x) < Q2max(x))
             {
+                double pol_factor = (_pol == -1) ? x : 1.0;
 
                 flux = _alphaem / (2. * _pi) *
                        ((1. + _pol * (1. - x) * (1. - x)) / x * log(Q2max(x) / Q2min(x)) +
-                        2. * x * _ml * _ml * (1. / Q2max(x) - 1 / Q2min(x)));
+                        2. * x * pol_factor * _ml * _ml * (1. / Q2max(x) - 1 / Q2min(x)));
             }
 
             else
