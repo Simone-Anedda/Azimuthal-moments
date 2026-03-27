@@ -67,15 +67,16 @@ std::vector<double> FF(13), FF_ppz1(13), FF_ppz2(13), FF_pmz1(13), FF_pmz2(13),\
 double f[13], h1[13]; //for HOPPET and transversity
 
 const double charges[13] = {-2./3., 1./3., -2./3., 1./3., -2./3., 1./3., 0, -1./3., 2./3., -1./3., 2./3., -1./3., 2./3.};
-constexpr int kPionHadron = 1;
-constexpr int kPositiveCharge = 1;
-constexpr int kNegativeCharge = -1;
 
 double  sqrts = 0.0, thetac = 0.0, Q20 = 0.0,\
         z1 = 0.0, z2 = 0.0, pperp2 = 0.12;
+double     Coll_piPpiM = 0.0, Coll_piMpiP = 0.0, Coll_piPpiP = 0.0, Coll_piMpiM = 0.0;
+double     Unp_piPpiM = 0.0, Unp_piMpiP = 0.0, Unp_piPpiP = 0.0, Unp_piMpiM = 0.0;
 double MC2 = pars.back();
 double pperp2Col = MC2 * pperp2 / (MC2 + pperp2);
 double prefact = (pi * EulerConst / 2) * (pow(pperp2Col, 3) / (pperp2 * pperp2 * MC2));
+
+int charge = 1, hadron = 1;
 
 FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
@@ -198,125 +199,111 @@ std::pair<double, double> calculateDiscreteInterval(
 
 
 
-struct CollinsChannelSums
+void Collins_FF( int & hadron, int & charge , double & z1, double & z2, double & hard_scale_sq)
 {
-    double Coll_piPpiM = 0.0;
-    double Coll_piMpiP = 0.0;
-    double Coll_piPpiP = 0.0;
-    double Coll_piMpiM = 0.0;
-    double Unp_piPpiM = 0.0;
-    double Unp_piMpiP = 0.0;
-    double Unp_piPpiP = 0.0;
-    double Unp_piMpiM = 0.0;
-};
-
-void Collins_FF(const int hadron, const double z1, const double z2, const double hard_scale_sq)
-{
-    myFF.FF_eval(hadron, kPositiveCharge, z1, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
     for (int i = 0; i < FF_ppz1.size(); ++i) FF_ppz1[i] = myFF.theFF[i] / z1;
 
-    myFF.FF_eval(hadron, kPositiveCharge, z2, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z2, hard_scale_sq);
     for (int i = 0; i < FF_ppz2.size(); ++i) FF_ppz2[i] = myFF.theFF[i] / z2;
 
-    myFF.FF_eval(hadron, kNegativeCharge, z1, hard_scale_sq);
+    charge *= -1; //to call pi- FFs
+
+    myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
     for (int i = 0; i < FF_pmz1.size(); ++i) FF_pmz1[i] = myFF.theFF[i] / z1;
 
-    myFF.FF_eval(hadron, kNegativeCharge, z2, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z2, hard_scale_sq);
     for (int i = 0; i < FF_pmz2.size(); ++i) FF_pmz2[i] = myFF.theFF[i] / z2;
 }
 
 
-CollinsChannelSums Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
-                                     const std::vector<double>& COL_ppz2_in,
-                                     const std::vector<double>& COL_pmz1_in,
-                                     const std::vector<double>& COL_pmz2_in,
-                                     const std::vector<double>& FF_ppz1_in,
-                                     const std::vector<double>& FF_ppz2_in,
-                                     const std::vector<double>& FF_pmz1_in,
-                                     const std::vector<double>& FF_pmz2_in)
+void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
+                       const std::vector<double>& COL_ppz2_in,
+                       const std::vector<double>& COL_pmz1_in,
+                       const std::vector<double>& COL_pmz2_in,
+                       const std::vector<double>& FF_ppz1_in,
+                       const std::vector<double>& FF_ppz2_in,
+                       const std::vector<double>& FF_pmz1_in,
+                       const std::vector<double>& FF_pmz2_in)
 {
-    CollinsChannelSums sums;
-
     for (int i = 3; i <= 9; ++i) {
         if (i == 3) { // sb
-            sums.Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 6];
-            sums.Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 6];
-            sums.Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 6];
-            sums.Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 6];
-            sums.Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 6];
-            sums.Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 6];
-            sums.Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 6];
-            sums.Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 6];
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 6];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 6];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 6];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 6];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 6];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 6];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 6];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 6];
         }
 
         if (i == 4) { // ub
-            sums.Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 4];
-            sums.Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 4];
-            sums.Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 4];
-            sums.Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 4];
-            sums.Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 4];
-            sums.Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 4];
-            sums.Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 4];
-            sums.Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 4];
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 4];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 4];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 4];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 4];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 4];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 4];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 4];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 4];
         }
 
         if (i == 5) { // db
-            sums.Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 2];
-            sums.Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 2];
-            sums.Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 2];
-            sums.Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 2];
-            sums.Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 2];
-            sums.Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 2];
-            sums.Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 2];
-            sums.Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 2];
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 2];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i + 2];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i + 2];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i + 2];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i + 2];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i + 2];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i + 2];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i + 2];
         }
 
         if (i == 6) { // g
-            sums.Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i];
-            sums.Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i];
-            sums.Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i];
-            sums.Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i];
-            sums.Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i];
-            sums.Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i];
-            sums.Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i];
-            sums.Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i];
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i];
         }
 
         if (i == 7) { // d
-            sums.Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 2];
-            sums.Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 2];
-            sums.Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 2];
-            sums.Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 2];
-            sums.Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 2];
-            sums.Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 2];
-            sums.Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 2];
-            sums.Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 2];
+                        Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 2];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 2];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 2];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 2];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 2];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 2];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 2];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 2];
         }
 
         if (i == 8) { // u
-            sums.Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 4];
-            sums.Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 4];
-            sums.Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 4];
-            sums.Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 4];
-            sums.Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 4];
-            sums.Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 4];
-            sums.Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 4];
-            sums.Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 4];
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 4];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 4];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 4];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 4];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 4];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 4];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 4];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 4];
         }
 
         if (i == 9) { // s
-            sums.Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 6];
-            sums.Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 6];
-            sums.Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 6];
-            sums.Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 6];
-            sums.Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 6];
-            sums.Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 6];
-            sums.Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 6];
-            sums.Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 6];
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 6];
+            Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 6];
+            Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 6];
+            Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 6];
+            Unp_piPpiM += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_pmz2_in[i - 6];
+            Unp_piMpiP += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_ppz2_in[i - 6];
+            Unp_piPpiP += std::pow(charges[i], 4) * FF_ppz1_in[i] * FF_ppz2_in[i - 6];
+            Unp_piMpiM += std::pow(charges[i], 4) * FF_pmz1_in[i] * FF_pmz2_in[i - 6];
         }
     }
-
-    return sums;
 }
 
 std::vector<double> integration_point_to_vector(const int* ndim, const double x[])
@@ -411,19 +398,21 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
     double z1 = z1_min + x[0] * (z1_max - z1_min);
     double f[13];
 
-    Collins_FF(kPionHadron, z1, z2, hard_scale_sq);
+    Collins_FF(hadron, charge, z1, z2, hard_scale_sq);
 
     if (myCol.evo == "DGLAP" || myCol.evo == "none") {
-        myCol.eval(z1, hard_scale_sq, kPositiveCharge, FF_ppz1, pars);
+        myCol.eval(z1, hard_scale_sq, charge, FF_ppz1, pars);
         for (int i = 0; i < COL_ppz1.size(); ++i) COL_ppz1[i] = myCol.COL_z[i];
 
-        myCol.eval(z2, hard_scale_sq, kPositiveCharge, FF_ppz2, pars);
+        myCol.eval(z2, hard_scale_sq, charge, FF_ppz2, pars);
         for (int i = 0; i < COL_ppz2.size(); ++i) COL_ppz2[i] = myCol.COL_z[i];
 
-        myCol.eval(z1, hard_scale_sq, kNegativeCharge, FF_pmz1, pars);
+        charge *= -1; //to call pi- Collins
+
+        myCol.eval(z1, hard_scale_sq, charge, FF_pmz1, pars);
         for (int i = 0; i < COL_pmz1.size(); ++i) COL_pmz1[i] = myCol.COL_z[i];
 
-        myCol.eval(z2, hard_scale_sq, kNegativeCharge, FF_pmz2, pars);
+        myCol.eval(z2, hard_scale_sq, charge, FF_pmz2, pars);
         for (int i = 0; i < COL_pmz2.size(); ++i) COL_pmz2[i] = myCol.COL_z[i];
     }
 
@@ -441,17 +430,16 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
         for (int i = 0; i < COL_pmz2.size(); ++i) COL_pmz2[i] = f[i] / z2;
     }
 
-    const CollinsChannelSums channel_sums =
-        Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2);
+    Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2);
 
-    f0 = channel_sums.Coll_piPpiM;
-    f1 = channel_sums.Coll_piMpiP;
-    f2 = channel_sums.Coll_piPpiP;
-    f3 = channel_sums.Coll_piMpiM;
-    f4 = channel_sums.Unp_piPpiM;
-    f5 = channel_sums.Unp_piMpiP;
-    f6 = channel_sums.Unp_piPpiP;
-    f7 = channel_sums.Unp_piMpiM;
+    f0 = Coll_piPpiM;
+    f1 = Coll_piMpiP;
+    f2 = Coll_piPpiP;
+    f3 = Coll_piMpiM;
+    f4 = Unp_piPpiM;
+    f5 = Unp_piMpiP;
+    f6 = Unp_piPpiP;
+    f7 = Unp_piMpiM;
 
     return 0;
 
