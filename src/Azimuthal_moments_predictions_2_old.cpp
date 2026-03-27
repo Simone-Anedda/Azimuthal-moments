@@ -66,7 +66,8 @@ double f[13], h1[13]; //for HOPPET and transversity
 
 const double charges[13] = {-2./3., 1./3., -2./3., 1./3., -2./3., 1./3., 0, -1./3., 2./3., -1./3., 2./3., -1./3., 2./3.};
 
-double  numFact = 0.0, denFact = 0.0,\
+double  numU = 0.0, denU = 0.0,\
+        numL = 0.0, denL = 0.0,\
         sqrts = 0.0, thetac = 0.0, Q20 = 0.0,\
         z1 = 0.0, z2 = 0.0, pperp2 = 0.12;
 
@@ -220,16 +221,8 @@ void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
                        const std::vector<double>& FF_ppz1_in,
                        const std::vector<double>& FF_ppz2_in,
                        const std::vector<double>& FF_pmz1_in,
-                       const std::vector<double>& FF_pmz2_in,
-                       double& numU,
-                       double& denU,
-                       double& numL,
-                       double& denL)
-{
-    numU = 0.0;
-    denU = 0.0;
-    numL = 0.0;
-    denL = 0.0;
+                       const std::vector<double>& FF_pmz2_in,)
+
 
     for (int i = 3; i <= 9; ++i) {
         if (i == 3) { // sb
@@ -512,10 +505,7 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 
     const double z1 = z1_min + x[0] * (z1_max - z1_min);
     double evolved_collins[13];
-    double numU = 0.0;
-    double denU = 0.0;
-    double numL = 0.0;
-    double denL = 0.0;
+
 
     Collins_FF(kPionHadron, z1, z2, hard_scale_sq);
 
@@ -547,8 +537,7 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
         for (int i = 0; i < COL_pmz2.size(); ++i) COL_pmz2[i] = evolved_collins[i] / z2;
     }
 
-    Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2,
-                      numU, denU, numL, denL);
+    Collins_epem_loop(COL_ppz1, COL_ppz2, COL_pmz1, COL_pmz2, FF_ppz1, FF_ppz2, FF_pmz1, FF_pmz2);
 
     f0 = denU;
     f1 = numU;
