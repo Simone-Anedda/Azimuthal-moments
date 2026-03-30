@@ -589,7 +589,7 @@ int main(int argc, char *argv[]) {
 
 
     //set parameters for the integration
-    int ndim = 2, ncomp = kNumComponents, nvec = 1, verbose = 0, last = 4, key = 13;
+    int ndim = 2, ncomp = kNumComponents, nvec = 1, verbose = 1, last = 4, key = 13;
     double epsrel = 1e-6, epsabs = 1e-12;
     int flags = 2, seed = 0, mineval = 0, nincrease = 0, nbatch = 1000, gridno = 0;
     char statefile[64] = "";

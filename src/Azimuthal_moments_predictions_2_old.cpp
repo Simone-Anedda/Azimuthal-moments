@@ -221,8 +221,8 @@ void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
                        const std::vector<double>& FF_ppz1_in,
                        const std::vector<double>& FF_ppz2_in,
                        const std::vector<double>& FF_pmz1_in,
-                       const std::vector<double>& FF_pmz2_in,)
-
+                       const std::vector<double>& FF_pmz2_in)
+{
 
     for (int i = 3; i <= 9; ++i) {
         if (i == 3) { // sb
@@ -548,10 +548,6 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 
 }
 
-#undef f0
-#undef f1
-#undef f2
-#undef f3
 
 
 
