@@ -78,6 +78,7 @@ double prefact = (pi * EulerConst / 2) * (pow(pperp2Col, 3) / (pperp2 * pperp2 *
 constexpr int kPionHadron = 1;
 constexpr int kPositiveCharge = 1;
 constexpr int kNegativeCharge = -1;
+int charge 1, hadron = 1;
 
 FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
@@ -200,16 +201,18 @@ std::pair<double, double> calculateDiscreteInterval(
 
 void Collins_FF(const int hadron, const double z1, const double z2, const double hard_scale_sq)
 {
-    myFF.FF_eval(hadron, kPositiveCharge, z1, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
     for (int i = 0; i < FF_ppz1.size(); ++i) FF_ppz1[i] = myFF.theFF[i] / z1;
 
-    myFF.FF_eval(hadron, kPositiveCharge, z2, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z2, hard_scale_sq);
     for (int i = 0; i < FF_ppz2.size(); ++i) FF_ppz2[i] = myFF.theFF[i] / z2;
 
-    myFF.FF_eval(hadron, kNegativeCharge, z1, hard_scale_sq);
+    charge *= -1; //to call pi- FFs
+
+    myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
     for (int i = 0; i < FF_pmz1.size(); ++i) FF_pmz1[i] = myFF.theFF[i] / z1;
 
-    myFF.FF_eval(hadron, kNegativeCharge, z2, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z2, hard_scale_sq);
     for (int i = 0; i < FF_pmz2.size(); ++i) FF_pmz2[i] = myFF.theFF[i] / z2;
 }
 
@@ -510,19 +513,21 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
     double evolved_collins[13];
 
 
-    Collins_FF(kPionHadron, z1, z2, hard_scale_sq);
+    Collins_FF(hadron, z1, z2, hard_scale_sq);
 
     if (myCol.evo == "DGLAP" || myCol.evo == "none") {
-        myCol.eval(z1, hard_scale_sq, kPositiveCharge, FF_ppz1, pars);
+        myCol.eval(z1, hard_scale_sq, charge, FF_ppz1, pars);
         for (int i = 0; i < COL_ppz1.size(); ++i) COL_ppz1[i] = myCol.COL_z[i];
 
-        myCol.eval(z2, hard_scale_sq, kPositiveCharge, FF_ppz2, pars);
+        myCol.eval(z2, hard_scale_sq, charge, FF_ppz2, pars);
         for (int i = 0; i < COL_ppz2.size(); ++i) COL_ppz2[i] = myCol.COL_z[i];
 
-        myCol.eval(z1, hard_scale_sq, kNegativeCharge, FF_pmz1, pars);
+        charge *= -1; //to call pi- Collins FFs
+
+        myCol.eval(z1, hard_scale_sq, charge, FF_pmz1, pars);
         for (int i = 0; i < COL_pmz1.size(); ++i) COL_pmz1[i] = myCol.COL_z[i];
 
-        myCol.eval(z2, hard_scale_sq, kNegativeCharge, FF_pmz2, pars);
+        myCol.eval(z2, hard_scale_sq, charge, FF_pmz2, pars);
         for (int i = 0; i < COL_pmz2.size(); ++i) COL_pmz2[i] = myCol.COL_z[i];
     }
 
