@@ -350,7 +350,7 @@ void ValuesfixedkT(const std::vector<double> &x, double results[], void *userdat
     const double kT0 = userdata_value(userdata, kUserDataQ20);
     const double thetac = userdata_value(userdata, kUserDataThetac);
     const double fixed_kT = userdata_value(userdata, kUserDataFixedValue);
-    std::cout << "Set variables: sqrts = " << sqrts << ", kT0 = " << kT0 << ", thetac = " << thetac << ", fixed_kT = " << fixed_kT << std::endl;
+    //std::cout << "Set variables: sqrts = " << sqrts << ", kT0 = " << kT0 << ", thetac = " << thetac << ", fixed_kT = " << fixed_kT << std::endl;
     
 
     const YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, thetac, x[0], x[1], fixed_kT, *flux1, flux2);
@@ -389,12 +389,12 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 #define f7 ff[7]
 
 
-    double hard_scale_sq = userdata_value(userdata, kUserDataFixedValue);
-    double hard_scale = std::sqrt(hard_scale_sq);
+    double hard_scale = userdata_value(userdata, kUserDataFixedValue);
+    double hard_scale_sq = hard_scale * hard_scale;
     double z1_min = userdata_value(userdata, kUserDataZ1Min);
     double z1_max = userdata_value(userdata, kUserDataZ1Max);
     double z2 = userdata_value(userdata, kUserDataZ2);
-    std::cout << "Set variables: hard_scale = " << hard_scale << ", z1_min = " << z1_min << ", z1_max = " << z1_max << ", z2 = " << z2 << std::endl;
+    //std::cout << "Set variables: hard_scale = " << hard_scale << ", z1_min = " << z1_min << ", z1_max = " << z1_max << ", z2 = " << z2 << std::endl;
     double z1 = z1_min + x[0] * (z1_max - z1_min);
     double f[13];
 
