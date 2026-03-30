@@ -223,7 +223,10 @@ void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
                        const std::vector<double>& FF_pmz1_in,
                        const std::vector<double>& FF_pmz2_in)
 {
-
+    denU = 0.0;
+    numU = 0.0;
+    denL = 0.0;
+    numL = 0.0;
     for (int i = 3; i <= 9; ++i) {
         if (i == 3) { // sb
             numU += std::pow(charges[i], 4) * (COL_ppz1_in[i] * COL_pmz2_in[i + 6] + COL_pmz1_in[i] * COL_ppz2_in[i + 6]);

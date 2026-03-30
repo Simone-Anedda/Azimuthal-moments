@@ -226,6 +226,15 @@ void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
                        const std::vector<double>& FF_pmz1_in,
                        const std::vector<double>& FF_pmz2_in)
 {
+    Coll_piMpiM = 0.0;
+    Coll_piPpiM = 0.0;
+    Coll_piMpiP = 0.0;
+    Coll_piPpiP = 0.0;
+    Unp_piMpiM = 0.0;
+    Unp_piPpiM = 0.0;
+    Unp_piMpiP = 0.0;
+    Unp_piPpiP = 0.0;
+
     for (int i = 3; i <= 9; ++i) {
         if (i == 3) { // sb
             Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i + 6];
@@ -272,7 +281,7 @@ void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
         }
 
         if (i == 7) { // d
-                        Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 2];
+            Coll_piPpiM += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_pmz2_in[i - 2];
             Coll_piMpiP += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_ppz2_in[i - 2];
             Coll_piPpiP += std::pow(charges[i], 4) * COL_ppz1_in[i] * COL_ppz2_in[i - 2];
             Coll_piMpiM += std::pow(charges[i], 4) * COL_pmz1_in[i] * COL_pmz2_in[i - 2];
