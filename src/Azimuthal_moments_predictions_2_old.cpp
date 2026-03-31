@@ -199,7 +199,7 @@ std::pair<double, double> calculateDiscreteInterval(
 
 
 
-void Collins_FF(const int hadron, const double z1, const double z2, const double hard_scale_sq)
+void Collins_FF(int & hadron, double & z1, double & z2, double & hard_scale_sq)
 {
     myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
     for (int i = 0; i < FF_ppz1.size(); ++i) FF_ppz1[i] = myFF.theFF[i] / z1;
