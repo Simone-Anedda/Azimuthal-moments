@@ -68,10 +68,10 @@ double f[13], h1[13]; //for HOPPET and transversity
 
 const double charges[13] = {-2./3., 1./3., -2./3., 1./3., -2./3., 1./3., 0, -1./3., 2./3., -1./3., 2./3., -1./3., 2./3.};
 
-double  sqrts = 0.0, thetac = 0.0, Q20 = 0.0,\
+double sqrts = 0.0, thetac = 0.0, Q20 = 0.0,\
         z1 = 0.0, z2 = 0.0, pperp2 = 0.12;
-double     Coll_piPpiM = 0.0, Coll_piMpiP = 0.0, Coll_piPpiP = 0.0, Coll_piMpiM = 0.0;
-double     Unp_piPpiM = 0.0, Unp_piMpiP = 0.0, Unp_piPpiP = 0.0, Unp_piMpiM = 0.0;
+double Coll_piPpiM = 0.0, Coll_piMpiP = 0.0, Coll_piPpiP = 0.0, Coll_piMpiM = 0.0;
+double Unp_piPpiM = 0.0, Unp_piMpiP = 0.0, Unp_piPpiP = 0.0, Unp_piMpiM = 0.0;
 double MC2 = pars.back();
 double pperp2Col = MC2 * pperp2 / (MC2 + pperp2);
 double prefact = (pi * EulerConst / 2) * (pow(pperp2Col, 3) / (pperp2 * pperp2 * MC2));
@@ -199,20 +199,20 @@ std::pair<double, double> calculateDiscreteInterval(
 
 
 
-void Collins_FF( int & hadron, int & charge , double & z1, double & z2, double & hard_scale_sq)
+void Collins_FF( int & hadron, int & charge , double & z1, double & z2, double & Q2)
 {
-    myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z1, Q2);
     for (int i = 0; i < FF_ppz1.size(); ++i) FF_ppz1[i] = myFF.theFF[i] / z1;
 
-    myFF.FF_eval(hadron, charge, z2, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z2, Q2);
     for (int i = 0; i < FF_ppz2.size(); ++i) FF_ppz2[i] = myFF.theFF[i] / z2;
 
     charge *= -1; //to call pi- FFs
 
-    myFF.FF_eval(hadron, charge, z1, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z1, Q2);
     for (int i = 0; i < FF_pmz1.size(); ++i) FF_pmz1[i] = myFF.theFF[i] / z1;
 
-    myFF.FF_eval(hadron, charge, z2, hard_scale_sq);
+    myFF.FF_eval(hadron, charge, z2, Q2);
     for (int i = 0; i < FF_pmz2.size(); ++i) FF_pmz2[i] = myFF.theFF[i] / z2;
 }
 
@@ -398,8 +398,8 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
 #define f7 ff[7]
 
 
-    double hard_scale = userdata_value(userdata, kUserDataFixedValue);
-    double hard_scale_sq = hard_scale * hard_scale;
+    double Q = userdata_value(userdata, kUserDataFixedValue);
+    double Q2 = Q * Q;
     double z1_min = userdata_value(userdata, kUserDataZ1Min);
     double z1_max = userdata_value(userdata, kUserDataZ1Max);
     double z2 = userdata_value(userdata, kUserDataZ2);
@@ -407,21 +407,21 @@ int integrand_Collins(const int *ndim, const double x[], const int *ncomp, doubl
     double z1 = z1_min + x[0] * (z1_max - z1_min);
     double f[13];
 
-    Collins_FF(hadron, charge, z1, z2, hard_scale_sq);
+    Collins_FF(hadron, charge, z1, z2, Q2);
 
     if (myCol.evo == "DGLAP" || myCol.evo == "none") {
-        myCol.eval(z1, hard_scale_sq, charge, FF_ppz1, pars);
+        myCol.eval(z1, Q2, charge, FF_ppz1, pars);
         for (int i = 0; i < COL_ppz1.size(); ++i) COL_ppz1[i] = myCol.COL_z[i];
 
-        myCol.eval(z2, hard_scale_sq, charge, FF_ppz2, pars);
+        myCol.eval(z2, Q2, charge, FF_ppz2, pars);
         for (int i = 0; i < COL_ppz2.size(); ++i) COL_ppz2[i] = myCol.COL_z[i];
 
         charge *= -1; //to call pi- Collins
 
-        myCol.eval(z1, hard_scale_sq, charge, FF_pmz1, pars);
+        myCol.eval(z1, Q2, charge, FF_pmz1, pars);
         for (int i = 0; i < COL_pmz1.size(); ++i) COL_pmz1[i] = myCol.COL_z[i];
 
-        myCol.eval(z2, hard_scale_sq, charge, FF_pmz2, pars);
+        myCol.eval(z2, Q2, charge, FF_pmz2, pars);
         for (int i = 0; i < COL_pmz2.size(); ++i) COL_pmz2[i] = myCol.COL_z[i];
     }
 
@@ -490,11 +490,12 @@ int main(int argc, char *argv[])
     double z2_max = atof(argv[12]);
     sqrts = atof(argv[14]);
     Q20 = atof(argv[16]); // kept for input compatibility, interpreted here as kT_min
-    double fixed_kT = atof(argv[18]);
-    thetac = atof(argv[20]);
-    EPA1namestr << argv[22];
-    EPA2namestr << argv[24];
-    MCnamestring << argv[26];
+    double kT_min = atof(argv[18]);
+    double kT_max = atof(argv[19]);
+    thetac = atof(argv[21]);
+    EPA1namestr << argv[23];
+    EPA2namestr << argv[25];
+    MCnamestring << argv[27];
 
     const std::string MCname = MCnamestring.str(), EPA1name = EPA1namestr.str(), EPA2name = EPA2namestr.str();
     CSV->Load(MCname);
@@ -605,7 +606,7 @@ int main(int argc, char *argv[])
     for (double z2_value : z2_values) {
         std::cout << "Running scan for fixed kT = " << fixed_kT << "  z2 = " << z2_value << std::endl;
 
-        void *USERDATA[] = {&sqrts, &Q20, &thetac, &fixed_kT, &z1_min, &z1_max, &z2_value};
+        void *USERDATA[] = {&sqrts, &Q20, &thetac, &kT_min, &kT_max, &z1_min, &z1_max, &z2_value};
 
         IntegrationResults col{};
         col.maxeval = maxeval;
