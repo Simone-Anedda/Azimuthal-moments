@@ -32,7 +32,6 @@ void evaluate_flux(EPA::EPA_flux& flux, double csi, double& unpolarised, double&
 
 YYKinematics PhysicsCalculator::computeYY(double sqrts,
                                           double kT0,
-                                          double thetac,
                                           double x1,
                                           double x2,
                                           double kT,
@@ -44,31 +43,30 @@ YYKinematics PhysicsCalculator::computeYY(double sqrts,
     out.S = sqrts * sqrts;
     out.kT0 = kT0;
     out.kTM = sqrts / 2.0;
-    out.thetac = thetac;
     out.kT = kT;
 
-    if (out.sqrts <= 0.0 || out.thetac <= 0.0 || out.kT <= 0.0 || out.kT < out.kT0 || out.kT >= out.kTM) {
+    if (out.sqrts <= 0.0 || out.kT <= 0.0 || out.kT < out.kT0 || out.kT >= out.kTM) {
         return out;
     }
 
-    const double sqrt_arg = out.S / (out.kT * out.kT) - 4.0;
+    double sqrt_arg = out.S / (out.kT * out.kT) - 4.0;
     if (sqrt_arg <= 0.0) {
         return out;
     }
 
-    const double sqrt_term = std::sqrt(sqrt_arg);
-    const double etaqmax = std::log(0.5 * (out.sqrts / out.kT + sqrt_term));
-    const double etaqmin = std::log(0.5 * (out.sqrts / out.kT - sqrt_term));
+    double sqrt_term = std::sqrt(sqrt_arg);
+    double etaqmax = std::log(0.5 * (out.sqrts / out.kT + sqrt_term));
+    double etaqmin = std::log(0.5 * (out.sqrts / out.kT - sqrt_term));
     out.etaq = (etaqmax - etaqmin) * x1 + etaqmin;
 
-    const double etaqbarmax_arg = out.sqrts / out.kT - std::exp(out.etaq);
-    const double etaqbarmin_arg = out.sqrts / out.kT - std::exp(-out.etaq);
+    double etaqbarmax_arg = out.sqrts / out.kT - std::exp(out.etaq);
+    double etaqbarmin_arg = out.sqrts / out.kT - std::exp(-out.etaq);
     if (etaqbarmax_arg <= 0.0 || etaqbarmin_arg <= 0.0) {
         return out;
     }
 
-    const double etaqbarmax = std::log(etaqbarmax_arg);
-    const double etaqbarmin = -std::log(etaqbarmin_arg);
+    double etaqbarmax =   std::log(etaqbarmax_arg);
+    double etaqbarmin = - std::log(etaqbarmin_arg);
     out.jacob = (etaqmax - etaqmin) * (etaqbarmax - etaqbarmin);
     out.etaqbar = (etaqbarmax - etaqbarmin) * x2 + etaqbarmin;
 
@@ -87,14 +85,13 @@ YYKinematics PhysicsCalculator::computeYY(double sqrts,
         return out;
     }
 
-    const double cosh_diff = std::cosh(out.etaq - out.etaqbar);
-    out.K = 1.0 / (out.S * out.kT * out.kT * (1.0 + cosh_diff));
-    out.AU = cosh_diff * out.fgl1 * out.fgl2;
-    out.BU = out.fgl1 * out.fgl2 / 4.0;
-    out.AL = cosh_diff * out.DLfgl1 * out.DLfgl2;
-    out.BL = out.DLfgl1 * out.DLfgl2 / 4.0;
+    double cosh_diff = std::cosh(out.etaq - out.etaqbar);
+    double K = 1.0 / (out.S * out.kT * out.kT * (1.0 + cosh_diff));
+    out.AU = K * cosh_diff * out.fgl1 * out.fgl2 * out.jacob;
+    out.BU = K * out.fgl1 * out.fgl2 * out.jacob / 4.0;
+    out.BL = K * out.DLfgl1 * out.DLfgl2 * out.jacob / 4.0;
 
-    out.valid = are_finite({out.K, out.AU, out.BU, out.AL, out.BL});
+    out.valid = are_finite({out.AU, out.BU, out.BL, out.jacob});
     return out;
 }
 

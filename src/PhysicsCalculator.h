@@ -13,7 +13,6 @@ struct YYKinematics
     double S = 0.0;
     double kT0 = 0.0;
     double kTM = 0.0;
-    double thetac = 0.0;
 
     double etaq = 0.0;
     double etaqbar = 0.0;
@@ -30,7 +29,6 @@ struct YYKinematics
     double K = 0.0;
     double AU = 0.0;
     double BU = 0.0;
-    double AL = 0.0;
     double BL = 0.0;
 };
 
