@@ -79,7 +79,6 @@ class PhysicsCalculator
 public:
     static YYKinematics computeYY(double sqrts,
                                   double kT0,
-                                  double thetac,
                                   double x1,
                                   double x2,
                                   double kT,

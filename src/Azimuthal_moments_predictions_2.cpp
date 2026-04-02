@@ -361,7 +361,7 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
 
     double f[13];
 
-    const YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, thetac, x[3], x[4], kT, *flux1, flux2);
+    const YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, x[3], x[4], kT, *flux1, flux2);
 
     if (cut(kin))
     {
