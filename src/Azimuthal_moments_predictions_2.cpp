@@ -308,7 +308,7 @@ void Collins_epem_loop(const std::vector<double>& COL_ppz1_in,
 }
 
 
-bool cut(YYKinematics& kin)
+bool cut(const YYKinematics& kin)
 {
     return kin.valid;
 }
@@ -421,6 +421,7 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
     f6 = Unp_piPpiP;
     f7 = Unp_piMpiM;
 
+    if(  x[0])
     return 0;
 
 }
@@ -662,6 +663,8 @@ int main(int argc, char *argv[])
                     << "," << BL_o_AU * scale_piPpiP << "," << BL_o_AU_error * std::abs(scale_piPpiP)
                     << "," << BU_o_AU * scale_piMpiM << "," << BU_o_AU_error * std::abs(scale_piMpiM)
                     << "," << BL_o_AU * scale_piMpiM << "," << BL_o_AU_error * std::abs(scale_piMpiM)
+                    << "," << BU_o_AU << "," << BU_o_AU_error
+                    << "," << BL_o_AU << "," << BL_o_AU_error
                     << "," << ratio_piPpiM << "," << ratio_piMpiP << "," << ratio_piPpiP << "," << ratio_piMpiM
                     << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
                     << std::endl;
