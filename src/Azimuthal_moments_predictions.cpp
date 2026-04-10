@@ -910,11 +910,13 @@ int main(int argc, char *argv[]) {
         col.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
         std::cout << " --> time=" << col.elapsed_seconds << "s, neval=" << col.neval << std::endl;
 
-        IntegrationResults res;
-        res.maxeval = maxeval;
-        res.nstart  = nstart;
 
         auto t2 = std::chrono::high_resolution_clock::now();
+
+        IntegrationResults res;
+
+        res.maxeval = maxeval;
+        res.nstart  = nstart;
         Vegas(ndim, ncomp, integrand_fixedQ2, USERDATA,
                 nvec, epsrel, epsabs,
                 flags, seed, mineval, maxeval,
@@ -923,6 +925,7 @@ int main(int argc, char *argv[]) {
                 &res.neval, &res.fail,
                 res.integral, res.error, res.prob);
        
+
 
         auto t3 = std::chrono::high_resolution_clock::now();
         res.elapsed_seconds = std::chrono::duration<double>(t3 - t2).count();

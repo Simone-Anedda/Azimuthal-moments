@@ -4,10 +4,9 @@
 .DEFAULT_GOAL := sources
 
 OBJDIR = ../obj/
-BASE_MODULES := FragFunct COL
-FULL_MODULES := $(BASE_MODULES) photon_flux PhysicsCalculator
-BASE_OBJS := $(addprefix $(OBJDIR), $(addsuffix .o,$(BASE_MODULES)))
-FULL_OBJS := $(addprefix $(OBJDIR), $(addsuffix .o,$(FULL_MODULES)))
+MODULES := FragFunct COL photon_flux PhysicsCalculator
+SOURCES := $(MODULES).cpp
+OBJS := $(OBJDIR)/$(MODULES).o
 
 
 ROOTCFLAGS = $(shell root-config --cflags)
@@ -28,8 +27,6 @@ $(OBJDIR)FCN.o: FCN.h FCN.cpp | $(OBJDIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) FCN.cpp -c
 	@mv FCN.o $(OBJDIR)
 	@echo "................FCN done.\n"
-	
-	
 	
 $(OBJDIR)FragFunct.o: FragFunct.h FragFunct.cpp | $(OBJDIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) FragFunct.cpp -c -L/st100-gr4/flore/libs/ -lff -lgfortran
@@ -53,8 +50,8 @@ $(OBJDIR)COL.o: COL.h COL.cpp | $(OBJDIR)
 		
 	
 
-sources: sources_full
-
-sources_base: $(BASE_OBJS)
-
-sources_full: $(FULL_OBJS)
+sources:
+	$(MAKE) $(OBJDIR)FragFunct.o
+	$(MAKE) $(OBJDIR)COL.o
+	$(MAKE) $(OBJDIR)photon_flux.o
+	$(MAKE) $(OBJDIR)PhysicsCalculator.o
