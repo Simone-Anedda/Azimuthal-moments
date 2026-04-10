@@ -511,8 +511,8 @@ int main(int argc, char *argv[])
     }
 
     int ndim = 4, ncomp = kNumComponents + 8, ncompColl = 8, nvec = 1, verbose = 0, last = 4, key = 13;
-    double epsrel = 1e-6, epsabs = 1e-12;
-    int flags = 2, seed = 0, mineval = 0, nincrease = 0, nbatch = 1000, gridno = 0;
+    double epsrel = 1e-4, epsabs = 1e-5;
+    int flags = 0, seed = 0, mineval = 0, nincrease = 0, nbatch = 1000, gridno = 0;
     char statefile[64] = "";
     void* spin = nullptr;
 
@@ -581,12 +581,21 @@ int main(int argc, char *argv[])
         res.nstart  = nstart;
 
         auto t0 = std::chrono::high_resolution_clock::now();
-        Cuhre(ndim, ncomp, integrand, USERDATA, nvec,
-              epsrel, epsabs, verbose | last,
-              mineval, maxeval, key,
-              statefile, spin,
-              &res.nregions, &res.neval, &res.fail,
-              res.integral, res.error, res.prob);
+        //Cuhre(ndim, ncomp, integrand, USERDATA, nvec,
+        //      epsrel, epsabs, verbose | last,
+        //      mineval, maxeval, key,
+        //      statefile, spin,
+        //      &res.nregions, &res.neval, &res.fail,
+        //      res.integral, res.error, res.prob);
+
+        Vegas(ndim, ncomp, integrand, USERDATA,
+               nvec, epsrel, epsabs,
+               flags, seed, mineval, maxeval,
+               nstart, nincrease, nbatch,
+               gridno, statefile, spin,
+               &res.neval, &res.fail,
+               res.integral, res.error, res.prob);
+
         auto t1 = std::chrono::high_resolution_clock::now();
         res.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
 
@@ -662,6 +671,8 @@ int main(int argc, char *argv[])
                     << "," << BL_o_AU * scale_piPpiP << "," << BL_o_AU_error * std::abs(scale_piPpiP)
                     << "," << BU_o_AU * scale_piMpiM << "," << BU_o_AU_error * std::abs(scale_piMpiM)
                     << "," << BL_o_AU * scale_piMpiM << "," << BL_o_AU_error * std::abs(scale_piMpiM)
+                    << "," << BU_o_AU << "," << BU_o_AU_error
+                    << "," << BL_o_AU << "," << BL_o_AU_error
                     << "," << ratio_piPpiM << "," << ratio_piMpiP << "," << ratio_piPpiP << "," << ratio_piMpiM
                     << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
                     << std::endl;
