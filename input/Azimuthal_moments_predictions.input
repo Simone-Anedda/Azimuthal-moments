@@ -11,4 +11,4 @@ EPA1 electron
 EPA2 electron
 filename    ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full
 iset_min    1
-iset_max    1
+iset_max    2
