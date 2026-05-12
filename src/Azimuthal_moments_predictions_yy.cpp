@@ -350,33 +350,37 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
     double kT_min   = userdata_value(userdata, kUserDataKTMin);
     double thetac   = userdata_value(userdata, kUserDataThetac);
     auto pars = *static_cast<std::vector<double>**>(userdata)[8];
- 
+    double etaq_min = *static_cast<double**>(userdata)[9];
+    double etaq_max = *static_cast<double**>(userdata)[10];
+    double etaqb_min = *static_cast<double**>(userdata)[11];
+    double etaqb_max = *static_cast<double**>(userdata)[12];
+
     double z1 = z1_min + x[0] * (z1_max - z1_min);
 
     double kT;
-    double jabob_kT;
+    double jacob_kT;
     if (kT_max == kT_min)
     {
         kT = kT_min;
-        jabob_kT = 1.0;
+        jacob_kT = 1.0;
     }
     else
     {
         kT = kT_min + x[1] * (kT_max - kT_min);
-        jabob_kT = kT_max - kT_min;
+        jacob_kT = kT_max - kT_min;
     }
     double Q  = kT;
     double Q2 = Q * Q;
 
     double f[13];
 
-    YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, x[3], x[4], kT, *flux1, flux2);
+    YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, x[3], x[4], kT, etaq_min, etaq_max, etaqb_min, etaqb_max, *flux1, flux2);
 
     if (cut(kin))
     {
-        f8 = kin.AU * jabob_kT;
-        f9 = kin.BU * jabob_kT;
-        f10 = kin.BL * jabob_kT;
+        f8 = kin.AU * jacob_kT;
+        f9 = kin.BU * jacob_kT;
+        f10 = kin.BL * jacob_kT;
     } 
     else
     {
@@ -474,6 +478,10 @@ int main(int argc, char *argv[])
     MCnamestring  << argv[27];
     int iset_min  = atoi(argv[29]);
     int iset_max  = atoi(argv[31]);
+    double etaq_min = atof(argv[33]);
+    double etaq_max = atof(argv[34]);
+    double etaqb_min = atof(argv[36]);
+    double etaqb_max = atof(argv[37]);
 
     const std::string MCname = MCnamestring.str(), EPA1name = EPA1namestr.str(), EPA2name = EPA2namestr.str();
     CSV->Load(MCname);
@@ -541,6 +549,8 @@ int main(int argc, char *argv[])
     std::ofstream outFile_U_L("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
                               "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
                               LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) +
+                              "_etaq_" + LHAPDF::to_str(etaq_min) + "_" + LHAPDF::to_str(etaq_max) +
+                              "_etaqb_" + LHAPDF::to_str(etaqb_min) + "_" + LHAPDF::to_str(etaqb_max) +
                                "_iset_" + LHAPDF::to_str(iset_min) + "_" + LHAPDF::to_str(iset_max) + "_U_L.txt");                      
     // std::ofstream outFile_sep("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
     //                           "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
@@ -603,9 +613,9 @@ int main(int argc, char *argv[])
 
         for (double z2 : z2_values) {
 
-            void *USERDATA[] = {&sqrts, &Q20, &thetac, &kT_min, &kT_max, &z1_min, &z1_max, &z2, &pars};
+            void *USERDATA[] = {&sqrts, &Q20, &thetac, &kT_min, &kT_max, &z1_min, &z1_max, &z2, &pars, &etaq_min, &etaq_max, &etaqb_min, &etaqb_max};
         
-            std::cout << "Running scan for  iset = "<< iset << ", kT =[" << kT_min << "," << kT_max << "], z2 = " << z2 << std::endl;
+            std::cout << "Running scan for  iset = "<< iset << ", kT =[" << kT_min << ", " << kT_max << "], etaq = [" << etaq_min << ", " << etaq_max << "], z2 = " << z2 << std::endl;
         
             IntegrationResults res{};
             res.maxeval = maxeval;

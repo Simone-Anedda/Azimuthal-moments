@@ -1,7 +1,7 @@
 model   fit-2015
 widths  latest
 evo     DGLAP
-z1  0.1  0.2
+z1  0.3  0.4
 z2  0.1  0.8
 sqrts 92.0
 Q20 3.0
@@ -12,3 +12,5 @@ EPA2 electron
 filename    ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full
 iset_min    1
 iset_max    2
+etaq  -2.5  2.5
+etaqb  -2.5  2.5

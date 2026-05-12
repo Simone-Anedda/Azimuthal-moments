@@ -35,6 +35,10 @@ YYKinematics PhysicsCalculator::computeYY(double sqrts,
                                           double x1,
                                           double x2,
                                           double kT,
+                                          double etaq_min,
+                                          double etaq_max,
+                                          double etaqb_min,
+                                          double etaqb_max,
                                           EPA::EPA_flux& flux1,
                                           EPA::EPA_flux* flux2)
 {
@@ -44,6 +48,11 @@ YYKinematics PhysicsCalculator::computeYY(double sqrts,
     out.kT0 = kT0;
     out.kTM = sqrts / 2.0;
     out.kT = kT;
+
+
+    // std::cout << "etaq_in: " << etaq_min << "\t" << etaq_max << std::endl;
+    // std::cout << "etaqb_in: " << etaqb_min << "\t" << etaqb_max << std::endl;
+
 
     if (out.sqrts <= 0.0 || out.kT <= 0.0 || out.kT < out.kT0 || out.kT >= out.kTM) {
         return out;
@@ -57,21 +66,34 @@ YYKinematics PhysicsCalculator::computeYY(double sqrts,
     double sqrt_term = std::sqrt(sqrt_arg);
     double etaqmax = std::log(0.5 * (out.sqrts / out.kT + sqrt_term));
     double etaqmin = std::log(0.5 * (out.sqrts / out.kT - sqrt_term));
+    
+    if (etaqmax >= etaq_max) etaqmax = etaq_max;
+    if (etaqmin <= etaq_min) etaqmin = etaq_min;
+    
     out.etaq = (etaqmax - etaqmin) * x1 + etaqmin;
 
     double etaqbarmax_arg = out.sqrts / out.kT - std::exp(out.etaq);
     double etaqbarmin_arg = out.sqrts / out.kT - std::exp(-out.etaq);
+    
     if (etaqbarmax_arg <= 0.0 || etaqbarmin_arg <= 0.0) {
         return out;
     }
 
     double etaqbarmax =   std::log(etaqbarmax_arg);
     double etaqbarmin = - std::log(etaqbarmin_arg);
+
+    if (etaqbarmax >= etaqb_max) etaqbarmax = etaqb_max;
+    if (etaqbarmin <= etaqb_min) etaqbarmin = etaqb_min;
+
     out.jacob = (etaqmax - etaqmin) * (etaqbarmax - etaqbarmin);
     out.etaqbar = (etaqbarmax - etaqbarmin) * x2 + etaqbarmin;
 
+    // std::cout << "etaq: " << etaqmin << "\t" << etaqmax << std::endl;
+    // std::cout << "etaqbar: " << etaqbarmin << "\t" << etaqbarmax << std::endl;
+
     out.csi1 = (out.kT / out.sqrts) * (std::exp(out.etaq) + std::exp(out.etaqbar));
     out.csi2 = (out.kT / out.sqrts) * (std::exp(-out.etaq) + std::exp(-out.etaqbar));
+    
     if (!(out.csi1 > 0.0 && out.csi1 < 1.0 && out.csi2 > 0.0 && out.csi2 < 1.0)) {
         return out;
     }
