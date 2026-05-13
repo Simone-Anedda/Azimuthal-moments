@@ -487,7 +487,7 @@ int main(int argc, char *argv[])
     CSV->Load(MCname);
     int Nset = CSV->GetRowCount();
 
-    if (iset_min < 1 || iset_max >= Nset) {
+    if (iset_min < 1 || iset_max > Nset) {
 
         std::cerr << "iset out of range: iset_min = " << iset_min << ", iset_max = " << iset_max << ", Nset = " << Nset << std::endl;
         return 0;
@@ -598,14 +598,8 @@ int main(int argc, char *argv[])
     //             << ",time[s]" << ",neval" << ",fail"
     //             << std::endl;
 
-    int min, max;
-    if (iset_min == 0) min = 0;
-    else if (iset_min > 0) min = iset_min;
-    
-    if (iset_max < Nset) max = iset_max + 1;
-    else max = Nset;
-
-    for (int iset = min; iset < max; iset ++){
+    //NOTE: rapidCSV uses zero based indexing
+    for (int iset = iset_min - 1; iset < iset_max; iset ++){
 
         std::vector<double> pars = CSV->GetRow<double>(iset);
 
