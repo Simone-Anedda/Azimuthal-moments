@@ -29,6 +29,7 @@ constexpr int kUserDataZ1Min = 5;
 constexpr int kUserDataZ1Max = 6;
 constexpr int kUserDataZ2 = 7;
 
+
 double userdata_value(void* userdata, int index)
 {
     return *static_cast<double **>(userdata)[index];
@@ -50,7 +51,7 @@ double safe_ratio_error(double numerator, double numerator_error, double denomin
 }
 }
 
-std::vector<double> pars = {0.5316, -.7290, .8246, 3.2293, 0.8568, -.3539, 1.7524, 0.0, 0.2551};
+std::vector<double> mean_pars = {0.5316, -.7290, .8246, 3.2293, 0.8568, -.3539, 1.7524, 0.0, 0.2551};
 std::vector<double> COL_z(13), COL_ppz1(13), COL_ppz2(13), COL_pmz1(13), COL_pmz2(13);
 std::vector<double> FF(13), FF_ppz1(13), FF_ppz2(13), FF_pmz1(13), FF_pmz2(13),\
     FF_ppz1_fixedQ2(13), FF_ppz2_fixedQ2(13), FF_pmz1_fixedQ2(13), FF_pmz2_fixedQ2(13),\
@@ -64,9 +65,9 @@ double sqrts = 0.0, thetac = 0.0, Q20 = 0.0,\
         z1 = 0.0, z2 = 0.0, pperp2 = 0.12;
 double Coll_piPpiM = 0.0, Coll_piMpiP = 0.0, Coll_piPpiP = 0.0, Coll_piMpiM = 0.0;
 double Unp_piPpiM = 0.0, Unp_piMpiP = 0.0, Unp_piPpiP = 0.0, Unp_piMpiM = 0.0;
-double MC2 = pars.back();
-double pperp2Col = MC2 * pperp2 / (MC2 + pperp2);
-double prefact = (pi * EulerConst / 2) * (pow(pperp2Col, 3) / (pperp2 * pperp2 * MC2));
+double mean_MC2 = mean_pars.back();
+double mean_pperp2Col = mean_MC2 * pperp2 / (mean_MC2 + pperp2);
+double mean_prefact = (pi * EulerConst / 2) * (pow(mean_pperp2Col, 3) / (pperp2 * pperp2 * mean_MC2));
 
 int charge = 1, hadron = 1;
 
@@ -187,6 +188,13 @@ std::pair<double, double> calculateDiscreteInterval(
     }
 
     return {lowerBound, upperBound};
+}
+
+double get_prefact(double & MC2){
+
+    double pperp2Col = MC2 * pperp2 / (MC2 + pperp2);
+    return (pi * EulerConst / 2) * (pow(pperp2Col, 3) / (pperp2 * pperp2 * MC2));
+
 }
 
 
@@ -341,33 +349,38 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
     double kT_max   = userdata_value(userdata, kUserDataKTMax);
     double kT_min   = userdata_value(userdata, kUserDataKTMin);
     double thetac   = userdata_value(userdata, kUserDataThetac);
- 
+    auto pars = *static_cast<std::vector<double>**>(userdata)[8];
+    double etaq_min = *static_cast<double**>(userdata)[9];
+    double etaq_max = *static_cast<double**>(userdata)[10];
+    double etaqb_min = *static_cast<double**>(userdata)[11];
+    double etaqb_max = *static_cast<double**>(userdata)[12];
+
     double z1 = z1_min + x[0] * (z1_max - z1_min);
 
     double kT;
-    double jabob_kT;
-    if (kT_max==kT_min)
+    double jacob_kT;
+    if (kT_max == kT_min)
     {
         kT = kT_min;
-        jabob_kT = 1.0;
+        jacob_kT = 1.0;
     }
     else
     {
         kT = kT_min + x[1] * (kT_max - kT_min);
-        jabob_kT = kT_max - kT_min;
+        jacob_kT = kT_max - kT_min;
     }
     double Q  = kT;
     double Q2 = Q * Q;
 
     double f[13];
 
-    const YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, x[3], x[4], kT, *flux1, flux2);
+    YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, x[3], x[4], kT, etaq_min, etaq_max, etaqb_min, etaqb_max, *flux1, flux2);
 
     if (cut(kin))
     {
-        f8 = kin.AU * jabob_kT;
-        f9 = kin.BU * jabob_kT;
-        f10 = kin.BL * jabob_kT;
+        f8 = kin.AU * jacob_kT;
+        f9 = kin.BU * jacob_kT;
+        f10 = kin.BL * jacob_kT;
     } 
     else
     {
@@ -375,8 +388,6 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
         f9 = 0.0;
         f10 = 0.0;
     }
-
-
 
     Collins_FF(hadron, charge, z1, z2, Q2);
 
@@ -465,9 +476,22 @@ int main(int argc, char *argv[])
     EPA1namestr   << argv[23];
     EPA2namestr   << argv[25];
     MCnamestring  << argv[27];
+    int iset_min  = atoi(argv[29]);
+    int iset_max  = atoi(argv[31]);
+    double etaq_min = atof(argv[33]);
+    double etaq_max = atof(argv[34]);
+    double etaqb_min = atof(argv[36]);
+    double etaqb_max = atof(argv[37]);
 
     const std::string MCname = MCnamestring.str(), EPA1name = EPA1namestr.str(), EPA2name = EPA2namestr.str();
     CSV->Load(MCname);
+    int Nset = CSV->GetRowCount();
+
+    if (iset_min < 1 || iset_max >= Nset) {
+
+        std::cerr << "iset out of range: iset_min = " << iset_min << ", iset_max = " << iset_max << ", Nset = " << Nset << std::endl;
+        return 0;
+    }
 
     std::vector<double> z2_values;
     for (double value = z2_min; value <= z2_max + 0.05; value += 0.05) {
@@ -516,34 +540,37 @@ int main(int argc, char *argv[])
     char statefile[64] = "";
     void* spin = nullptr;
 
-    std::ofstream outFile_UL("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
-                             "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
-                             LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_UL.txt");
-    std::ofstream outFile_UC("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
-                             "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
-                             LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_UC.txt");
+    // std::ofstream outFile_UL("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
+    //                          "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
+    //                          LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_UL.txt");
+    // std::ofstream outFile_UC("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
+    //                          "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
+    //                          LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_UC.txt");
     std::ofstream outFile_U_L("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
                               "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
-                              LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_U_L.txt");                         
-    std::ofstream outFile_sep("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
-                              "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
-                              LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_separated.txt");
+                              LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) +
+                              "_etaq_" + LHAPDF::to_str(etaq_min) + "_" + LHAPDF::to_str(etaq_max) +
+                              "_etaqb_" + LHAPDF::to_str(etaqb_min) + "_" + LHAPDF::to_str(etaqb_max) +
+                               "_iset_" + LHAPDF::to_str(iset_min) + "_" + LHAPDF::to_str(iset_max) + "_U_L.txt");                      
+    // std::ofstream outFile_sep("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
+    //                           "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
+    //                           LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_separated.txt");
 
-    outFile_UL << "z2"
-               << ",<dsig|c12>_UL" <<",err_<dsig|c12>_UL"
-               << ",<ALL|c12>_UL" << ",err_<ALL|c12>_UL"
-               << ",BU_o_AU" << ",err_BU_o_AU"
-               << ",BL_o_AU" << ",err_BL_o_AU"
-               << ",Collins_UL" << ",times[s]" << ",neval" << ",fail"
-               << std::endl;
+    // outFile_UL << "z2"
+    //            << ",<dsig|c12>_UL" <<",err_<dsig|c12>_UL"
+    //            << ",<ALL|c12>_UL" << ",err_<ALL|c12>_UL"
+    //            << ",BU_o_AU" << ",err_BU_o_AU"
+    //            << ",BL_o_AU" << ",err_BL_o_AU"
+    //            << ",Collins_UL" << ",times[s]" << ",neval" << ",fail"
+    //            << std::endl;
 
-    outFile_UC << "z2"
-               << ",<dsig|c12>_UC" <<",err_<dsig|c12>_UC"
-               << ",<ALL|c12>_UC" << ",err_<ALL|c12>_UC"
-               << ",BU_o_AU" << ",err_BU_o_AU"
-               << ",BL_o_AU" << ",err_BL_o_AU"
-               << ",Collins_UC" << ",times[s]" << ",neval" << ",fail"
-               << std::endl;
+    // outFile_UC << "z2"
+    //            << ",<dsig|c12>_UC" <<",err_<dsig|c12>_UC"
+    //            << ",<ALL|c12>_UC" << ",err_<ALL|c12>_UC"
+    //            << ",BU_o_AU" << ",err_BU_o_AU"
+    //            << ",BL_o_AU" << ",err_BL_o_AU"
+    //            << ",Collins_UC" << ",times[s]" << ",neval" << ",fail"
+    //            << std::endl;
 
     outFile_U_L << "z2"
                 << ",<dsig|c12>_U" <<",err_<dsig|c12>_U"
@@ -556,39 +583,53 @@ int main(int argc, char *argv[])
                 << ",time[s]" << ",neval" << ",fail"
                 << std::endl;
 
-    outFile_sep << "z2"
-                << ",<dsig|c12>_piPpiM" <<",err_<dsig|c12>_piPpiM"
-                << ",<dsig|c12>_piMpiP" <<",err_<dsig|c12>_piMpiP"
-                << ",<dsig|c12>_piPpiP" <<",err_<dsig|c12>_piPpiP"
-                << ",<dsig|c12>_piMpiM" <<",err_<dsig|c12>_piMpiM"
-                << ",<ALL|c12>_piPpiM" << ",err_<ALL|c12>_piPpiM"
-                << ",<ALL|c12>_piMpiP" << ",err_<ALL|c12>_piMpiP"
-                << ",<ALL|c12>_piPpiP" << ",err_<ALL|c12>_piPpiP"
-                << ",<ALL|c12>_piMpiM" << ",err_<ALL|c12>_piMpiM"
-                << ",BU_o_AU" << ",err_BU_o_AU"
-                << ",BL_o_AU" << ",err_BL_o_AU"
-                << ",Collins_piPpiM" << ",Collins_piMpiP" << ",Collins_piPpiP" << ",Collins_piMpiM"
-                << ",time[s]" << ",neval" << ",fail"
-                << std::endl;
+    // outFile_sep << "z2"
+    //             << ",<dsig|c12>_piPpiM" <<",err_<dsig|c12>_piPpiM"
+    //             << ",<ALL|c12>_piPpiM" << ",err_<ALL|c12>_piPpiM"
+    //             << ",<dsig|c12>_piMpiP" <<",err_<dsig|c12>_piMpiP"
+    //             << ",<ALL|c12>_piMpiP" << ",err_<ALL|c12>_piMpiP"
+    //             << ",<dsig|c12>_piPpiP" <<",err_<dsig|c12>_piPpiP"
+    //             << ",<ALL|c12>_piPpiP" << ",err_<ALL|c12>_piPpiP"
+    //             << ",<dsig|c12>_piMpiM" <<",err_<dsig|c12>_piMpiM"
+    //             << ",<ALL|c12>_piMpiM" << ",err_<ALL|c12>_piMpiM"
+    //             << ",BU_o_AU" << ",err_BU_o_AU"
+    //             << ",BL_o_AU" << ",err_BL_o_AU"
+    //             << ",Collins_piPpiM" << ",Collins_piMpiP" << ",Collins_piPpiP" << ",Collins_piMpiM"
+    //             << ",time[s]" << ",neval" << ",fail"
+    //             << std::endl;
 
-    for (double z2_value : z2_values) {
-        void *USERDATA[] = {&sqrts, &Q20, &thetac, &kT_min, &kT_max, &z1_min, &z1_max, &z2_value};
+    int min, max;
+    if (iset_min == 0) min = 0;
+    else if (iset_min > 0) min = iset_min;
+    
+    if (iset_max < Nset) max = iset_max + 1;
+    else max = Nset;
+
+    for (int iset = min; iset < max; iset ++){
+
+        std::vector<double> pars = CSV->GetRow<double>(iset);
+
+        double prefact = get_prefact(pars.back());
+
+        for (double z2 : z2_values) {
+
+            void *USERDATA[] = {&sqrts, &Q20, &thetac, &kT_min, &kT_max, &z1_min, &z1_max, &z2, &pars, &etaq_min, &etaq_max, &etaqb_min, &etaqb_max};
         
-        std::cout << "Running scan for kT =[" << kT_min << "," << kT_max << "], z2 = " << z2_value << std::endl;
+            std::cout << "Running scan for  iset = "<< iset << ", kT =[" << kT_min << ", " << kT_max << "], etaq = [" << etaq_min << ", " << etaq_max << "], z2 = " << z2 << std::endl;
         
-        IntegrationResults res{};
-        res.maxeval = maxeval;
-        res.nstart  = nstart;
+            IntegrationResults res{};
+            res.maxeval = maxeval;
+            res.nstart  = nstart;
 
-        auto t0 = std::chrono::high_resolution_clock::now();
-        //Cuhre(ndim, ncomp, integrand, USERDATA, nvec,
-        //      epsrel, epsabs, verbose | last,
-        //      mineval, maxeval, key,
-        //      statefile, spin,
-        //      &res.nregions, &res.neval, &res.fail,
-        //      res.integral, res.error, res.prob);
+            auto t0 = std::chrono::high_resolution_clock::now();
+            //Cuhre(ndim, ncomp, integrand, USERDATA, nvec,
+            //      epsrel, epsabs, verbose | last,
+            //      mineval, maxeval, key,
+            //      statefile, spin,
+            //      &res.nregions, &res.neval, &res.fail,
+            //      res.integral, res.error, res.prob);
 
-        Vegas(ndim, ncomp, integrand, USERDATA,
+            Vegas(ndim, ncomp, integrand, USERDATA,
                nvec, epsrel, epsabs,
                flags, seed, mineval, maxeval,
                nstart, nincrease, nbatch,
@@ -596,95 +637,97 @@ int main(int argc, char *argv[])
                &res.neval, &res.fail,
                res.integral, res.error, res.prob);
 
-        auto t1 = std::chrono::high_resolution_clock::now();
-        res.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
+            auto t1 = std::chrono::high_resolution_clock::now();
+            res.elapsed_seconds = std::chrono::duration<double>(t1 - t0).count();
 
-        double numU = res.integral[0] + res.integral[1];
-        double numL = res.integral[2] + res.integral[3];
-        double denU = res.integral[4] + res.integral[5];
-        double denL = res.integral[6] + res.integral[7];
+            double numU = res.integral[0] + res.integral[1];
+            double numL = res.integral[2] + res.integral[3];
+            double denU = res.integral[4] + res.integral[5];
+            double denL = res.integral[6] + res.integral[7];
 
-        double ratio_piPpiM = safe_ratio(res.integral[0], res.integral[4]);
-        double ratio_piMpiP = safe_ratio(res.integral[1], res.integral[5]);
-        double ratio_piPpiP = safe_ratio(res.integral[2], res.integral[6]);
-        double ratio_piMpiM = safe_ratio(res.integral[3], res.integral[7]);
+            double ratio_piPpiM = safe_ratio(res.integral[0], res.integral[4]);
+            double ratio_piMpiP = safe_ratio(res.integral[1], res.integral[5]);
+            double ratio_piPpiP = safe_ratio(res.integral[2], res.integral[6]);
+            double ratio_piMpiM = safe_ratio(res.integral[3], res.integral[7]);
         
-        double ratio_U  = safe_ratio( numU, denU );
-        double ratio_L  = safe_ratio( numL, denL );
-        double ratio_UL = ratio_U - ratio_L;
-        double ratio_UC = ratio_U - safe_ratio( numU + numL, denU + denL );
+            double ratio_U  = safe_ratio( numU, denU );
+            double ratio_L  = safe_ratio( numL, denL );
+            double ratio_UL = ratio_U - ratio_L;
+            double ratio_UC = ratio_U - safe_ratio( numU + numL, denU + denL );
 
-        double BU_o_AU = safe_ratio(res.integral[9], res.integral[8]);
-        double BU_o_AU_error = safe_ratio_error(res.integral[9], res.error[9], res.integral[8], res.error[8]);
-        double BL_o_AU = safe_ratio(res.integral[10], res.integral[8]);
-        double BL_o_AU_error = safe_ratio_error(res.integral[10], res.error[10], res.integral[8], res.error[8]);
+            double BU_o_AU = safe_ratio(res.integral[9], res.integral[8]);
+            double BU_o_AU_error = safe_ratio_error(res.integral[9], res.error[9], res.integral[8], res.error[8]);
+            double BL_o_AU = safe_ratio(res.integral[10], res.integral[8]);
+            double BL_o_AU_error = safe_ratio_error(res.integral[10], res.error[10], res.integral[8], res.error[8]);
 
-        std::cout << "Collins ratios: UL = " << ratio_UL
+            std::cout << "Collins ratios: UL = " << ratio_UL
                   << "  UC = " << ratio_UC
                   << "  U = " << ratio_U
                   << "  L = " << ratio_L << std::endl;
-        std::cout << " --> Integration time=" << res.elapsed_seconds
+            std::cout << " --> Integration time=" << res.elapsed_seconds
                   << "s, neval=" << res.neval << std::endl;
 
-        double scale_UL = prefact * ratio_UL;
-        double scale_UC = prefact * ratio_UC;
-        double scale_U = prefact * ratio_U;
-        double scale_L = prefact * ratio_L;
-        double scale_piPpiM = prefact * ratio_piPpiM;
-        double scale_piMpiP = prefact * ratio_piMpiP;
-        double scale_piPpiP = prefact * ratio_piPpiP;
-        double scale_piMpiM = prefact * ratio_piMpiM;
+            ratio_UL *= prefact;
+            ratio_UC *= prefact;
+            ratio_U *= prefact;
+            ratio_L *= prefact;
+            ratio_piPpiM *= prefact;
+            ratio_piMpiP *= prefact;
+            ratio_piPpiP *= prefact;
+            ratio_piMpiM *= prefact;
 
-        outFile_UL << "," << z2_value
-                   << "," << BU_o_AU * scale_UL << "," << BU_o_AU_error * std::abs(scale_UL)
-                   << "," << BL_o_AU * scale_UL << "," << BL_o_AU_error * std::abs(scale_UL)
-                   << "," << BU_o_AU << "," << BU_o_AU_error
-                   << "," << BL_o_AU << "," << BL_o_AU_error
-                   << "," << ratio_UL<< "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
-                   << std::endl;
+            // outFile_UL << z2
+            //        << "," << BU_o_AU * ratio_UL << "," << BU_o_AU_error * std::abs(ratio_UL)
+            //        << "," << BL_o_AU * ratio_UL << "," << BL_o_AU_error * std::abs(ratio_UL)
+            //        << "," << BU_o_AU << "," << BU_o_AU_error
+            //        << "," << BL_o_AU << "," << BL_o_AU_error
+            //        << "," << ratio_UL<< "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
+            //        << std::endl;
 
-        outFile_UC << "," << z2_value
-                   << "," << BU_o_AU * scale_UC << "," << BU_o_AU_error * std::abs(scale_UC)
-                   << "," << BL_o_AU * scale_UC << "," << BL_o_AU_error * std::abs(scale_UC)
-                   << "," << BU_o_AU << "," << BU_o_AU_error
-                   << "," << BL_o_AU << "," << BL_o_AU_error
-                   << "," << ratio_UC << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
-                   << std::endl;
+            // outFile_UC << z2
+            //        << "," << BU_o_AU * ratio_UC << "," << BU_o_AU_error * std::abs(ratio_UC)
+            //        << "," << BL_o_AU * ratio_UC << "," << BL_o_AU_error * std::abs(ratio_UC)
+            //        << "," << BU_o_AU << "," << BU_o_AU_error
+            //        << "," << BL_o_AU << "," << BL_o_AU_error
+            //        << "," << ratio_UC << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
+            //        << std::endl;
 
-        outFile_U_L << "," << z2_value
-                    << "," << BU_o_AU * scale_U << "," << BU_o_AU_error * std::abs(scale_U)
-                    << "," << BL_o_AU * scale_U << "," << BL_o_AU_error * std::abs(scale_U)
-                    << "," << BU_o_AU * scale_L << "," << BU_o_AU_error * std::abs(scale_L)
-                    << "," << BL_o_AU * scale_L << "," << BL_o_AU_error * std::abs(scale_L)
+            outFile_U_L << z2
+                    << "," << BU_o_AU * ratio_U << "," << BU_o_AU_error * std::abs(ratio_U)
+                    << "," << BL_o_AU * ratio_U << "," << BL_o_AU_error * std::abs(ratio_U)
+                    << "," << BU_o_AU * ratio_L << "," << BU_o_AU_error * std::abs(ratio_L)
+                    << "," << BL_o_AU * ratio_L << "," << BL_o_AU_error * std::abs(ratio_L)
                     << "," << BU_o_AU << "," << BU_o_AU_error
                     << "," << BL_o_AU << "," << BL_o_AU_error
                     << "," << ratio_U << "," << ratio_L
                     << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
                     << std::endl;
 
-        outFile_sep << "," << z2_value
-                    << "," << BU_o_AU * scale_piPpiM << "," << BU_o_AU_error * std::abs(scale_piPpiM)
-                    << "," << BL_o_AU * scale_piPpiM << "," << BL_o_AU_error * std::abs(scale_piPpiM)
-                    << "," << BU_o_AU * scale_piMpiP << "," << BU_o_AU_error * std::abs(scale_piMpiP)
-                    << "," << BL_o_AU * scale_piMpiP << "," << BL_o_AU_error * std::abs(scale_piMpiP)
-                    << "," << BU_o_AU * scale_piPpiP << "," << BU_o_AU_error * std::abs(scale_piPpiP)
-                    << "," << BL_o_AU * scale_piPpiP << "," << BL_o_AU_error * std::abs(scale_piPpiP)
-                    << "," << BU_o_AU * scale_piMpiM << "," << BU_o_AU_error * std::abs(scale_piMpiM)
-                    << "," << BL_o_AU * scale_piMpiM << "," << BL_o_AU_error * std::abs(scale_piMpiM)
-                    << "," << BU_o_AU << "," << BU_o_AU_error
-                    << "," << BL_o_AU << "," << BL_o_AU_error
-                    << "," << ratio_piPpiM << "," << ratio_piMpiP << "," << ratio_piPpiP << "," << ratio_piMpiM
-                    << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
-                    << std::endl;
+            // outFile_sep << z2
+            //         << "," << BU_o_AU * ratio_piPpiM << "," << BU_o_AU_error * std::abs(ratio_piPpiM)
+            //         << "," << BL_o_AU * ratio_piPpiM << "," << BL_o_AU_error * std::abs(ratio_piPpiM)
+            //         << "," << BU_o_AU * ratio_piMpiP << "," << BU_o_AU_error * std::abs(ratio_piMpiP)
+            //         << "," << BL_o_AU * ratio_piMpiP << "," << BL_o_AU_error * std::abs(ratio_piMpiP)
+            //         << "," << BU_o_AU * ratio_piPpiP << "," << BU_o_AU_error * std::abs(ratio_piPpiP)
+            //         << "," << BL_o_AU * ratio_piPpiP << "," << BL_o_AU_error * std::abs(ratio_piPpiP)
+            //         << "," << BU_o_AU * ratio_piMpiM << "," << BU_o_AU_error * std::abs(ratio_piMpiM)
+            //         << "," << BL_o_AU * ratio_piMpiM << "," << BL_o_AU_error * std::abs(ratio_piMpiM)
+            //         << "," << BU_o_AU << "," << BU_o_AU_error
+            //         << "," << BL_o_AU << "," << BL_o_AU_error
+            //         << "," << ratio_piPpiM << "," << ratio_piMpiP << "," << ratio_piPpiP << "," << ratio_piMpiM
+            //         << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
+            //         << std::endl;
 
-        std::cout << " --> kT integration time=" << res.elapsed_seconds
+            std::cout << " --> kT integration time=" << res.elapsed_seconds
                   << "s, neval=" << res.neval << std::endl;
+        }
+
     }
 
-    outFile_UL.close();
-    outFile_UC.close();
+    // outFile_UL.close();
+    // outFile_UC.close();
     outFile_U_L.close();
-    outFile_sep.close();
+    // outFile_sep.close();
 
     return 0;
 }

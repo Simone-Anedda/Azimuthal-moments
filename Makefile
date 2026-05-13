@@ -29,12 +29,12 @@ INPUTDIR = input
 
 MAINEXE = Azimuthal_moments
 PREDEXE = Azimuthal_moments_predictions
-PREDEXE2 = Azimuthal_moments_predictions_2
+PREDEXE2 = Azimuthal_moments_predictions_yy
 PREDEXE2_OLD = Azimuthal_moments_predictions_2_old
 
 MAIN = $(SRCDIR)/Azimuthal_moments.cpp
 PRED_MAIN = $(SRCDIR)/Azimuthal_moments_predictions.cpp
-PRED_MAIN2 = $(SRCDIR)/Azimuthal_moments_predictions_2.cpp
+PRED_MAIN2 = $(SRCDIR)/Azimuthal_moments_predictions_yy.cpp
 PRED_MAIN2_OLD = $(SRCDIR)/Azimuthal_moments_predictions_2_old.cpp
 
 INPUT = Azimuthal_moments.input
@@ -100,7 +100,7 @@ OLD_OBJS = $(BASEOBJ)
 # LIBS = -lMinuit2 -lgomp -lff -lgrv -ltransv -lcuba -lhoppet_v1 -lhoppet_v1_collins -lhoppet_v1_collins2 -lgfortran -lLHAPDF -lm # -lceres   
 # LIBS = -lMinuit2 -fopenmp -lstdc++fs -lboost_iostreams -lboost_system -lboost_filesystem -lff -lgrv -ltransv -lcuba -lhoppet_v1 -lhoppet_v1_collins -lhoppet_v1_collins2 -lgfortran -lLHAPDF -lm 
 # LIBS = -lLHAPDF -L/st100-gr4/flore/libs -lff -lcuba -L$(HOPPETDIR1) -lhoppet_v1_collins -L$(HOPPETDIR2) -lhoppet_v1_collins2 -lgfortran  -lm
-FF_LIBDIR ?= /st100-gr4/flore/libs
+FF_LIBDIR ?= /hpe-gr4/flore/libs
 FF_LIBS ?= -lff
 CUBA_LIBS ?= -lcuba
 HOPPET_LIBS ?= -lhoppet_v1_collins -lhoppet_v1_collins2
@@ -136,11 +136,11 @@ predictions: sources | $(EXEDIR)
 		echo "could not create executable for '$(PREDEXE)'";\
 	fi
 
-predictions2: sources | $(EXEDIR)
+predictions_yy: sources | $(EXEDIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(PRED_MAIN2) \
 	$(OBJS)  $(LIBS) -lc -o $(PREDEXE2)
 	@if [ -f $(PREDEXE2) ]; then \
-		mv $(PREDEXE2) $(EXEDIR); echo "...................Azimuthal_moments_predictions_2 done.\n"; \
+		mv $(PREDEXE2) $(EXEDIR); echo "...................Azimuthal_moments_predictions_yy done.\n"; \
 	else \
 		echo "could not create executable for '$(PREDEXE2)'";\
 	fi
