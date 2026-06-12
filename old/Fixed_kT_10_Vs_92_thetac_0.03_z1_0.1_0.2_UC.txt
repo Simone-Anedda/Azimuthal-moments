@@ -1,0 +1,1 @@
+z2,AL_over_AU,err_AL_over_AU,BU_over_AU_times_Collins_UC,err_BU_over_AU_times_Collins_UC,BL_over_AU_times_Collins_UC,err_BL_over_AU_times_Collins_UC,AU,err_AU,BU,err_BU,AL,err_AL,BL,err_BL,Collins_UC,Collins_U,Collins_L,time[s],neval,fail

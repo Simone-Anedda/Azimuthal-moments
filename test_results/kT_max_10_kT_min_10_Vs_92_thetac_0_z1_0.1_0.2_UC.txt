@@ -1,0 +1,16 @@
+z2,<dsig|c12>_UC,err_<dsig|c12>_UC,<ALL|c12>_UC,err_<ALL|c12>_UC,BU_o_AU,err_BU_o_AU,BL_o_AU,err_BL_o_AU,Collins_UC,times[s],neval,fail
+,0.1,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.171822,0.0395653,11169,0
+,0.15,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.174388,0.0343378,9639,0
+,0.2,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.181587,0.0328125,9333,0
+,0.25,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.192257,0.031046,8721,0
+,0.3,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.204166,0.0283832,8109,0
+,0.35,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.215797,0.0290767,8109,0
+,0.4,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.226712,0.0284917,8109,0
+,0.45,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.23707,0.027645,7803,0
+,0.5,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.246883,0.02803,7803,0
+,0.55,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.25556,0.0274425,7803,0
+,0.6,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.261913,0.0274237,7803,0
+,0.65,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.264781,0.0275376,7803,0
+,0.7,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.263338,0.0274121,7803,0
+,0.75,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.2577,0.0275304,7803,0
+,0.8,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.248868,0.0276793,7803,0

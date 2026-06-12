@@ -70,6 +70,7 @@ double mean_pperp2Col = mean_MC2 * pperp2 / (mean_MC2 + pperp2);
 double mean_prefact = (pi * EulerConst / 2) * (pow(mean_pperp2Col, 3) / (pperp2 * pperp2 * mean_MC2));
 
 int charge = 1, hadron = 1;
+bool compute_BL = true;
 
 FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
@@ -350,34 +351,38 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
     double kT_min   = userdata_value(userdata, kUserDataKTMin);
     double thetac   = userdata_value(userdata, kUserDataThetac);
     auto pars = *static_cast<std::vector<double>**>(userdata)[8];
- 
+    double etaq_min = *static_cast<double**>(userdata)[9];
+    double etaq_max = *static_cast<double**>(userdata)[10];
+    double etaqb_min = *static_cast<double**>(userdata)[11];
+    double etaqb_max = *static_cast<double**>(userdata)[12];
+
     double z1 = z1_min + x[0] * (z1_max - z1_min);
 
     double kT;
-    double jabob_kT;
+    double jacob_kT;
     if (kT_max == kT_min)
     {
         kT = kT_min;
-        jabob_kT = 1.0;
+        jacob_kT = 1.0;
     }
     else
     {
         kT = kT_min + x[1] * (kT_max - kT_min);
-        jabob_kT = kT_max - kT_min;
+        jacob_kT = kT_max - kT_min;
     }
     double Q  = kT;
     double Q2 = Q * Q;
 
     double f[13];
 
-    YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, x[3], x[4], kT, *flux1, flux2);
+    YYKinematics kin = PhysicsCalculator::computeYY(sqrts, kT0, x[3], x[4], kT, etaq_min, etaq_max, etaqb_min, etaqb_max, *flux1, flux2);
 
     if (cut(kin))
     {
-        f8 = kin.AU * jabob_kT;
-        f9 = kin.BU * jabob_kT;
-        f10 = kin.BL * jabob_kT;
-    } 
+        f8 = kin.AU * jacob_kT;
+        f9 = kin.BU * jacob_kT;
+        f10 = compute_BL ? kin.BL * jacob_kT : 0.0;
+   } 
     else
     {
         f8 = 0.0;
@@ -474,12 +479,24 @@ int main(int argc, char *argv[])
     MCnamestring  << argv[27];
     int iset_min  = atoi(argv[29]);
     int iset_max  = atoi(argv[31]);
+    double etaq_min = atof(argv[33]);
+    double etaq_max = atof(argv[34]);
+    double etaqb_min = atof(argv[36]);
+    double etaqb_max = atof(argv[37]);
 
     const std::string MCname = MCnamestring.str(), EPA1name = EPA1namestr.str(), EPA2name = EPA2namestr.str();
+    auto isLepton = [](const std::string& name) {
+        return name == "electron" || name == "muon" || name == "tau";
+    };
+    
+    compute_BL = isLepton(EPA1name) && isLepton(EPA2name);
+    if (!compute_BL)
+        std::cout << "EPA sources '" << EPA1name << "' and '" << EPA2name
+                  << "' are not both leptons: BL (f10) integration will be skipped." << std::endl;
     CSV->Load(MCname);
     int Nset = CSV->GetRowCount();
 
-    if (iset_min < 1 || iset_max >= Nset) {
+    if (iset_min < 1 || iset_max > Nset) {
 
         std::cerr << "iset out of range: iset_min = " << iset_min << ", iset_max = " << iset_max << ", Nset = " << Nset << std::endl;
         return 0;
@@ -527,7 +544,7 @@ int main(int argc, char *argv[])
     }
 
     int ndim = 4, ncomp = kNumComponents + 8, ncompColl = 8, nvec = 1, verbose = 0, last = 4, key = 13;
-    double epsrel = 1e-4, epsabs = 1e-5;
+    double epsrel = 1e-3, epsabs = 1e-4;
     int flags = 0, seed = 0, mineval = 0, nincrease = 0, nbatch = 1000, gridno = 0;
     char statefile[64] = "";
     void* spin = nullptr;
@@ -541,6 +558,8 @@ int main(int argc, char *argv[])
     std::ofstream outFile_U_L("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
                               "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
                               LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) +
+                              "_etaq_" + LHAPDF::to_str(etaq_min) + "_" + LHAPDF::to_str(etaq_max) +
+                              "_etaqb_" + LHAPDF::to_str(etaqb_min) + "_" + LHAPDF::to_str(etaqb_max) +
                                "_iset_" + LHAPDF::to_str(iset_min) + "_" + LHAPDF::to_str(iset_max) + "_U_L.txt");                      
     // std::ofstream outFile_sep("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
     //                           "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
@@ -569,6 +588,7 @@ int main(int argc, char *argv[])
                 << ",<ALL|c12>_L" << ",err_<ALL|c12>_L"
                 << ",BU_o_AU" << ",err_BU_o_AU"
                 << ",BL_o_AU" << ",err_BL_o_AU"
+                << ",denU" << ",denL"     
                 << ",Collins_U" << ",Collins_L"
                 << ",time[s]" << ",neval" << ",fail"
                 << std::endl;
@@ -588,14 +608,8 @@ int main(int argc, char *argv[])
     //             << ",time[s]" << ",neval" << ",fail"
     //             << std::endl;
 
-    int min, max;
-    if (iset_min == 0) min = 0;
-    else if (iset_min > 0) min = iset_min;
-    
-    if (iset_max < Nset) max = iset_max + 1;
-    else max = Nset;
-
-    for (int iset = min; iset < max; iset ++){
+    //NOTE: rapidCSV uses zero based indexing
+    for (int iset = iset_min - 1; iset < iset_max; iset ++){
 
         std::vector<double> pars = CSV->GetRow<double>(iset);
 
@@ -603,9 +617,9 @@ int main(int argc, char *argv[])
 
         for (double z2 : z2_values) {
 
-            void *USERDATA[] = {&sqrts, &Q20, &thetac, &kT_min, &kT_max, &z1_min, &z1_max, &z2, &pars};
+            void *USERDATA[] = {&sqrts, &Q20, &thetac, &kT_min, &kT_max, &z1_min, &z1_max, &z2, &pars, &etaq_min, &etaq_max, &etaqb_min, &etaqb_max};
         
-            std::cout << "Running scan for  iset = "<< iset << ", kT =[" << kT_min << "," << kT_max << "], z2 = " << z2 << std::endl;
+            std::cout << "Running scan for  iset = "<< iset << ", kT =[" << kT_min << ", " << kT_max << "], etaq = [" << etaq_min << ", " << etaq_max << "], z2 = " << z2 << std::endl;
         
             IntegrationResults res{};
             res.maxeval = maxeval;
@@ -689,6 +703,7 @@ int main(int argc, char *argv[])
                     << "," << BL_o_AU * ratio_L << "," << BL_o_AU_error * std::abs(ratio_L)
                     << "," << BU_o_AU << "," << BU_o_AU_error
                     << "," << BL_o_AU << "," << BL_o_AU_error
+                    << "," << denU << "," << denL
                     << "," << ratio_U << "," << ratio_L
                     << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
                     << std::endl;

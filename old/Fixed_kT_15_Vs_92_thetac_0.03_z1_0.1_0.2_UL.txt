@@ -1,0 +1,2 @@
+z2,AL_over_AU,err_AL_over_AU,BU_over_AU_times_Collins_UL,err_BU_over_AU_times_Collins_UL,BL_over_AU_times_Collins_UL,err_BL_over_AU_times_Collins_UL,AU,err_AU,BU,err_BU,AL,err_AL,BL,err_BL,Collins_UL,Collins_U,Collins_L,time[s],neval,fail
+,0.1,0.205307,2.35456e-05,0.0195422,4.134e-06,0.00338292,5.12537e-07,1.13278e-08,1.04966e-12,1.94372e-09,3.69634e-13,2.32567e-09,1.57157e-13,3.36475e-10,4.03323e-14,0.180264,0.17704,-0.0032239,2.53122,10000000,1

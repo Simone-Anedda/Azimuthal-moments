@@ -1,0 +1,1 @@
+z2,<dsig|c12>_U,err_<dsig|c12>_U,<ALL|c12>_U,err_<ALL|c12>_U,<dsig|c12>_L,err_<dsig|c12>_L,<ALL|c12>_L,err_<ALL|c12>_L,BU_o_AU,err_BU_o_AU,BL_o_AU,err_BL_o_AU,Collins_U,Collins_L,time[s],neval,fail

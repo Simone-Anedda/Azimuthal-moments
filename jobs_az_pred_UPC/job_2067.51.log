@@ -1,0 +1,103 @@
+000 (2067.051.000) 2026-05-15 12:20:01 Job submitted from host: <192.135.33.172:9618?addrs=192.135.33.172-9618&alias=theosrv-01.ca.infn.it&noUDP&sock=schedd_1878_baf3>
+...
+001 (2067.051.000) 2026-05-15 13:29:03 Job executing on host: <192.135.33.172:9618?addrs=192.135.33.172-9618&alias=theosrv-01.ca.infn.it&noUDP&sock=startd_1878_baf3>
+	SlotName: slot5@theosrv-01.ca.infn.it
+	CondorScratchDir = "/var/lib/condor/execute/dir_658865"
+	Cpus = 1
+	Disk = 342046
+	Memory = 3568
+...
+006 (2067.051.000) 2026-05-15 13:29:11 Image size of job updated: 13540
+	13  -  MemoryUsage of job (MB)
+	13284  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-15 13:34:11 Image size of job updated: 13540
+	14  -  MemoryUsage of job (MB)
+	13540  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-15 13:49:13 Image size of job updated: 13800
+	14  -  MemoryUsage of job (MB)
+	13800  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-15 13:54:14 Image size of job updated: 13896
+	14  -  MemoryUsage of job (MB)
+	13896  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-15 14:29:17 Image size of job updated: 14152
+	14  -  MemoryUsage of job (MB)
+	13896  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-15 17:34:36 Image size of job updated: 14152
+	14  -  MemoryUsage of job (MB)
+	14152  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-15 23:35:14 Image size of job updated: 14180
+	14  -  MemoryUsage of job (MB)
+	14152  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-16 02:00:29 Image size of job updated: 14432
+	14  -  MemoryUsage of job (MB)
+	14176  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-16 06:10:56 Image size of job updated: 14436
+	14  -  MemoryUsage of job (MB)
+	14176  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-16 14:21:48 Image size of job updated: 14436
+	14  -  MemoryUsage of job (MB)
+	14192  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-16 16:17:00 Image size of job updated: 14452
+	14  -  MemoryUsage of job (MB)
+	14192  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-16 20:02:24 Image size of job updated: 14712
+	14  -  MemoryUsage of job (MB)
+	14192  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-17 06:48:33 Image size of job updated: 14724
+	14  -  MemoryUsage of job (MB)
+	14192  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-17 09:23:49 Image size of job updated: 14724
+	14  -  MemoryUsage of job (MB)
+	14216  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-17 10:13:54 Image size of job updated: 14736
+	14  -  MemoryUsage of job (MB)
+	14216  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-17 13:49:16 Image size of job updated: 14736
+	14  -  MemoryUsage of job (MB)
+	14224  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-17 19:44:53 Image size of job updated: 14744
+	14  -  MemoryUsage of job (MB)
+	14224  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-17 20:04:54 Image size of job updated: 14744
+	14  -  MemoryUsage of job (MB)
+	14236  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-17 21:15:01 Image size of job updated: 15000
+	14  -  MemoryUsage of job (MB)
+	14236  -  ResidentSetSize of job (KB)
+...
+006 (2067.051.000) 2026-05-18 02:45:35 Image size of job updated: 15264
+	14  -  MemoryUsage of job (MB)
+	14236  -  ResidentSetSize of job (KB)
+...
+004 (2067.051.000) 2026-05-18 15:29:23 Job was evicted.
+	(0) CPU times
+		Usr 3 01:36:18, Sys 0 00:06:12  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.99        1         1 
+	   Disk (KB)            :  4000        4000    342046 
+	   Memory (MB)          :    14           4      3568 
+...
+009 (2067.051.000) 2026-05-18 15:29:23 Job was aborted.
+	via condor_rm (by user sanedda)
+...

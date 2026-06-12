@@ -90,14 +90,16 @@ public:
                                           double thetac,
                                           double xB,
                                           double y,
-                                          double csi);
+                                          double csi,
+                                          EPA::EPA_flux& flux);
 
     static YStarYKinematics computeYStarYQ2(double sqrts,
                                             double Q20,
                                             double thetac,
                                             double xB,
                                             double Q2,
-                                            double csi);
+                                            double csi,
+                                            EPA::EPA_flux& flux);
 
 private:
     static YStarYKinematics finalizeYStarY(double sqrts,
@@ -106,5 +108,6 @@ private:
                                            double xB,
                                            double y,
                                            double csi,
-                                           double Q2);
+                                           double Q2,
+                                           EPA::EPA_flux& flux);
 };
