@@ -1,0 +1,91 @@
+000 (2067.031.000) 2026-05-15 12:20:01 Job submitted from host: <192.135.33.172:9618?addrs=192.135.33.172-9618&alias=theosrv-01.ca.infn.it&noUDP&sock=schedd_1878_baf3>
+...
+001 (2067.031.000) 2026-05-15 12:20:02 Job executing on host: <192.135.33.172:9618?addrs=192.135.33.172-9618&alias=theosrv-01.ca.infn.it&noUDP&sock=startd_1878_baf3>
+	SlotName: slot62@theosrv-01.ca.infn.it
+	CondorScratchDir = "/var/lib/condor/execute/dir_656859"
+	Cpus = 1
+	Disk = 342046
+	Memory = 3568
+...
+006 (2067.031.000) 2026-05-15 12:20:11 Image size of job updated: 14880
+	15  -  MemoryUsage of job (MB)
+	14880  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-15 12:35:12 Image size of job updated: 14976
+	15  -  MemoryUsage of job (MB)
+	14880  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-15 12:45:13 Image size of job updated: 15028
+	15  -  MemoryUsage of job (MB)
+	14880  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-15 13:30:19 Image size of job updated: 15040
+	15  -  MemoryUsage of job (MB)
+	15036  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-15 14:10:23 Image size of job updated: 15296
+	15  -  MemoryUsage of job (MB)
+	15036  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-15 14:30:24 Image size of job updated: 15296
+	15  -  MemoryUsage of job (MB)
+	15040  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-15 15:25:30 Image size of job updated: 15300
+	15  -  MemoryUsage of job (MB)
+	15296  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-15 17:55:45 Image size of job updated: 15556
+	15  -  MemoryUsage of job (MB)
+	15296  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-15 22:21:13 Image size of job updated: 15560
+	15  -  MemoryUsage of job (MB)
+	15296  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-16 04:16:49 Image size of job updated: 15560
+	15  -  MemoryUsage of job (MB)
+	15316  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-16 07:22:07 Image size of job updated: 15584
+	15  -  MemoryUsage of job (MB)
+	15316  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-16 08:52:16 Image size of job updated: 15808
+	15  -  MemoryUsage of job (MB)
+	15316  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-16 09:12:18 Image size of job updated: 15808
+	15  -  MemoryUsage of job (MB)
+	15324  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-16 12:07:36 Image size of job updated: 15856
+	15  -  MemoryUsage of job (MB)
+	15324  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-17 09:54:55 Image size of job updated: 15868
+	15  -  MemoryUsage of job (MB)
+	15324  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-17 12:25:10 Image size of job updated: 16092
+	15  -  MemoryUsage of job (MB)
+	15324  -  ResidentSetSize of job (KB)
+...
+006 (2067.031.000) 2026-05-17 19:20:53 Image size of job updated: 16092
+	16  -  MemoryUsage of job (MB)
+	15364  -  ResidentSetSize of job (KB)
+...
+004 (2067.031.000) 2026-05-18 15:29:22 Job was evicted.
+	(0) CPU times
+		Usr 3 02:44:58, Sys 0 00:06:16  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     1.00        1         1 
+	   Disk (KB)            :  4000        4000    342046 
+	   Memory (MB)          :    16           4      3568 
+...
+009 (2067.031.000) 2026-05-18 15:29:22 Job was aborted.
+	via condor_rm (by user sanedda)
+...

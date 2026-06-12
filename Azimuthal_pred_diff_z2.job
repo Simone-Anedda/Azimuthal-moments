@@ -1,0 +1,27 @@
+#############################
+Executable      = /hpe-gr4/sanedda/Azimuthal-moments/exe/Azimuthal_moments_predictions_2
+Initialdir      = /hpe-gr4/sanedda/Azimuthal-moments
+Requirements    = OpSys == "LINUX" && Arch == "X86_64"
+getenv          = True
+Output          = job_$(Cluster).$(Process)_results.output
+Error           = job_$(Cluster).$(Process).err
+Log             = job_$(Cluster).$(Process).log
+
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 18.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset 0
+queue
+
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 18.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset 0
+queue
+
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 18.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset 0
+queue
+
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 18.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset 0
+queue
+
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 18.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset 0
+queue
+
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 18.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset 0
+queue
+#############################

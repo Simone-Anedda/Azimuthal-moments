@@ -1,0 +1,47 @@
+000 (2068.000.000) 2026-05-18 13:02:33 Job submitted from host: <192.135.33.172:9618?addrs=192.135.33.172-9618&alias=theosrv-01.ca.infn.it&noUDP&sock=schedd_1878_baf3>
+...
+001 (2068.000.000) 2026-05-18 13:02:36 Job executing on host: <192.135.33.172:9618?addrs=192.135.33.172-9618&alias=theosrv-01.ca.infn.it&noUDP&sock=startd_1878_baf3>
+	SlotName: slot1@theosrv-01.ca.infn.it
+	CondorScratchDir = "/var/lib/condor/execute/dir_700877"
+	Cpus = 1
+	Disk = 342046
+	Memory = 3568
+...
+006 (2068.000.000) 2026-05-18 13:02:45 Image size of job updated: 13452
+	13  -  MemoryUsage of job (MB)
+	13192  -  ResidentSetSize of job (KB)
+...
+006 (2068.000.000) 2026-05-18 13:07:46 Image size of job updated: 13960
+	14  -  MemoryUsage of job (MB)
+	13704  -  ResidentSetSize of job (KB)
+...
+006 (2068.000.000) 2026-05-18 13:22:48 Image size of job updated: 13964
+	14  -  MemoryUsage of job (MB)
+	13704  -  ResidentSetSize of job (KB)
+...
+006 (2068.000.000) 2026-05-18 13:27:48 Image size of job updated: 14048
+	14  -  MemoryUsage of job (MB)
+	13704  -  ResidentSetSize of job (KB)
+...
+006 (2068.000.000) 2026-05-18 13:32:48 Image size of job updated: 14304
+	14  -  MemoryUsage of job (MB)
+	13704  -  ResidentSetSize of job (KB)
+...
+006 (2068.000.000) 2026-05-18 13:42:49 Image size of job updated: 14556
+	14  -  MemoryUsage of job (MB)
+	13704  -  ResidentSetSize of job (KB)
+...
+004 (2068.000.000) 2026-05-18 15:29:22 Job was evicted.
+	(0) CPU times
+		Usr 0 02:25:51, Sys 0 00:00:16  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     1.00        1         1 
+	   Disk (KB)            :  4000        4000    342046 
+	   Memory (MB)          :    14           4      3568 
+...
+009 (2068.000.000) 2026-05-18 15:29:22 Job was aborted.
+	via condor_rm (by user sanedda)
+...

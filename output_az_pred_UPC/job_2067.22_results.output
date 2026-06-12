@@ -1,0 +1,859 @@
+DEHSS	NLO
+Set EPA flux for Pb
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.557067  UC = 0.25018  U = 0.425727  L = -0.13134
+ --> Integration time=1322.94s, neval=100000000
+ --> kT integration time=1322.94s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.565304  UC = 0.257367  U = 0.425561  L = -0.139742
+ --> Integration time=1342.08s, neval=100000000
+ --> kT integration time=1342.08s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.589983  UC = 0.267214  U = 0.430647  L = -0.159336
+ --> Integration time=1334.34s, neval=100000000
+ --> kT integration time=1334.34s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.62852  UC = 0.27813  U = 0.440029  L = -0.18849
+ --> Integration time=1313.16s, neval=100000000
+ --> kT integration time=1313.16s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.674451  UC = 0.288787  U = 0.450947  L = -0.223504
+ --> Integration time=1300.52s, neval=100000000
+ --> kT integration time=1300.52s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.722592  UC = 0.298926  U = 0.461426  L = -0.261165
+ --> Integration time=1294.96s, neval=100000000
+ --> kT integration time=1294.96s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.770476  UC = 0.308968  U = 0.470787  L = -0.299689
+ --> Integration time=1299.67s, neval=100000000
+ --> kT integration time=1299.67s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.818087  UC = 0.319019  U = 0.479238  L = -0.33885
+ --> Integration time=1304.41s, neval=100000000
+ --> kT integration time=1304.41s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.86622  UC = 0.328083  U = 0.4872  L = -0.379021
+ --> Integration time=1280.51s, neval=100000000
+ --> kT integration time=1280.51s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.914544  UC = 0.334144  U = 0.494746  L = -0.419798
+ --> Integration time=1308.63s, neval=100000000
+ --> kT integration time=1308.63s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.960656  UC = 0.334803  U = 0.501478  L = -0.459178
+ --> Integration time=1309.28s, neval=100000000
+ --> kT integration time=1309.28s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 1.00047  UC = 0.328874  U = 0.50676  L = -0.493715
+ --> Integration time=1274.68s, neval=100000000
+ --> kT integration time=1274.68s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.02926  UC = 0.315946  U = 0.510138  L = -0.519124
+ --> Integration time=1303.85s, neval=100000000
+ --> kT integration time=1303.85s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.0429  UC = 0.297375  U = 0.511506  L = -0.531399
+ --> Integration time=1299.37s, neval=100000000
+ --> kT integration time=1299.37s, neval=100000000
+Running scan for  iset = 600, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.0395  UC = 0.275662  U = 0.511147  L = -0.528356
+ --> Integration time=1341.66s, neval=100000000
+ --> kT integration time=1341.66s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.518015  UC = 0.232642  U = 0.382772  L = -0.135243
+ --> Integration time=1296.38s, neval=100000000
+ --> kT integration time=1296.38s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.529948  UC = 0.241271  U = 0.383861  L = -0.146087
+ --> Integration time=1283.65s, neval=100000000
+ --> kT integration time=1283.65s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.55716  UC = 0.252348  U = 0.389659  L = -0.167501
+ --> Integration time=1312.17s, neval=100000000
+ --> kT integration time=1312.17s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.596665  UC = 0.264034  U = 0.399073  L = -0.197592
+ --> Integration time=1305.01s, neval=100000000
+ --> kT integration time=1305.01s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.642205  UC = 0.27498  U = 0.409578  L = -0.232627
+ --> Integration time=1294.57s, neval=100000000
+ --> kT integration time=1294.57s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.688967  UC = 0.285016  U = 0.419484  L = -0.269483
+ --> Integration time=1320.34s, neval=100000000
+ --> kT integration time=1320.34s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.734747  UC = 0.29464  U = 0.428273  L = -0.306473
+ --> Integration time=1312.7s, neval=100000000
+ --> kT integration time=1312.7s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.779561  UC = 0.303996  U = 0.436155  L = -0.343406
+ --> Integration time=1293.77s, neval=100000000
+ --> kT integration time=1293.77s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.824075  UC = 0.312121  U = 0.443432  L = -0.380644
+ --> Integration time=1311.97s, neval=100000000
+ --> kT integration time=1311.97s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.867896  UC = 0.317101  U = 0.450052  L = -0.417844
+ --> Integration time=1314.72s, neval=100000000
+ --> kT integration time=1314.72s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.90882  UC = 0.316738  U = 0.455572  L = -0.453248
+ --> Integration time=1290.3s, neval=100000000
+ --> kT integration time=1290.3s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 0.94333  UC = 0.31009  U = 0.459461  L = -0.483869
+ --> Integration time=1288.55s, neval=100000000
+ --> kT integration time=1288.55s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 0.967458  UC = 0.296974  U = 0.4614  L = -0.506058
+ --> Integration time=1271.77s, neval=100000000
+ --> kT integration time=1271.77s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 0.977946  UC = 0.278853  U = 0.461445  L = -0.516501
+ --> Integration time=1317.96s, neval=100000000
+ --> kT integration time=1317.96s, neval=100000000
+Running scan for  iset = 601, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 0.973535  UC = 0.258168  U = 0.459998  L = -0.513537
+ --> Integration time=1258.5s, neval=100000000
+ --> kT integration time=1258.5s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.595568  UC = 0.267471  U = 0.458995  L = -0.136573
+ --> Integration time=1289.08s, neval=100000000
+ --> kT integration time=1289.08s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.60662  UC = 0.276177  U = 0.459008  L = -0.147612
+ --> Integration time=1277.78s, neval=100000000
+ --> kT integration time=1277.78s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.634055  UC = 0.287175  U = 0.464447  L = -0.169608
+ --> Integration time=1305.19s, neval=100000000
+ --> kT integration time=1305.19s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.674847  UC = 0.298631  U = 0.474262  L = -0.200585
+ --> Integration time=1278.89s, neval=100000000
+ --> kT integration time=1278.89s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.722212  UC = 0.309237  U = 0.485539  L = -0.236673
+ --> Integration time=1306.55s, neval=100000000
+ --> kT integration time=1306.55s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.770856  UC = 0.318892  U = 0.496216  L = -0.274639
+ --> Integration time=1299.27s, neval=100000000
+ --> kT integration time=1299.27s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.818328  UC = 0.328157  U = 0.505588  L = -0.312739
+ --> Integration time=1299.81s, neval=100000000
+ --> kT integration time=1299.81s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.864674  UC = 0.337186  U = 0.513896  L = -0.350778
+ --> Integration time=1304.7s, neval=100000000
+ --> kT integration time=1304.7s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.910784  UC = 0.344962  U = 0.521643  L = -0.389141
+ --> Integration time=1315.35s, neval=100000000
+ --> kT integration time=1315.35s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.956509  UC = 0.349477  U = 0.529017  L = -0.427492
+ --> Integration time=1317.15s, neval=100000000
+ --> kT integration time=1317.15s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.999777  UC = 0.348437  U = 0.535742  L = -0.464035
+ --> Integration time=1295.24s, neval=100000000
+ --> kT integration time=1295.24s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 1.03695  UC = 0.340864  U = 0.541244  L = -0.495703
+ --> Integration time=1303.91s, neval=100000000
+ --> kT integration time=1303.91s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.06385  UC = 0.326563  U = 0.545106  L = -0.518743
+ --> Integration time=1299.6s, neval=100000000
+ --> kT integration time=1299.6s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.07692  UC = 0.307073  U = 0.547181  L = -0.529734
+ --> Integration time=1293.92s, neval=100000000
+ --> kT integration time=1293.92s, neval=100000000
+Running scan for  iset = 602, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.07462  UC = 0.284974  U = 0.547668  L = -0.526949
+ --> Integration time=1294.76s, neval=100000000
+ --> kT integration time=1294.76s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.561969  UC = 0.252382  U = 0.429046  L = -0.132923
+ --> Integration time=1325.35s, neval=100000000
+ --> kT integration time=1325.35s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.57069  UC = 0.259819  U = 0.428961  L = -0.141729
+ --> Integration time=1302.55s, neval=100000000
+ --> kT integration time=1302.55s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.595922  UC = 0.269904  U = 0.434153  L = -0.161769
+ --> Integration time=1321.43s, neval=100000000
+ --> kT integration time=1321.43s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.634998  UC = 0.280997  U = 0.443642  L = -0.191357
+ --> Integration time=1318.74s, neval=100000000
+ --> kT integration time=1318.74s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.681388  UC = 0.291757  U = 0.454647  L = -0.226741
+ --> Integration time=1327.72s, neval=100000000
+ --> kT integration time=1327.72s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.729874  UC = 0.301939  U = 0.46519  L = -0.264684
+ --> Integration time=1287.64s, neval=100000000
+ --> kT integration time=1287.64s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.777984  UC = 0.311979  U = 0.47459  L = -0.303394
+ --> Integration time=1291.77s, neval=100000000
+ --> kT integration time=1291.77s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.825706  UC = 0.32199  U = 0.483059  L = -0.342647
+ --> Integration time=1284.65s, neval=100000000
+ --> kT integration time=1284.65s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.873839  UC = 0.330969  U = 0.491024  L = -0.382816
+ --> Integration time=1311.34s, neval=100000000
+ --> kT integration time=1311.34s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.922061  UC = 0.336891  U = 0.498558  L = -0.423502
+ --> Integration time=1305.72s, neval=100000000
+ --> kT integration time=1305.72s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.967987  UC = 0.337358  U = 0.505269  L = -0.462717
+ --> Integration time=1286.56s, neval=100000000
+ --> kT integration time=1286.56s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 1.00757  UC = 0.331208  U = 0.510527  L = -0.497048
+ --> Integration time=1323.03s, neval=100000000
+ --> kT integration time=1323.03s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.03614  UC = 0.318058  U = 0.513886  L = -0.522258
+ --> Integration time=1295.9s, neval=100000000
+ --> kT integration time=1295.9s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.04965  UC = 0.299299  U = 0.515246  L = -0.534403
+ --> Integration time=1321.77s, neval=100000000
+ --> kT integration time=1321.77s, neval=100000000
+Running scan for  iset = 603, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.04625  UC = 0.277451  U = 0.514892  L = -0.531356
+ --> Integration time=1300.77s, neval=100000000
+ --> kT integration time=1300.77s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.596383  UC = 0.267837  U = 0.461326  L = -0.135056
+ --> Integration time=1321.12s, neval=100000000
+ --> kT integration time=1321.12s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.606379  UC = 0.276067  U = 0.461118  L = -0.145261
+ --> Integration time=1315.31s, neval=100000000
+ --> kT integration time=1315.31s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.633002  UC = 0.286698  U = 0.466407  L = -0.166594
+ --> Integration time=1312.33s, neval=100000000
+ --> kT integration time=1312.33s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.673346  UC = 0.297967  U = 0.476177  L = -0.197169
+ --> Integration time=1321.46s, neval=100000000
+ --> kT integration time=1321.46s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.720629  UC = 0.308559  U = 0.487491  L = -0.233137
+ --> Integration time=1311.7s, neval=100000000
+ --> kT integration time=1311.7s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.769497  UC = 0.31833  U = 0.498253  L = -0.271244
+ --> Integration time=1312.96s, neval=100000000
+ --> kT integration time=1312.96s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.817449  UC = 0.327805  U = 0.507734  L = -0.309715
+ --> Integration time=1298.37s, neval=100000000
+ --> kT integration time=1298.37s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.864512  UC = 0.337123  U = 0.516169  L = -0.348343
+ --> Integration time=1279.18s, neval=100000000
+ --> kT integration time=1279.18s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.911578  UC = 0.345263  U = 0.524069  L = -0.387509
+ --> Integration time=1306.95s, neval=100000000
+ --> kT integration time=1306.95s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.958478  UC = 0.350196  U = 0.531623  L = -0.426855
+ --> Integration time=1307.55s, neval=100000000
+ --> kT integration time=1307.55s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 1.00305  UC = 0.349579  U = 0.538543  L = -0.464509
+ --> Integration time=1290.8s, neval=100000000
+ --> kT integration time=1290.8s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 1.0415  UC = 0.34236  U = 0.544231  L = -0.49727
+ --> Integration time=1299.03s, neval=100000000
+ --> kT integration time=1299.03s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.06944  UC = 0.328279  U = 0.548241  L = -0.5212
+ --> Integration time=1319.54s, neval=100000000
+ --> kT integration time=1319.54s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.08309  UC = 0.308834  U = 0.550411  L = -0.532678
+ --> Integration time=1275.79s, neval=100000000
+ --> kT integration time=1275.79s, neval=100000000
+Running scan for  iset = 604, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.08076  UC = 0.286604  U = 0.550935  L = -0.529828
+ --> Integration time=1308.99s, neval=100000000
+ --> kT integration time=1308.99s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.552512  UC = 0.248134  U = 0.422967  L = -0.129545
+ --> Integration time=1331.45s, neval=100000000
+ --> kT integration time=1331.45s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.561346  UC = 0.255565  U = 0.422881  L = -0.138465
+ --> Integration time=1306.12s, neval=100000000
+ --> kT integration time=1306.12s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.586212  UC = 0.265506  U = 0.427955  L = -0.158257
+ --> Integration time=1312.86s, neval=100000000
+ --> kT integration time=1312.86s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.624456  UC = 0.276332  U = 0.437228  L = -0.187228
+ --> Integration time=1336.29s, neval=100000000
+ --> kT integration time=1336.29s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.669681  UC = 0.286744  U = 0.44797  L = -0.221711
+ --> Integration time=1305.05s, neval=100000000
+ --> kT integration time=1305.05s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.716799  UC = 0.29653  U = 0.458237  L = -0.258562
+ --> Integration time=1316.95s, neval=100000000
+ --> kT integration time=1316.95s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.763407  UC = 0.306134  U = 0.467362  L = -0.296046
+ --> Integration time=1335.69s, neval=100000000
+ --> kT integration time=1335.69s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.809504  UC = 0.315672  U = 0.475556  L = -0.333948
+ --> Integration time=1304.65s, neval=100000000
+ --> kT integration time=1304.65s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.855882  UC = 0.324168  U = 0.48325  L = -0.372632
+ --> Integration time=1310.11s, neval=100000000
+ --> kT integration time=1310.11s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.902264  UC = 0.329658  U = 0.490542  L = -0.411722
+ --> Integration time=1298.59s, neval=100000000
+ --> kT integration time=1298.59s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.946393  UC = 0.329832  U = 0.497074  L = -0.449319
+ --> Integration time=1290.49s, neval=100000000
+ --> kT integration time=1290.49s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 0.984418  UC = 0.323596  U = 0.502245  L = -0.482173
+ --> Integration time=1321.21s, neval=100000000
+ --> kT integration time=1321.21s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.01189  UC = 0.310612  U = 0.505627  L = -0.506258
+ --> Integration time=1331.06s, neval=100000000
+ --> kT integration time=1331.06s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.02495  UC = 0.292257  U = 0.507113  L = -0.517839
+ --> Integration time=1295.51s, neval=100000000
+ --> kT integration time=1295.51s, neval=100000000
+Running scan for  iset = 605, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.02189  UC = 0.27099  U = 0.506958  L = -0.514927
+ --> Integration time=1304.08s, neval=100000000
+ --> kT integration time=1304.08s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.600394  UC = 0.269638  U = 0.467144  L = -0.13325
+ --> Integration time=1312.21s, neval=100000000
+ --> kT integration time=1312.21s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.607486  UC = 0.276572  U = 0.466391  L = -0.141095
+ --> Integration time=1274.64s, neval=100000000
+ --> kT integration time=1274.64s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.631942  UC = 0.286218  U = 0.47133  L = -0.160612
+ --> Integration time=1306.55s, neval=100000000
+ --> kT integration time=1306.55s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.671251  UC = 0.29704  U = 0.481033  L = -0.190217
+ --> Integration time=1306.8s, neval=100000000
+ --> kT integration time=1306.8s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.718644  UC = 0.307709  U = 0.492514  L = -0.226129
+ --> Integration time=1304.13s, neval=100000000
+ --> kT integration time=1304.13s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.768617  UC = 0.317966  U = 0.503587  L = -0.26503
+ --> Integration time=1309.09s, neval=100000000
+ --> kT integration time=1309.09s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.818526  UC = 0.328237  U = 0.513465  L = -0.305061
+ --> Integration time=1272.93s, neval=100000000
+ --> kT integration time=1272.93s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.868361  UC = 0.338624  U = 0.522372  L = -0.34599
+ --> Integration time=1286.87s, neval=100000000
+ --> kT integration time=1286.87s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.919033  UC = 0.348086  U = 0.530822  L = -0.388211
+ --> Integration time=1295.2s, neval=100000000
+ --> kT integration time=1295.2s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.970284  UC = 0.35451  U = 0.538985  L = -0.4313
+ --> Integration time=1306.58s, neval=100000000
+ --> kT integration time=1306.58s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 1.01963  UC = 0.355355  U = 0.546507  L = -0.47312
+ --> Integration time=1314.63s, neval=100000000
+ --> kT integration time=1314.63s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 1.06268  UC = 0.349321  U = 0.552697  L = -0.50998
+ --> Integration time=1301.09s, neval=100000000
+ --> kT integration time=1301.09s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.09429  UC = 0.335906  U = 0.55703  L = -0.537256
+ --> Integration time=1304.15s, neval=100000000
+ --> kT integration time=1304.15s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.10988  UC = 0.316474  U = 0.559302  L = -0.550581
+ --> Integration time=1289.82s, neval=100000000
+ --> kT integration time=1289.82s, neval=100000000
+Running scan for  iset = 606, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.10723  UC = 0.293623  U = 0.559716  L = -0.547516
+ --> Integration time=1311.76s, neval=100000000
+ --> kT integration time=1311.76s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.536529  UC = 0.240956  U = 0.403387  L = -0.133142
+ --> Integration time=1301.79s, neval=100000000
+ --> kT integration time=1301.79s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.547099  UC = 0.249079  U = 0.403914  L = -0.143184
+ --> Integration time=1315.5s, neval=100000000
+ --> kT integration time=1315.5s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.573366  UC = 0.259687  U = 0.409385  L = -0.163981
+ --> Integration time=1318.27s, neval=100000000
+ --> kT integration time=1318.27s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.612476  UC = 0.271031  U = 0.418762  L = -0.193714
+ --> Integration time=1288.61s, neval=100000000
+ --> kT integration time=1288.61s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.658073  UC = 0.281774  U = 0.429413  L = -0.22866
+ --> Integration time=1302.83s, neval=100000000
+ --> kT integration time=1302.83s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.70519  UC = 0.291727  U = 0.439521  L = -0.265669
+ --> Integration time=1317.6s, neval=100000000
+ --> kT integration time=1317.6s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.751518  UC = 0.301366  U = 0.448494  L = -0.303024
+ --> Integration time=1294.81s, neval=100000000
+ --> kT integration time=1294.81s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.797065  UC = 0.310822  U = 0.456542  L = -0.340523
+ --> Integration time=1265.14s, neval=100000000
+ --> kT integration time=1265.14s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.842558  UC = 0.319121  U = 0.464032  L = -0.378526
+ --> Integration time=1256.12s, neval=100000000
+ --> kT integration time=1256.12s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.887662  UC = 0.324323  U = 0.470985  L = -0.416677
+ --> Integration time=1242.95s, neval=100000000
+ --> kT integration time=1242.95s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.93015  UC = 0.324171  U = 0.477001  L = -0.453149
+ --> Integration time=1229.47s, neval=100000000
+ --> kT integration time=1229.47s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 0.966347  UC = 0.317656  U = 0.481515  L = -0.484833
+ --> Integration time=1217.58s, neval=100000000
+ --> kT integration time=1217.58s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 0.992064  UC = 0.304527  U = 0.484156  L = -0.507908
+ --> Integration time=1219.85s, neval=100000000
+ --> kT integration time=1219.85s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.00377  UC = 0.286218  U = 0.484902  L = -0.518872
+ --> Integration time=1207.62s, neval=100000000
+ --> kT integration time=1207.62s, neval=100000000
+Running scan for  iset = 607, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.00001  UC = 0.265188  U = 0.484085  L = -0.515921
+ --> Integration time=1213.34s, neval=100000000
+ --> kT integration time=1213.34s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.482884  UC = 0.216864  U = 0.342801  L = -0.140083
+ --> Integration time=1221.14s, neval=100000000
+ --> kT integration time=1221.14s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.498776  UC = 0.227079  U = 0.34534  L = -0.153436
+ --> Integration time=1227.54s, neval=100000000
+ --> kT integration time=1227.54s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.528509  UC = 0.239371  U = 0.351984  L = -0.176525
+ --> Integration time=1219.03s, neval=100000000
+ --> kT integration time=1219.03s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.568776  UC = 0.251693  U = 0.361493  L = -0.207283
+ --> Integration time=1214.21s, neval=100000000
+ --> kT integration time=1214.21s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.613629  UC = 0.262744  U = 0.371596  L = -0.242033
+ --> Integration time=1210.26s, neval=100000000
+ --> kT integration time=1210.26s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.658715  UC = 0.272501  U = 0.380911  L = -0.277805
+ --> Integration time=1213.67s, neval=100000000
+ --> kT integration time=1213.67s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.702156  UC = 0.281571  U = 0.389103  L = -0.313053
+ --> Integration time=1206.39s, neval=100000000
+ --> kT integration time=1206.39s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.744034  UC = 0.290142  U = 0.396388  L = -0.347646
+ --> Integration time=1206.28s, neval=100000000
+ --> kT integration time=1206.28s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.784909  UC = 0.297287  U = 0.402951  L = -0.381958
+ --> Integration time=1201.96s, neval=100000000
+ --> kT integration time=1201.96s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.824337  UC = 0.301186  U = 0.408614  L = -0.415723
+ --> Integration time=1215.15s, neval=100000000
+ --> kT integration time=1215.15s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.860307  UC = 0.29983  U = 0.412887  L = -0.44742
+ --> Integration time=1211.73s, neval=100000000
+ --> kT integration time=1211.73s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 0.889829  UC = 0.292503  U = 0.415345  L = -0.474483
+ --> Integration time=1217.1s, neval=100000000
+ --> kT integration time=1217.1s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 0.90963  UC = 0.279223  U = 0.415804  L = -0.493826
+ --> Integration time=1223.91s, neval=100000000
+ --> kT integration time=1223.91s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 0.917202  UC = 0.261533  U = 0.414483  L = -0.50272
+ --> Integration time=1204.89s, neval=100000000
+ --> kT integration time=1204.89s, neval=100000000
+Running scan for  iset = 608, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 0.911824  UC = 0.241804  U = 0.411904  L = -0.49992
+ --> Integration time=1218.07s, neval=100000000
+ --> kT integration time=1218.07s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.551753  UC = 0.247794  U = 0.423404  L = -0.128349
+ --> Integration time=1211.65s, neval=100000000
+ --> kT integration time=1211.65s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.56117  UC = 0.255485  U = 0.423369  L = -0.137801
+ --> Integration time=1221.55s, neval=100000000
+ --> kT integration time=1221.55s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.586287  UC = 0.26554  U = 0.428439  L = -0.157848
+ --> Integration time=1223.6s, neval=100000000
+ --> kT integration time=1223.6s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.62438  UC = 0.276298  U = 0.437644  L = -0.186736
+ --> Integration time=1225.62s, neval=100000000
+ --> kT integration time=1225.62s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.669093  UC = 0.286493  U = 0.448267  L = -0.220826
+ --> Integration time=1230.86s, neval=100000000
+ --> kT integration time=1230.86s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.715409  UC = 0.295954  U = 0.458381  L = -0.257028
+ --> Integration time=1217.93s, neval=100000000
+ --> kT integration time=1217.93s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.760977  UC = 0.305159  U = 0.467325  L = -0.293652
+ --> Integration time=1211.05s, neval=100000000
+ --> kT integration time=1211.05s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.805811  UC = 0.314232  U = 0.475315  L = -0.330496
+ --> Integration time=1204.7s, neval=100000000
+ --> kT integration time=1204.7s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.850714  UC = 0.32221  U = 0.482795  L = -0.367919
+ --> Integration time=1199.76s, neval=100000000
+ --> kT integration time=1199.76s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.895461  UC = 0.327172  U = 0.489891  L = -0.40557
+ --> Integration time=1206.2s, neval=100000000
+ --> kT integration time=1206.2s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.937933  UC = 0.326884  U = 0.496287  L = -0.441646
+ --> Integration time=1203.01s, neval=100000000
+ --> kT integration time=1203.01s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 0.974473  UC = 0.320327  U = 0.501412  L = -0.473062
+ --> Integration time=1207.39s, neval=100000000
+ --> kT integration time=1207.39s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.00087  UC = 0.307232  U = 0.504854  L = -0.496019
+ --> Integration time=1216.41s, neval=100000000
+ --> kT integration time=1216.41s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.01352  UC = 0.288996  U = 0.506499  L = -0.507018
+ --> Integration time=1217.81s, neval=100000000
+ --> kT integration time=1217.81s, neval=100000000
+Running scan for  iset = 609, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.01081  UC = 0.268052  U = 0.506575  L = -0.504231
+ --> Integration time=1214.75s, neval=100000000
+ --> kT integration time=1214.75s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.57345  UC = 0.257538  U = 0.432763  L = -0.140687
+ --> Integration time=1220.55s, neval=100000000
+ --> kT integration time=1220.55s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.584542  UC = 0.266126  U = 0.433226  L = -0.151316
+ --> Integration time=1210.41s, neval=100000000
+ --> kT integration time=1210.41s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.612301  UC = 0.277322  U = 0.43897  L = -0.173332
+ --> Integration time=1208.92s, neval=100000000
+ --> kT integration time=1208.92s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.653709  UC = 0.289277  U = 0.448904  L = -0.204805
+ --> Integration time=1210.94s, neval=100000000
+ --> kT integration time=1210.94s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.702008  UC = 0.300586  U = 0.460216  L = -0.241792
+ --> Integration time=1209.08s, neval=100000000
+ --> kT integration time=1209.08s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.75191  UC = 0.311055  U = 0.470952  L = -0.280958
+ --> Integration time=1219.68s, neval=100000000
+ --> kT integration time=1219.68s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.800959  UC = 0.321192  U = 0.480472  L = -0.320487
+ --> Integration time=1220.14s, neval=100000000
+ --> kT integration time=1220.14s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.849165  UC = 0.331138  U = 0.489002  L = -0.360163
+ --> Integration time=1209.96s, neval=100000000
+ --> kT integration time=1209.96s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.897317  UC = 0.339861  U = 0.496945  L = -0.400372
+ --> Integration time=1202.89s, neval=100000000
+ --> kT integration time=1202.89s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.945083  UC = 0.345302  U = 0.504348  L = -0.440735
+ --> Integration time=1222.97s, neval=100000000
+ --> kT integration time=1222.97s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.990127  UC = 0.345074  U = 0.510803  L = -0.479323
+ --> Integration time=1221.13s, neval=100000000
+ --> kT integration time=1221.13s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 1.02856  UC = 0.338107  U = 0.515712  L = -0.512849
+ --> Integration time=1213.79s, neval=100000000
+ --> kT integration time=1213.79s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.05595  UC = 0.324137  U = 0.518675  L = -0.537272
+ --> Integration time=1197.97s, neval=100000000
+ --> kT integration time=1197.97s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.06854  UC = 0.304685  U = 0.51965  L = -0.548889
+ --> Integration time=1209.81s, neval=100000000
+ --> kT integration time=1209.81s, neval=100000000
+Running scan for  iset = 610, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.06476  UC = 0.28236  U = 0.518968  L = -0.545792
+ --> Integration time=1216.38s, neval=100000000
+ --> kT integration time=1216.38s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.558905  UC = 0.251006  U = 0.4189  L = -0.140005
+ --> Integration time=1218.56s, neval=100000000
+ --> kT integration time=1218.56s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.571408  UC = 0.260146  U = 0.41974  L = -0.151668
+ --> Integration time=1217.97s, neval=100000000
+ --> kT integration time=1217.97s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.599816  UC = 0.271667  U = 0.425619  L = -0.174197
+ --> Integration time=1212.71s, neval=100000000
+ --> kT integration time=1212.71s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.640994  UC = 0.28365  U = 0.435418  L = -0.205576
+ --> Integration time=1207.71s, neval=100000000
+ --> kT integration time=1207.71s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.688344  UC = 0.294736  U = 0.446421  L = -0.241923
+ --> Integration time=1215.38s, neval=100000000
+ --> kT integration time=1215.38s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.736793  UC = 0.304801  U = 0.456783  L = -0.280011
+ --> Integration time=1204.25s, neval=100000000
+ --> kT integration time=1204.25s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.784025  UC = 0.314402  U = 0.465917  L = -0.318108
+ --> Integration time=1213.49s, neval=100000000
+ --> kT integration time=1213.49s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.830079  UC = 0.323696  U = 0.474052  L = -0.356027
+ --> Integration time=1217.31s, neval=100000000
+ --> kT integration time=1217.31s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.875721  UC = 0.331682  U = 0.481572  L = -0.394149
+ --> Integration time=1224.12s, neval=100000000
+ --> kT integration time=1224.12s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.920653  UC = 0.336376  U = 0.488513  L = -0.43214
+ --> Integration time=1207.6s, neval=100000000
+ --> kT integration time=1207.6s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.96272  UC = 0.335522  U = 0.494495  L = -0.468225
+ --> Integration time=1207.62s, neval=100000000
+ --> kT integration time=1207.62s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 0.998362  UC = 0.32818  U = 0.498973  L = -0.499389
+ --> Integration time=1209.18s, neval=100000000
+ --> kT integration time=1209.18s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.02356  UC = 0.314194  U = 0.5016  L = -0.521956
+ --> Integration time=1208.09s, neval=100000000
+ --> kT integration time=1208.09s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.03496  UC = 0.295111  U = 0.502366  L = -0.532596
+ --> Integration time=1214.43s, neval=100000000
+ --> kT integration time=1214.43s, neval=100000000
+Running scan for  iset = 611, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.03127  UC = 0.273479  U = 0.501606  L = -0.529664
+ --> Integration time=1212.24s, neval=100000000
+ --> kT integration time=1212.24s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.6093  UC = 0.273638  U = 0.48212  L = -0.12718
+ --> Integration time=1217.26s, neval=100000000
+ --> kT integration time=1217.26s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.617188  UC = 0.280989  U = 0.481182  L = -0.136006
+ --> Integration time=1219.48s, neval=100000000
+ --> kT integration time=1219.48s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.641704  UC = 0.290639  U = 0.485934  L = -0.15577
+ --> Integration time=1216.9s, neval=100000000
+ --> kT integration time=1216.9s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.680203  UC = 0.301001  U = 0.495453  L = -0.18475
+ --> Integration time=1221.63s, neval=100000000
+ --> kT integration time=1221.63s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.725973  UC = 0.310847  U = 0.506716  L = -0.219257
+ --> Integration time=1218.72s, neval=100000000
+ --> kT integration time=1218.72s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.773625  UC = 0.320038  U = 0.517495  L = -0.25613
+ --> Integration time=1223.68s, neval=100000000
+ --> kT integration time=1223.68s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.820604  UC = 0.32907  U = 0.526978  L = -0.293626
+ --> Integration time=1215.16s, neval=100000000
+ --> kT integration time=1215.16s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.866938  UC = 0.338069  U = 0.535404  L = -0.331534
+ --> Integration time=1212.22s, neval=100000000
+ --> kT integration time=1212.22s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.913595  UC = 0.346027  U = 0.543365  L = -0.37023
+ --> Integration time=1199.83s, neval=100000000
+ --> kT integration time=1199.83s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.960513  UC = 0.35094  U = 0.551161  L = -0.409352
+ --> Integration time=1217.52s, neval=100000000
+ --> kT integration time=1217.52s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 1.0056  UC = 0.350467  U = 0.558585  L = -0.447016
+ --> Integration time=1201.61s, neval=100000000
+ --> kT integration time=1201.61s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 1.045  UC = 0.343509  U = 0.565014  L = -0.479982
+ --> Integration time=1219.24s, neval=100000000
+ --> kT integration time=1219.24s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 1.07418  UC = 0.329733  U = 0.569948  L = -0.50423
+ --> Integration time=1218.29s, neval=100000000
+ --> kT integration time=1218.29s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 1.08914  UC = 0.310558  U = 0.573114  L = -0.516022
+ --> Integration time=1212.14s, neval=100000000
+ --> kT integration time=1212.14s, neval=100000000
+Running scan for  iset = 612, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 1.08795  UC = 0.288509  U = 0.574594  L = -0.513352
+ --> Integration time=1213.78s, neval=100000000
+ --> kT integration time=1213.78s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.527806  UC = 0.237039  U = 0.394121  L = -0.133684
+ --> Integration time=1216.87s, neval=100000000
+ --> kT integration time=1216.87s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.539118  UC = 0.245446  U = 0.394905  L = -0.144213
+ --> Integration time=1218.81s, neval=100000000
+ --> kT integration time=1218.81s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.565839  UC = 0.256279  U = 0.400508  L = -0.165332
+ --> Integration time=1226.13s, neval=100000000
+ --> kT integration time=1226.13s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.605045  UC = 0.267742  U = 0.40987  L = -0.195175
+ --> Integration time=1224.07s, neval=100000000
+ --> kT integration time=1224.07s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.650438  UC = 0.278505  U = 0.420411  L = -0.230027
+ --> Integration time=1224.21s, neval=100000000
+ --> kT integration time=1224.21s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.697145  UC = 0.288399  U = 0.430376  L = -0.266768
+ --> Integration time=1221.93s, neval=100000000
+ --> kT integration time=1221.93s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.742918  UC = 0.297917  U = 0.439209  L = -0.303709
+ --> Integration time=1222.67s, neval=100000000
+ --> kT integration time=1222.67s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
+Collins ratios: UL = 0.787773  UC = 0.307198  U = 0.447119  L = -0.340654
+ --> Integration time=1220.75s, neval=100000000
+ --> kT integration time=1220.75s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.5
+Collins ratios: UL = 0.832415  UC = 0.315279  U = 0.454449  L = -0.377965
+ --> Integration time=1224.55s, neval=100000000
+ --> kT integration time=1224.55s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.55
+Collins ratios: UL = 0.876496  UC = 0.320243  U = 0.461198  L = -0.415299
+ --> Integration time=1214.99s, neval=100000000
+ --> kT integration time=1214.99s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.6
+Collins ratios: UL = 0.91784  UC = 0.319881  U = 0.466956  L = -0.450884
+ --> Integration time=1216.81s, neval=100000000
+ --> kT integration time=1216.81s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.65
+Collins ratios: UL = 0.952893  UC = 0.313233  U = 0.471183  L = -0.48171
+ --> Integration time=1220.05s, neval=100000000
+ --> kT integration time=1220.05s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.7
+Collins ratios: UL = 0.977628  UC = 0.300096  U = 0.473535  L = -0.504093
+ --> Integration time=1225.72s, neval=100000000
+ --> kT integration time=1225.72s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.75
+Collins ratios: UL = 0.988696  UC = 0.281918  U = 0.474022  L = -0.514674
+ --> Integration time=1226.34s, neval=100000000
+ --> kT integration time=1226.34s, neval=100000000
+Running scan for  iset = 613, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.8
+Collins ratios: UL = 0.984751  UC = 0.261143  U = 0.472997  L = -0.511754
+ --> Integration time=1213.93s, neval=100000000
+ --> kT integration time=1213.93s, neval=100000000
+Running scan for  iset = 614, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.679014  UC = 0.304947  U = 0.550757  L = -0.128258
+ --> Integration time=1221.69s, neval=100000000
+ --> kT integration time=1221.69s, neval=100000000
+Running scan for  iset = 614, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.684756  UC = 0.311751  U = 0.548872  L = -0.135885
+ --> Integration time=1218.66s, neval=100000000
+ --> kT integration time=1218.66s, neval=100000000
+Running scan for  iset = 614, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.708569  UC = 0.320924  U = 0.553417  L = -0.155153
+ --> Integration time=1226.87s, neval=100000000
+ --> kT integration time=1226.87s, neval=100000000
+Running scan for  iset = 614, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.747958  UC = 0.330984  U = 0.563506  L = -0.184452
+ --> Integration time=1225.4s, neval=100000000
+ --> kT integration time=1225.4s, neval=100000000
+Running scan for  iset = 614, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3

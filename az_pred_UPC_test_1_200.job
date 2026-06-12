@@ -1,0 +1,13 @@
+#############################
+Executable      = /hpe-gr4/sanedda/Azimuthal-moments_yy/exe/Azimuthal_moments_predictions_yy
+Initialdir      = /hpe-gr4/sanedda/Azimuthal-moments_yy
+Requirements    = OpSys == "LINUX" && Arch == "X86_64"
+getenv          = True
+Output          = output_az_pred_UPC/job_$(Cluster).$(Process)_results.output
+Error           = jobs_az_pred_UPC/job_$(Cluster).$(Process).err
+Log             = jobs_az_pred_UPC/job_$(Cluster).$(Process).log
+
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 5360.0 Q20 3.0 Q2 10.0 30.0 thetac 3.0e-2 EPA1 Pb EPA2 Pb filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -2.4 2.4 etaqb -2.4 2.4 
+queue
+
+#############################

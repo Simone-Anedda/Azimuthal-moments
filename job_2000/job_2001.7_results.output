@@ -1,0 +1,63 @@
+DEHSS	NLO
+ml = 0.000510999
+Set EPA flux for electron
+Running scan for kT =[3,18], z2 = 0.1
+Collins ratios: UL = 0.564327  UC = 0.227487  U = 0.487074  L = -0.0772531
+ --> Integration time=37.396s, neval=12000000
+ --> kT integration time=37.396s, neval=12000000
+Running scan for kT =[3,18], z2 = 0.15
+Collins ratios: UL = 0.581193  UC = 0.243642  U = 0.487266  L = -0.0939267
+ --> Integration time=6.22695s, neval=2000000
+ --> kT integration time=6.22695s, neval=2000000
+Running scan for kT =[3,18], z2 = 0.2
+Collins ratios: UL = 0.609361  UC = 0.25565  U = 0.488847  L = -0.120514
+ --> Integration time=3.12315s, neval=1000000
+ --> kT integration time=3.12315s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.25
+Collins ratios: UL = 0.647613  UC = 0.261775  U = 0.491468  L = -0.156146
+ --> Integration time=3.10965s, neval=1000000
+ --> kT integration time=3.10965s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.3
+Collins ratios: UL = 0.693229  UC = 0.263975  U = 0.494343  L = -0.198885
+ --> Integration time=3.09526s, neval=1000000
+ --> kT integration time=3.09526s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.35
+Collins ratios: UL = 0.743801  UC = 0.265262  U = 0.497001  L = -0.246799
+ --> Integration time=3.12246s, neval=1000000
+ --> kT integration time=3.12246s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.4
+Collins ratios: UL = 0.79779  UC = 0.267971  U = 0.499348  L = -0.298442
+ --> Integration time=3.11118s, neval=1000000
+ --> kT integration time=3.11118s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.45
+Collins ratios: UL = 0.854821  UC = 0.272415  U = 0.501467  L = -0.353355
+ --> Integration time=3.09286s, neval=1000000
+ --> kT integration time=3.09286s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.5
+Collins ratios: UL = 0.915445  UC = 0.276435  U = 0.503404  L = -0.412041
+ --> Integration time=3.11129s, neval=1000000
+ --> kT integration time=3.11129s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.55
+Collins ratios: UL = 0.980379  UC = 0.276172  U = 0.505062  L = -0.475317
+ --> Integration time=3.13406s, neval=1000000
+ --> kT integration time=3.13406s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.6
+Collins ratios: UL = 1.04981  UC = 0.267851  U = 0.506229  L = -0.543582
+ --> Integration time=3.12206s, neval=1000000
+ --> kT integration time=3.12206s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.65
+Collins ratios: UL = 1.12302  UC = 0.250022  U = 0.506743  L = -0.616272
+ --> Integration time=3.11832s, neval=1000000
+ --> kT integration time=3.11832s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.7
+Collins ratios: UL = 1.19862  UC = 0.222673  U = 0.506548  L = -0.692074
+ --> Integration time=3.0659s, neval=1000000
+ --> kT integration time=3.0659s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.75
+Collins ratios: UL = 1.27365  UC = 0.188515  U = 0.505756  L = -0.767898
+ --> Integration time=3.10153s, neval=1000000
+ --> kT integration time=3.10153s, neval=1000000
+Running scan for kT =[3,18], z2 = 0.8
+Collins ratios: UL = 1.34229  UC = 0.15161  U = 0.504577  L = -0.837717
+ --> Integration time=3.08303s, neval=1000000
+ --> kT integration time=3.08303s, neval=1000000

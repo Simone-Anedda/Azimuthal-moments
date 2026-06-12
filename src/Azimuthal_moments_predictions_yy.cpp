@@ -70,6 +70,7 @@ double mean_pperp2Col = mean_MC2 * pperp2 / (mean_MC2 + pperp2);
 double mean_prefact = (pi * EulerConst / 2) * (pow(mean_pperp2Col, 3) / (pperp2 * pperp2 * mean_MC2));
 
 int charge = 1, hadron = 1;
+bool compute_BL = true;
 
 FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
@@ -380,8 +381,8 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
     {
         f8 = kin.AU * jacob_kT;
         f9 = kin.BU * jacob_kT;
-        f10 = kin.BL * jacob_kT;
-    } 
+        f10 = compute_BL ? kin.BL * jacob_kT : 0.0;
+   } 
     else
     {
         f8 = 0.0;
@@ -484,6 +485,14 @@ int main(int argc, char *argv[])
     double etaqb_max = atof(argv[37]);
 
     const std::string MCname = MCnamestring.str(), EPA1name = EPA1namestr.str(), EPA2name = EPA2namestr.str();
+    auto isLepton = [](const std::string& name) {
+        return name == "electron" || name == "muon" || name == "tau";
+    };
+    
+    compute_BL = isLepton(EPA1name) && isLepton(EPA2name);
+    if (!compute_BL)
+        std::cout << "EPA sources '" << EPA1name << "' and '" << EPA2name
+                  << "' are not both leptons: BL (f10) integration will be skipped." << std::endl;
     CSV->Load(MCname);
     int Nset = CSV->GetRowCount();
 
@@ -535,7 +544,7 @@ int main(int argc, char *argv[])
     }
 
     int ndim = 4, ncomp = kNumComponents + 8, ncompColl = 8, nvec = 1, verbose = 0, last = 4, key = 13;
-    double epsrel = 1e-4, epsabs = 1e-5;
+    double epsrel = 1e-3, epsabs = 1e-4;
     int flags = 0, seed = 0, mineval = 0, nincrease = 0, nbatch = 1000, gridno = 0;
     char statefile[64] = "";
     void* spin = nullptr;
@@ -579,6 +588,7 @@ int main(int argc, char *argv[])
                 << ",<ALL|c12>_L" << ",err_<ALL|c12>_L"
                 << ",BU_o_AU" << ",err_BU_o_AU"
                 << ",BL_o_AU" << ",err_BL_o_AU"
+                << ",denU" << ",denL"     
                 << ",Collins_U" << ",Collins_L"
                 << ",time[s]" << ",neval" << ",fail"
                 << std::endl;
@@ -693,6 +703,7 @@ int main(int argc, char *argv[])
                     << "," << BL_o_AU * ratio_L << "," << BL_o_AU_error * std::abs(ratio_L)
                     << "," << BU_o_AU << "," << BU_o_AU_error
                     << "," << BL_o_AU << "," << BL_o_AU_error
+                    << "," << denU << "," << denL
                     << "," << ratio_U << "," << ratio_L
                     << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
                     << std::endl;

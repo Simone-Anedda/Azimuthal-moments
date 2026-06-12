@@ -1,0 +1,16 @@
+z2,<dsig|c12>_piPpiM,err_<dsig|c12>_piPpiM,<dsig|c12>_piMpiP,err_<dsig|c12>_piMpiP,<dsig|c12>_piPpiP,err_<dsig|c12>_piPpiP,<dsig|c12>_piMpiM,err_<dsig|c12>_piMpiM,<ALL|c12>_piPpiM,err_<ALL|c12>_piPpiM,<ALL|c12>_piMpiP,err_<ALL|c12>_piMpiP,<ALL|c12>_piPpiP,err_<ALL|c12>_piPpiP,<ALL|c12>_piMpiM,err_<ALL|c12>_piMpiM,BU_o_AU,err_BU_o_AU,BL_o_AU,err_BL_o_AU,Collins_piPpiM,Collins_piMpiP,Collins_piPpiP,Collins_piMpiM,time[s],neval,fail
+,0.1,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.352668,0.352668,-0.0038922,-0.0038922,0.0395653,11169,0
+,0.15,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.346938,0.346938,-0.0128483,-0.0128483,0.0343378,9639,0
+,0.2,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.348085,0.348085,-0.0267192,-0.0267192,0.0328125,9333,0
+,0.25,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.35597,0.35597,-0.0434673,-0.0434673,0.031046,8721,0
+,0.3,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.367195,0.367195,-0.0611645,-0.0611645,0.0283832,8109,0
+,0.35,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.378533,0.378533,-0.0788676,-0.0788676,0.0290767,8109,0
+,0.4,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.388285,0.388285,-0.0965443,-0.0965443,0.0284917,8109,0
+,0.45,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.396626,0.396626,-0.114258,-0.114258,0.027645,7803,0
+,0.5,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.40475,0.40475,-0.131371,-0.131371,0.02803,7803,0
+,0.55,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.414178,0.414178,-0.146006,-0.146006,0.0274425,7803,0
+,0.6,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.425769,0.425769,-0.155432,-0.155432,0.0274237,7803,0
+,0.65,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.439124,0.439124,-0.157381,-0.157381,0.0275376,7803,0
+,0.7,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.453403,0.453403,-0.150191,-0.150191,0.0274121,7803,0
+,0.75,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.467274,0.467274,-0.134108,-0.134108,0.0275304,7803,0
+,0.8,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,-nan,-nan,-nan,nan,0.479554,0.479554,-0.11117,-0.11117,0.0276793,7803,0

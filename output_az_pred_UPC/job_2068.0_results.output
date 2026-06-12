@@ -1,0 +1,32 @@
+EPA sources 'Pb' and 'Pb' are not both leptons: BL (f10) integration will be skipped.
+DEHSS	NLO
+Set EPA flux for Pb
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1
+Collins ratios: UL = 0.338099  UC = 0.163599  U = 0.330691  L = -0.00740786
+ --> Integration time=1220.27s, neval=100000000
+ --> kT integration time=1220.27s, neval=100000000
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.15
+Collins ratios: UL = 0.344374  UC = 0.16731  U = 0.327044  L = -0.0173301
+ --> Integration time=1204.01s, neval=100000000
+ --> kT integration time=1204.01s, neval=100000000
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.2
+Collins ratios: UL = 0.361304  UC = 0.17526  U = 0.329593  L = -0.0317115
+ --> Integration time=1217.93s, neval=100000000
+ --> kT integration time=1217.93s, neval=100000000
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.25
+Collins ratios: UL = 0.386504  UC = 0.186197  U = 0.33796  L = -0.0485442
+ --> Integration time=1217.75s, neval=100000000
+ --> kT integration time=1217.75s, neval=100000000
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.3
+Collins ratios: UL = 0.41505  UC = 0.198039  U = 0.349033  L = -0.0660169
+ --> Integration time=1211.94s, neval=100000000
+ --> kT integration time=1211.94s, neval=100000000
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.35
+Collins ratios: UL = 0.443334  UC = 0.209467  U = 0.36005  L = -0.083284
+ --> Integration time=1207.93s, neval=100000000
+ --> kT integration time=1207.93s, neval=100000000
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.4
+Collins ratios: UL = 0.469953  UC = 0.22012  U = 0.369662  L = -0.100291
+ --> Integration time=1211.83s, neval=100000000
+ --> kT integration time=1211.83s, neval=100000000
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.45
