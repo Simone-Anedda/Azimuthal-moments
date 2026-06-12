@@ -7,10 +7,6 @@
 
 namespace
 {
-constexpr double kAlphaEm = 1.0 / 137.036;
-constexpr double kElectronMass = 5.11e-4;
-constexpr double kPiValue = 3.14159265358979323846;
-
 bool are_finite(std::initializer_list<double> values)
 {
     for (const double value : values) {
@@ -122,11 +118,12 @@ YStarYKinematics PhysicsCalculator::computeYStarY(double sqrts,
                                                   double thetac,
                                                   double xB,
                                                   double y,
-                                                  double csi)
+                                                  double csi,
+                                                  EPA::EPA_flux& flux)
 {
     const double S = sqrts * sqrts;
     const double Q2 = xB * y * S;
-    return finalizeYStarY(sqrts, Q20, thetac, xB, y, csi, Q2);
+    return finalizeYStarY(sqrts, Q20, thetac, xB, y, csi, Q2, flux);
 }
 
 YStarYKinematics PhysicsCalculator::computeYStarYQ2(double sqrts,
@@ -134,7 +131,8 @@ YStarYKinematics PhysicsCalculator::computeYStarYQ2(double sqrts,
                                                     double thetac,
                                                     double xB,
                                                     double Q2,
-                                                    double csi)
+                                                    double csi,
+                                                    EPA::EPA_flux& flux)
 {
     const double S = sqrts * sqrts;
     if (xB <= 0.0 || S <= 0.0) {
@@ -142,7 +140,7 @@ YStarYKinematics PhysicsCalculator::computeYStarYQ2(double sqrts,
     }
 
     const double y = Q2 / (xB * S);
-    return finalizeYStarY(sqrts, Q20, thetac, xB, y, csi, Q2);
+    return finalizeYStarY(sqrts, Q20, thetac, xB, y, csi, Q2, flux);
 }
 
 YStarYKinematics PhysicsCalculator::finalizeYStarY(double sqrts,
@@ -151,7 +149,8 @@ YStarYKinematics PhysicsCalculator::finalizeYStarY(double sqrts,
                                                    double xB,
                                                    double y,
                                                    double csi,
-                                                   double Q2)
+                                                   double Q2,
+                                                   EPA::EPA_flux& flux)
 {
     YStarYKinematics out;
     out.sqrts = sqrts;
@@ -186,8 +185,8 @@ YStarYKinematics PhysicsCalculator::finalizeYStarY(double sqrts,
     out.zetamin = 0.5 * (1.0 - zeta_sqrt);
     out.zetamax = 0.5 * (1.0 + zeta_sqrt);
 
-    out.Q2min = kElectronMass * kElectronMass * out.csi * out.csi / (1.0 - out.csi);
-    out.Q2max = (out.S / 4.0) * out.thetac * out.thetac * (1.0 - out.csi) + out.Q2min;
+    out.Q2min = flux.Q2min(out.csi);
+    out.Q2max = flux.Q2max(out.csi);
     if (out.Q2min <= 0.0 || out.Q2max <= out.Q2min) {
         return out;
     }
@@ -210,13 +209,7 @@ YStarYKinematics PhysicsCalculator::finalizeYStarY(double sqrts,
         return out;
     }
 
-    const double log_ratio = std::log(out.Q2max / out.Q2min);
-    const double me2_term = 2.0 * kElectronMass * kElectronMass * out.csi * (1.0 / out.Q2max - 1.0 / out.Q2min);
-
-    out.fgl = (kAlphaEm / (2.0 * kPiValue)) *
-              ((1.0 + (1.0 - out.csi) * (1.0 - out.csi)) / out.csi * log_ratio + me2_term);
-    out.DLfgl = (kAlphaEm / (2.0 * kPiValue)) *
-                ((1.0 - (1.0 - out.csi) * (1.0 - out.csi)) / out.csi * log_ratio + me2_term);
+    evaluate_flux(flux, out.csi, out.fgl, out.DLfgl);
 
     out.Kxy = 1.0 / (out.xB * out.y * out.y * out.csi * out.csi * out.csi * out.S);
     out.KQx = 1.0 / (out.csi * out.csi * out.csi * out.Q2 * out.Q2);

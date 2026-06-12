@@ -82,7 +82,6 @@ public:
                                   double x1,
                                   double x2,
                                   double kT,
-double etaq_min, double etaq_max, double etaqb_min, double etaqb_max,
                                   EPA::EPA_flux& flux1,
                                   EPA::EPA_flux* flux2 = nullptr);
 
@@ -91,14 +90,16 @@ double etaq_min, double etaq_max, double etaqb_min, double etaqb_max,
                                           double thetac,
                                           double xB,
                                           double y,
-                                          double csi);
+                                          double csi,
+                                          EPA::EPA_flux& flux);
 
     static YStarYKinematics computeYStarYQ2(double sqrts,
                                             double Q20,
                                             double thetac,
                                             double xB,
                                             double Q2,
-                                            double csi);
+                                            double csi,
+                                            EPA::EPA_flux& flux);
 
 private:
     static YStarYKinematics finalizeYStarY(double sqrts,
@@ -107,5 +108,6 @@ private:
                                            double xB,
                                            double y,
                                            double csi,
-                                           double Q2);
+                                           double Q2,
+                                           EPA::EPA_flux& flux);
 };
