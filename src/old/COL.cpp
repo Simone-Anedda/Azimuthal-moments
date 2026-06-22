@@ -61,26 +61,11 @@ void COLLINS::set_model(const string model_in){
         
         parnames = {"NT_u", "NT_d", "a_u", "a_d", "b_u", "b_d", "NC_fav", "NC_dis", "g_fav", "g_dis", "d_fav", "d_dis", "Col_p_width"};    
     }
-
-};
-
-
-void COLLINS::set_model(const string model_in, const int member_in){
-
-    model = model_in;
-    member = member_in;
-
-    if (model == "JAM3D-2022"){
-
-        COL_ff = LHAPDF::mkPDF("DeltaND_JAM22_collins_pion_lo", member);
-    }
-    if (model == "JAM3D-2022-nolat"){
-
-        COL_ff = LHAPDF::mkPDF("DeltaND_JAM22_collins_pion_lo_nolat", member);
-    }
+ 
 
     set_header();
-}
+
+};
 
 void  COLLINS::set_header(){
     
@@ -127,11 +112,7 @@ void  COLLINS::set_header(){
     if(hasFF and evo == "DGLAP") header += "Evolution: DGLAP evolution for Collins function\n\n";
     if(evo == "CT3") header += "Evolution: HOPPET CT3 evolution for Collins function\n\n";
 
-    if(model == "JAM3D-2022" || model == "JAM3D-2022-nolat"){
-        header += "Model: JAM3D-2022\n\n";
-        if(model == "JAM3D-2022-nolat") header += "no lattice QCD included\n\n";
 
-    } 
 };
 
 
@@ -456,38 +437,6 @@ void COLLINS::eval(const double & av_z, const double & Q2, const int & charge_in
             
             Col_fav = N_fav;
             Col_dis = N_dis;
-        }
-
-        if(model == "JAM3D-2022"){
-                        
-            Col_fav = COL_ff->xfxQ2(2, av_z, Q2) / av_z;
-            Col_dis = COL_ff->xfxQ2(1, av_z, Q2) / av_z;
-
-            COL_z[0] = 0;
-            COL_z[1] = 0;
-            COL_z[2] = 0;
-            for(int i = 3; i <= 9; i++){
-                
-                if(i == 3 || i == 9) COL_z[i] = Col_dis;//s or sbar are always disfavoured for pions 
-                
-                if(charge == 1){ //pi+
-                    
-                    if(i == 5 || i == 8) COL_z[i] = Col_fav; //favoured for u and dbar
-                    if(i == 4 || i == 7) COL_z[i] = Col_dis; //disfavoured for d and ubar
-                }
-                
-                if(charge == -1){ //pi-
-                    
-                    if(i == 5 || i == 8) COL_z[i] = Col_dis; //disfavoured for u and dbar
-                    if(i == 4 || i == 7) COL_z[i] = Col_fav; //favoured for d and ubar
-                }
-            }
-            
-            COL_z[6] = 0; //no gluon
-            COL_z[10] = 0;
-            COL_z[11] = 0;
-            COL_z[12] = 0;  
-
         }
     }
     

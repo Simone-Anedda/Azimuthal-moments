@@ -24,7 +24,7 @@ constexpr int kUserDataSqrts = 0;
 constexpr int kUserDataQ20 = 1;
 constexpr int kUserDataThetac = 2;
 constexpr int kUserDataKTMin = 3;
-constexpr int kUserDataKTMax = 4;
+constexpr int kUserDataKTMmax = 4;
 constexpr int kUserDataZ1Min = 5;
 constexpr int kUserDataZ1Max = 6;
 constexpr int kUserDataZ2 = 7;
@@ -70,8 +70,9 @@ double mean_pperp2Col = mean_MC2 * pperp2 / (mean_MC2 + pperp2);
 double mean_prefact = (pi * EulerConst / 2) * (pow(mean_pperp2Col, 3) / (pperp2 * pperp2 * mean_MC2));
 
 int charge = 1, hadron = 1;
+bool compute_BL = true;
 
-FRAG::FF myFF;//"DEHSS","NLO");
+FRAG::FF myFF("DEHSS","NLO");
 COL::COLLINS myCol;
 EPA::EPA_flux *flux1 = new EPA::EPA_flux();
 EPA::EPA_flux *flux2 = new EPA::EPA_flux();
@@ -380,14 +381,17 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
     {
         f8 = kin.AU * jacob_kT;
         f9 = kin.BU * jacob_kT;
-        f10 = kin.BL * jacob_kT;
-    } 
+        f10 = compute_BL ? kin.BL * jacob_kT : 0.0;
+   } 
     else
     {
         f8 = 0.0;
         f9 = 0.0;
         f10 = 0.0;
     }
+    //if( kin.AU < 0|| jacob_kT < 0){
+    //  std::cout<< kin.AU<<jacob_kT<<std::endl;
+    //}
 
     Collins_FF(hadron, charge, z1, z2, Q2);
 
@@ -484,6 +488,22 @@ int main(int argc, char *argv[])
     double etaqb_max = atof(argv[37]);
 
     const std::string MCname = MCnamestring.str(), EPA1name = EPA1namestr.str(), EPA2name = EPA2namestr.str();
+    auto isLepton = [](const std::string& name) {
+        return name == "electron" || name == "muon" || name == "tau";
+    };
+    
+    compute_BL = isLepton(EPA1name) && isLepton(EPA2name);
+    if (!compute_BL)
+        std::cout << "EPA sources '" << EPA1name << "' and '" << EPA2name
+                  << "' are not both leptons: BL (f10) integration will be skipped." << std::endl;
+    CSV->Load(MCname);
+    int Nset = CSV->GetRowCount();
+
+    if (iset_min < 1 || iset_max > Nset) {
+
+        std::cerr << "iset out of range: iset_min = " << iset_min << ", iset_max = " << iset_max << ", Nset = " << Nset << std::endl;
+        return 0;
+    }
 
     std::vector<double> z2_values;
     for (double value = z2_min; value <= z2_max + 0.05; value += 0.05) {
@@ -494,23 +514,7 @@ int main(int argc, char *argv[])
     const std::string widths = widthsstr.str();
     const std::string evo = evostr.str();
 
-    CSV->Load(MCname);
-    int Nset = CSV->GetRowCount();
-
-    if (iset_min < 1 || iset_max > Nset) {
-
-        std::cerr << "iset out of range: iset_min = " << iset_min << ", iset_max = " << iset_max << ", Nset = " << Nset << std::endl;
-        return 0;
-    }
-
-
     myFF.use_LHAPDF(true);
-    if (model != "JAM3D-2022") {
-        myFF.set_FF("DEHSS", "NLO");
-    }
-    else if (model == "JAM3D-2022") {
-        myFF.set_FFset("DSS07LO");
-    }
     cout << myFF.FFset << "\t" << myFF.FForder << endl;
     if (myFF.useLHAPDF) {
         if (myFF.FFset == "NNFF10") {
@@ -518,10 +522,9 @@ int main(int argc, char *argv[])
             if (myFF.FForder == "NLO") myFF.set_LHAPDF_FFset(NNFF10setsNLO);
         }
         if (myFF.FFset == "DEHSS") myFF.set_LHAPDF_FFset(DEHSSsetsNLO);
-        if (myFF.FFset == "DSS07LO") myFF.set_LHAPDF_FFset(DSSsetsLO);
     }
 
-    if (model != "JAM3D-2022") myCol.set_model(model);
+    myCol.set_model(model);
     myCol.set_widths(widths);
     myCol.set_evolution(evo);
 
@@ -555,7 +558,7 @@ int main(int argc, char *argv[])
     // std::ofstream outFile_UC("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
     //                          "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
     //                          LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) + "_UC.txt");
-    std::ofstream outFile_U_L(model + "_kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
+    std::ofstream outFile_U_L("kT_max_" + LHAPDF::to_str(kT_max) + "_kT_min_" + LHAPDF::to_str(kT_min) + "_Vs_" + LHAPDF::to_str(sqrts) +
                               "_thetac_" + LHAPDF::to_str(thetac) + "_z1_" +
                               LHAPDF::to_str(z1_min) + "_" + LHAPDF::to_str(z1_max) +
                               "_etaq_" + LHAPDF::to_str(etaq_min) + "_" + LHAPDF::to_str(etaq_max) +
@@ -588,6 +591,9 @@ int main(int argc, char *argv[])
                 << ",<ALL|c12>_L" << ",err_<ALL|c12>_L"
                 << ",BU_o_AU" << ",err_BU_o_AU"
                 << ",BL_o_AU" << ",err_BL_o_AU"
+		<< ",AU" << ",err_AU"
+		<< ",BU" << ",err_BU" 
+                << ",denU" << ",denL"     
                 << ",Collins_U" << ",Collins_L"
                 << ",time[s]" << ",neval" << ",fail"
                 << std::endl;
@@ -607,27 +613,13 @@ int main(int argc, char *argv[])
     //             << ",time[s]" << ",neval" << ",fail"
     //             << std::endl;
 
-//     int min, max;
-//     min = i
-//     if (iset_min == 1) min = 0;
-//     else if (iset_min > 0) min = iset_min;
-    
-//     if (iset_max < Nset) max = iset_max + 1;
-//     else max = Nset;
-
+    //NOTE: rapidCSV uses zero based indexing
     for (int iset = iset_min - 1; iset < iset_max; iset ++){
 
         std::vector<double> pars = CSV->GetRow<double>(iset);
 
-        //double prefact = get_prefact(pars.back());
-        double prefact = 1.0;
+        double prefact = get_prefact(pars.back());
 
-        if (model != "JAM3D-2022" && model != "JAM3D-2022-nolat") {
-             prefact = get_prefact(pars.back());
-        }
-        if (model == "JAM3D-2022" || model == "JAM3D-2022-nolat"){
-             myCol.set_model(model, iset);
-        }
         for (double z2 : z2_values) {
 
             void *USERDATA[] = {&sqrts, &Q20, &thetac, &kT_min, &kT_max, &z1_min, &z1_max, &z2, &pars, &etaq_min, &etaq_max, &etaqb_min, &etaqb_max};
@@ -682,7 +674,7 @@ int main(int argc, char *argv[])
                   << "  U = " << ratio_U
                   << "  L = " << ratio_L << std::endl;
             std::cout << " --> Integration time=" << res.elapsed_seconds
-                  << "s, neval=" << res.neval << ", fail=" << res.fail << std::endl;
+                  << "s, neval=" << res.neval << std::endl;
 
             ratio_UL *= prefact;
             ratio_UC *= prefact;
@@ -716,6 +708,9 @@ int main(int argc, char *argv[])
                     << "," << BL_o_AU * ratio_L << "," << BL_o_AU_error * std::abs(ratio_L)
                     << "," << BU_o_AU << "," << BU_o_AU_error
                     << "," << BL_o_AU << "," << BL_o_AU_error
+		    << "," << res.integral[8] << "," << res.error[8]
+		    << "," << res.integral[9] << "," << res.error[9]
+                    << "," << denU << "," << denL
                     << "," << ratio_U << "," << ratio_L
                     << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail
                     << std::endl;

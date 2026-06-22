@@ -29,9 +29,10 @@ void FF::set_FF(const std::string FFset_in, const std::string FForder_in){
     set_FFset(FFset_in);
     set_FForder(FForder_in);
     
-    if(FForder == "LO"){        
-        FForder_i = 0;
-        iset_ff = 1;
+    if(FForder == "LO"){
+                
+                FForder_i = 0;
+                iset_ff = 1;
     }
     
     else if(FForder == "NLO"){
@@ -53,9 +54,9 @@ void FF::set_LHAPDF_FFset(map<string, string> FFsets){
 
     ff_pip = LHAPDF::mkPDF(FFsets["pip"] + "/0");
     ff_pim = LHAPDF::mkPDF(FFsets["pim"] + "/0");
-    if(!FFsets["kap"].empty()) ff_kap = LHAPDF::mkPDF(FFsets["kap"] + "/0");
-    if(!FFsets["kam"].empty()) ff_kam = LHAPDF::mkPDF(FFsets["kam"] + "/0");
-    if(!FFsets["pisum"].empty()) ff_pisum = LHAPDF::mkPDF(FFsets["pisum"] + "/0");
+    ff_kap = LHAPDF::mkPDF(FFsets["kap"] + "/0");
+    ff_kam = LHAPDF::mkPDF(FFsets["kam"] + "/0");
+    ff_pisum = LHAPDF::mkPDF(FFsets["pisum"] + "/0");
     if(!FFsets["kasum"].empty()) ff_kasum = LHAPDF::mkPDF(FFsets["kasum"] + "/0");
     if(!FFsets["prp"].empty()) ff_prp = LHAPDF::mkPDF(FFsets["prp"] + "/0");
     if(!FFsets["prm"].empty()) ff_prm = LHAPDF::mkPDF(FFsets["prm"] + "/0");

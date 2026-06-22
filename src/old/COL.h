@@ -17,11 +17,10 @@
 #include "dss_wrapper.h"
 //#include "FCN.h"
 #include "FragFunct.h"
-#include "LHAPDF/LHAPDF.h"
 
 //HOPPET
-#include "hoppet_v1_collins.h"
-#include "hoppet_v1_collins2.h"
+#include "/st100-gr4/codes/hoppet-1.1.5-modified_cf-build/include/hoppet_v1_collins.h"
+#include "/st100-gr4/codes/hoppet-1.1.5-modified_cff-build/include/hoppet_v1_collins2.h"
 
     
 namespace COL{
@@ -85,8 +84,6 @@ class COLLINS{
     
     bool hasFF;
 
-    LHAPDF::PDF* COL_ff;
-
     std::string model, widths, evo, header;
 
     vector<std::string> parnames;
@@ -112,8 +109,6 @@ class COLLINS{
     void has_FF(bool hasFF_in);
 
     void set_model(const string model_in);
-
-    void set_model(const string model_in, const int member_in);
 
     void set_header();
 
