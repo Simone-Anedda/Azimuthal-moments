@@ -87,6 +87,8 @@ class COLLINS{
 
     LHAPDF::PDF* COL_ff;
 
+    int member;
+
     std::string model, widths, evo, header;
 
     vector<std::string> parnames;
