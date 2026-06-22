@@ -108,7 +108,10 @@ YYKinematics PhysicsCalculator::computeYY(double sqrts,
     out.AU = K * cosh_diff * out.fgl1 * out.fgl2 * out.jacob;
     out.BU = K * out.fgl1 * out.fgl2 * out.jacob / 4.0;
     out.BL = K * out.DLfgl1 * out.DLfgl2 * out.jacob / 4.0;
-
+    if (K < 0 || out.AU < 0 || out.jacob<0){
+      std::cout << "jacob " << out.jacob <<" K " << K <<" AU " << out.AU << std::endl;
+      
+    }
     out.valid = are_finite({out.AU, out.BU, out.BL, out.jacob});
     return out;
 }

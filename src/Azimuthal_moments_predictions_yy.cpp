@@ -23,8 +23,8 @@ constexpr int kNumComponents = 3;
 constexpr int kUserDataSqrts = 0;
 constexpr int kUserDataQ20 = 1;
 constexpr int kUserDataThetac = 2;
-constexpr int kUserDataKTMax = 3;
-constexpr int kUserDataKTMin = 4;
+constexpr int kUserDataKTMin = 3;
+constexpr int kUserDataKTMmax = 4;
 constexpr int kUserDataZ1Min = 5;
 constexpr int kUserDataZ1Max = 6;
 constexpr int kUserDataZ2 = 7;
@@ -389,6 +389,9 @@ int integrand(const int *ndim, const double x[], const int *ncomp, double ff[], 
         f9 = 0.0;
         f10 = 0.0;
     }
+    //if( kin.AU < 0|| jacob_kT < 0){
+    //  std::cout<< kin.AU<<jacob_kT<<std::endl;
+    //}
 
     Collins_FF(hadron, charge, z1, z2, Q2);
 
@@ -588,6 +591,8 @@ int main(int argc, char *argv[])
                 << ",<ALL|c12>_L" << ",err_<ALL|c12>_L"
                 << ",BU_o_AU" << ",err_BU_o_AU"
                 << ",BL_o_AU" << ",err_BL_o_AU"
+		<< ",AU" << ",err_AU"
+		<< ",BU" << ",err_BU" 
                 << ",denU" << ",denL"     
                 << ",Collins_U" << ",Collins_L"
                 << ",time[s]" << ",neval" << ",fail"
@@ -703,6 +708,8 @@ int main(int argc, char *argv[])
                     << "," << BL_o_AU * ratio_L << "," << BL_o_AU_error * std::abs(ratio_L)
                     << "," << BU_o_AU << "," << BU_o_AU_error
                     << "," << BL_o_AU << "," << BL_o_AU_error
+		    << "," << res.integral[8] << "," << res.error[8]
+		    << "," << res.integral[9] << "," << res.error[9]
                     << "," << denU << "," << denL
                     << "," << ratio_U << "," << ratio_L
                     << "," << res.elapsed_seconds << "," << res.neval << "," << res.fail

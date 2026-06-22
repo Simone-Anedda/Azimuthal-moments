@@ -1,0 +1,4 @@
+EPA sources 'Pb' and 'Pb' are not both leptons: BL (f10) integration will be skipped.
+DEHSS	NLO
+Set EPA flux for Pb
+Running scan for  iset = 0, kT =[10, 30], etaq = [-2.4, 2.4], z2 = 0.1

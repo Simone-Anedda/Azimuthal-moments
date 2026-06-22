@@ -1,190 +1,190 @@
 #############################
-Executable      = /hpe-gr4/sanedda/Azimuthal-moments_yy/exe/Azimuthal_moments_predictions_yy
-Initialdir      = /hpe-gr4/sanedda/Azimuthal-moments_yy
+Executable      = /hpe-gr4/sanedda/Azimuthal-moments/exe/Azimuthal_moments_predictions_yy
+Initialdir      = /hpe-gr4/sanedda/Azimuthal-moments
 Requirements    = OpSys == "LINUX" && Arch == "X86_64"
 getenv          = True
 Output          = output_az_pred/job_$(Cluster).$(Process)_results.output
 Error           = jobs_az_pred/job_$(Cluster).$(Process).err
 Log             = jobs_az_pred/job_$(Cluster).$(Process).log
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1 iset_max 200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 201 iset_max 400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 401 iset_max 600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 601 iset_max 800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 801 iset_max 1000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1001 iset_max 1200 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1201 iset_max 1400 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1401 iset_max 1600 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1601 iset_max 1800 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.1 0.2 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.2 0.3 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.3 0.4 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.4 0.5 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.5 0.7 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
-Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 3.0 20.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -2.5 2.5 etaqb -2.5 2.5
+Arguments = model fit-2015 widths latest evo DGLAP z1 0.7 0.9 z2 0.1 0.8 sqrts 92.0 Q20 3.0 Q2 20.0 40.0 thetac 3.0e-2 EPA1 electron EPA2 electron filename ./Collins_sets/res-fit2015-MSHT20nlo-DSS14-SBpost-h1-evo-adaptMCMC-sampled.csv.full iset_min 1801 iset_max 2000 etaq -0.5 0.5 etaqb -0.5 0.5
 queue
 
 #############################

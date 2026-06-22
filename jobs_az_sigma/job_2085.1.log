@@ -1,0 +1,42 @@
+000 (2085.001.000) 2026-06-17 17:14:51 Job submitted from host: <192.135.33.172:9618?addrs=192.135.33.172-9618&alias=theosrv-01.ca.infn.it&noUDP&sock=schedd_1878_baf3>
+...
+001 (2085.001.000) 2026-06-17 17:14:55 Job executing on host: <192.135.33.172:9618?addrs=192.135.33.172-9618&alias=theosrv-01.ca.infn.it&noUDP&sock=startd_1878_baf3>
+	SlotName: slot2@theosrv-01.ca.infn.it
+	CondorScratchDir = "/var/lib/condor/execute/dir_1374423"
+	Cpus = 1
+	Disk = 342046
+	Memory = 3568
+...
+006 (2085.001.000) 2026-06-17 17:15:04 Image size of job updated: 15000
+	15  -  MemoryUsage of job (MB)
+	14748  -  ResidentSetSize of job (KB)
+...
+006 (2085.001.000) 2026-06-17 17:20:05 Image size of job updated: 15044
+	15  -  MemoryUsage of job (MB)
+	14820  -  ResidentSetSize of job (KB)
+...
+006 (2085.001.000) 2026-06-17 17:25:06 Image size of job updated: 15204
+	15  -  MemoryUsage of job (MB)
+	15204  -  ResidentSetSize of job (KB)
+...
+006 (2085.001.000) 2026-06-17 17:35:06 Image size of job updated: 15296
+	15  -  MemoryUsage of job (MB)
+	15276  -  ResidentSetSize of job (KB)
+...
+005 (2085.001.000) 2026-06-17 17:59:26 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:44:20, Sys 0 00:00:04  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:44:20, Sys 0 00:00:04  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     1.00        1         1 
+	   Disk (KB)            :  4000        4000    342046 
+	   Memory (MB)          :    15           4      3568 
+
+	Job terminated of its own accord at 2026-06-17T15:59:26Z with exit-code 0.
+...
