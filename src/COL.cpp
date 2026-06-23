@@ -458,7 +458,7 @@ void COLLINS::eval(const double & av_z, const double & Q2, const int & charge_in
             Col_dis = N_dis;
         }
 
-        if(model == "JAM3D-2022"){
+        if(model == "JAM3D-2022" || model == "JAM3D-2022-nolat"){ //JAM3D-2022
                         
             Col_fav = COL_ff->xfxQ2(2, av_z, Q2) / av_z;
             Col_dis = COL_ff->xfxQ2(1, av_z, Q2) / av_z;

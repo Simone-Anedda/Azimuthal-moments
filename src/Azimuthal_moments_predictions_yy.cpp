@@ -505,10 +505,10 @@ int main(int argc, char *argv[])
 
 
     myFF.use_LHAPDF(true);
-    if (model != "JAM3D-2022") {
+    if (model != "JAM3D-2022" && model != "JAM3D-2022-nolat") {
         myFF.set_FF("DEHSS", "NLO");
     }
-    else if (model == "JAM3D-2022") {
+    else if (model == "JAM3D-2022" || model == "JAM3D-2022-nolat") {
         myFF.set_FFset("DSS07LO");
     }
     cout << myFF.FFset << "\t" << myFF.FForder << endl;
@@ -521,7 +521,7 @@ int main(int argc, char *argv[])
         if (myFF.FFset == "DSS07LO") myFF.set_LHAPDF_FFset(DSSsetsLO);
     }
 
-    if (model != "JAM3D-2022") myCol.set_model(model);
+    if (model != "JAM3D-2022" && model != "JAM3D-2022-nolat") myCol.set_model(model);
     myCol.set_widths(widths);
     myCol.set_evolution(evo);
 
