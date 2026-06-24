@@ -57,6 +57,7 @@ z_ranges_str = [["0.1", "0.2"], ["0.2", "0.3"], ["0.3", "0.4"], ["0.4", "0.5"], 
 
 df_dict = {}
 df_list = []
+df_list_JAM = []
 
 q_low = 0.02275
 q_high = 0.97725
@@ -66,10 +67,11 @@ for zr in z_ranges_str:
     zstr = "_z1_" + zr[0] + "_" + zr[1]
     name = kine_str_dict["kT"] + kine_str_dict["Vs"] + kine_str_dict["thetac"] + zstr + kine_str_dict["etaq"] + kine_str_dict["etaqb"] + "_U_L.csv"
     if "JAM3D-2022" in _model:
-        name = _model + "_" + name
+        JAM_name = _model + "_" + name
     print(name)
 
     df_list.append(pd.read_csv(name))
+    df_list_JAM.append(pd.read_csv(JAM_name))
     # df_dict[zstr.replace("_z1", "z1")] = pd.read_csv(name)
 
 
@@ -96,14 +98,21 @@ for i in range(len(axs)):
         ax.set_xlim(0.05, 0.85)
 
         df = df_list[k]
-
+        df_JAM = df_list_JAM[k]
+        
         ax.plot(df.z2, df["dsig_U_median"], color = "blue", lw = 2)
         ax.plot(df.z2, df["dsig_L_median"], color = "red", lw = 2)
 
-        ax.fill_between(df.z2, df["dsig_U_min"], df["dsig_U_max"], facecolor = "none", hatch = "\\", edgecolor = "blue", label = r"$U$")
-        ax.fill_between(df.z2, df["dsig_L_min"], df["dsig_L_max"], facecolor = "none", hatch = "/", edgecolor = "red", label = r"$L$")
+        ax.fill_between(df.z2, df["dsig_U_min"], df["dsig_U_max"], facecolor = "none", hatch = "\\", edgecolor = "blue", label = r"$U$ (our)")
+        ax.fill_between(df.z2, df["dsig_L_min"], df["dsig_L_max"], facecolor = "none", hatch = "/", edgecolor = "red", label = r"$L$ (our)")
+        
+        ax.plot(df_JAM.z2, df_JAM["dsig_U_median"], color = "orange", lw = 2)
+        ax.plot(df_JAM.z2, df_JAM["dsig_L_median"], color = "green", lw = 2)
 
-        ax.set_ylim(-0.1499, 0.1299)
+        ax.fill_between(df_JAM.z2, df_JAM["dsig_U_min"], df_JAM["dsig_U_max"], facecolor = "none", hatch = "/", edgecolor = "orange", label = r"$U$ (" + _model + ")")
+        ax.fill_between(df_JAM.z2, df_JAM["dsig_L_min"], df_JAM["dsig_L_max"], facecolor = "none", hatch = "\\", edgecolor = "green", label = r"$L$ (" + _model + ")")
+
+        ax.set_ylim(-0.3299, 0.3299)
         ax.annotate(r"$z_1 \in [$" + z_ranges_str[k][0] + r"$\,:\,$" + z_ranges_str[k][1] + r"$]$", (0.05, 0.1), xycoords = 'axes fraction', size = 24)
 
         if i == 1:
@@ -155,14 +164,23 @@ for i in range(len(axs)):
         ax.set_xlim(0.05, 0.85)
 
         df = df_list[k]
+        df_JAM = df_list_JAM[k]
 
         ax.plot(df.z2, df["ALL_U_median"], color = "blue", lw = 2)
         ax.plot(df.z2, df["ALL_L_median"], color = "red", lw = 2)
 
-        ax.fill_between(df.z2, df["ALL_U_min"], df["ALL_U_max"], facecolor = "none", hatch = "\\", edgecolor = "blue", label = r"$U$")
-        ax.fill_between(df.z2, df["ALL_L_min"], df["ALL_L_max"], facecolor = "none", hatch = "/", edgecolor = "red", label = r"$L$")
+        ax.fill_between(df.z2, df["ALL_U_min"], df["ALL_U_max"], facecolor = "none", hatch = "\\", edgecolor = "blue", label = r"$U$ (our)")
+        ax.fill_between(df.z2, df["ALL_L_min"], df["ALL_L_max"], facecolor = "none", hatch = "/", edgecolor = "red", label = r"$L$ (our)")    
+        
 
-        ax.set_ylim(-0.1499, 0.1299)
+        ax.plot(df_JAM.z2, df_JAM["ALL_U_median"], color = "orange", lw = 2)
+        ax.plot(df_JAM.z2, df_JAM["ALL_L_median"], color = "green", lw = 2)
+
+        ax.fill_between(df_JAM.z2, df_JAM["ALL_U_min"], df_JAM["ALL_U_max"], facecolor = "none", hatch = "/", edgecolor = "orange", label = r"$U$ (" + _model + ")")
+        ax.fill_between(df_JAM.z2, df_JAM["ALL_L_min"], df_JAM["ALL_L_max"], facecolor = "none", hatch = "\\", edgecolor = "green", label = r"$L$ (" + _model + ")")
+
+
+        ax.set_ylim(-0.3299, 0.3299)
         ax.annotate(r"$z_1 \in [$" + z_ranges_str[k][0] + r"$\,:\,$" + z_ranges_str[k][1] + r"$]$", (0.05, 0.1), xycoords = 'axes fraction', size = 24)
 
         if i == 1:
@@ -186,6 +204,6 @@ for i in range(len(axs)):
         # ax.text(xl, -.0675,xlabels_xsec_dict["etaj"] + r' $\in [$'+ str(kine_lims_dict["etaj"][0]) + r"$\,:\,$" + str(kine_lims_dict["etaj"][1]) + r"$]$", size = 24 )
 
     fig.text(0.07, 0.5, r"$\langle A^{LL} | \cos\phi_{12}\rangle$", va='center', rotation='vertical', size = 24)
-    plt.savefig(out_name + "ALL_U_L.pdf", bbox_inches = "tight", dpi=400)
+    plt.savefig(out_name + "_ALL_U_L.pdf", bbox_inches = "tight", dpi=400)
 
 plt.show()
